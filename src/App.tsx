@@ -9,7 +9,7 @@ import json from './utils/data.json';
 
 import IDataItem from './components/Interfaces/IDataItem';
 
-class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, selectedIngredientsId: string[] }> {
+class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, selectedIngredientsId: string[], quantityData: { id: string, quantity: number }[] }> {
 
   constructor(props: any) {
 
@@ -18,7 +18,13 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
     this.state = {
       data: json,
       idForPopup: null,
-      selectedIngredientsId: []
+      selectedIngredientsId: [],
+      quantityData: Array.from(json).map((v: IDataItem) => {
+        return {
+          id: v._id,
+          quantity: Math.floor(Math.random() * 10)
+        };
+      })
     };
 
     this.state.selectedIngredientsId.push(this.state.data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id);
@@ -36,25 +42,48 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
 
   addIngredient = (id: any) => {
 
+    if (this.state.quantityData.find((v) => { return v.id === id })?.quantity === 0) {
+      this.setState({ ...this.state, idForPopup: id });
+      return;
+    }
+
+    let newQuantityData = this.state.quantityData.map((v) => {
+
+      if (v.id === id) {
+        v.quantity = v.quantity - 1;
+      }
+
+      return v;
+    });
+
     let selectedIngredientsId = Array.from(this.state.selectedIngredientsId);
     let alreadyExist = selectedIngredientsId.includes(id);
     selectedIngredientsId.push(id);
 
     if (alreadyExist) {
-      this.setState({ ...this.state, selectedIngredientsId: selectedIngredientsId });
+      this.setState({ ...this.state, selectedIngredientsId: selectedIngredientsId, quantityData: newQuantityData });
     } else {
-      this.setState({ ...this.state, selectedIngredientsId: selectedIngredientsId, idForPopup: id });
+      this.setState({ ...this.state, selectedIngredientsId: selectedIngredientsId, quantityData: newQuantityData, idForPopup: id });
     }
 
   };
 
   removeIngredient = (id: any) => {
 
+    let newQuantityData = this.state.quantityData.map((v) => {
+
+      if (v.id === id) {
+        v.quantity = v.quantity + 1;
+      }
+
+      return v;
+    });
+
     let selectedIngredientsId = this.state.selectedIngredientsId;
     let index = this.state.selectedIngredientsId.indexOf(id);
     selectedIngredientsId.splice(index, 1);
 
-    this.setState({ ...this.state, selectedIngredientsId: selectedIngredientsId });
+    this.setState({ ...this.state, selectedIngredientsId: selectedIngredientsId, quantityData: newQuantityData });
   };
 
   setIdForPopup = (id: any) => {
@@ -86,6 +115,7 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
               selectedIngredientsId={this.state.selectedIngredientsId}
               setIdForPopup={this.setIdForPopup}
               addIngredient={this.addIngredient}
+              quantityData={this.state.quantityData}
             ></BurgerIngredients>
 
             <BurgerConstructor

@@ -11,7 +11,7 @@
     }
 
     ul.tab-elements {
-        max-height: 60vh;
+        max-height     : 60vh;
         display        : flex;
         flex-direction : column;
         justify-content: flex-start;
@@ -28,10 +28,16 @@
                 >li.list-item {
 
                     max-height: 209px;
-                    cursor: pointer;
+                    cursor    : pointer;
 
                     .counter-wrapper {
                         position: relative;
+
+                        &.counter-wrapper-left>div {
+                            left      : 0;
+                            right     : auto;
+                            background: #ff4cf1;
+                        }
                     }
 
                     .illustration {
