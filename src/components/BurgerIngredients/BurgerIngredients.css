@@ -1,0 +1,47 @@
+.burger-ingredients {
+  width: 100%;
+}
+.burger-ingredients .tab-bar {
+  display: flex;
+  justify-content: space-between;
+}
+.burger-ingredients .tab-bar > div {
+  width: 100%;
+}
+.burger-ingredients ul.tab-elements {
+  max-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+.burger-ingredients ul.tab-elements > li ul.ingredients-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: calc(var(--offset-base-size) * 8);
+  column-gap: calc(var(--offset-base-size) * 6);
+}
+.burger-ingredients ul.tab-elements > li ul.ingredients-list > li.list-item {
+  max-height: 209px;
+  cursor: pointer;
+}
+.burger-ingredients ul.tab-elements > li ul.ingredients-list > li.list-item .counter-wrapper {
+  position: relative;
+}
+.burger-ingredients ul.tab-elements > li ul.ingredients-list > li.list-item .illustration > img {
+  width: 100%;
+}
+.burger-ingredients ul.tab-elements > li ul.ingredients-list > li.list-item .price-block {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: calc(var(--offset-base-size) * 2);
+}
+.burger-ingredients ul.tab-elements > li ul.ingredients-list > li.list-item .price-block .price {
+  font-size: 28px;
+}
+.burger-ingredients ul.tab-elements > li ul.ingredients-list > li.list-item .item-name {
+  font-size: 16px;
+  text-align: center;
+  min-height: 48px;
+}
