@@ -2,8 +2,6 @@ import React from 'react';
 
 import {
     Tab,
-    CurrencyIcon,
-    Counter
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import './BurgerIngredients.css';
@@ -106,19 +104,21 @@ class BurgerIngredients extends React.Component<BurgerIngredientsProps, BurgerIn
                 <div className="tab-bar mt-5 mb-10">
                     {['bun', 'sauce', 'main'].map((tab: string, i) => {
                         return (
-                            <Tab value={tab}
-                                active={this.state.current === tab}
-                                onClick={this.setCurrent}
-                            >
-                                {this.getTitleByType(tab)}
-                            </Tab>
+                            <React.Fragment key={tab}>
+                                <Tab value={tab}
+                                    active={this.state.current === tab}
+                                    onClick={this.setCurrent}
+                                >
+                                    {this.getTitleByType(tab)}
+                                </Tab>
+                            </React.Fragment>
                         )
                     })}
                 </div>
 
                 <ul className="tab-elements scrollable">
 
-                    {/* TODO задел на то, что типы в исходном json могут быть еще добавлены и не предется переписывать много логики */}
+                    {/* TODO задел на то, что типы в исходном json могут быть еще добавлены и не придется переписывать много логики */}
                     {this.getUnicleType(this.state.currentItems).map((type, i) => {
 
                         let items = this.getItemsByType(type, this.state.currentItems);
@@ -138,48 +138,19 @@ class BurgerIngredients extends React.Component<BurgerIngredientsProps, BurgerIn
                                         let quantity = this.getQuantityCountById(item._id);
 
                                         return (
-                                            
-                                            <React.Fragment key={item._id}>
+                                            // TODO если вот так, то не ругается на обязательный key  
+                                            <li
+                                                key={item._id}
+                                                className="list-item"
+                                                onClick={() => this.onClickOnItem(item)}
+                                            >
                                                 <BurgerIngredientListItem
                                                     item={item}
                                                     quantity={quantity}
                                                     count={count}
                                                     onClickOnItem={this.onClickOnItem}
                                                 />
-                                            </React.Fragment>
-
-                                        //     TODO если вот так, то не ругается на обязательный key  
-                                        //     <li
-                                        //     key={item._id}
-                                        //     className="list-item"
-                                        //     onClick={() => this.onClickOnItem(item)}
-                                        // >
-                                
-                                        //     <div className="counter-wrapper">
-                                        //         {quantity > 0 ?
-                                        //             <Counter count={quantity} size="default" />
-                                        //             : null}
-                                        //     </div>
-                                
-                                        //     {/* TODO сначала не понял для чего нужен счетчик, думал это количество выбранных элементов, а оказалось количество оставшихся */}
-                                        //     {/* <div className="counter-wrapper counter-wrapper-left">
-                                        //             {props.count > 0 ? <Counter count={props.count} size="default" /> : null}
-                                        //         </div> */}
-                                
-                                        //     <div className="illustration pl-4 pr-4">
-                                        //         <img alt="illustration" src={item.image} />
-                                        //     </div>
-                                
-                                        //     <div className="price-block pt-1 pb-1">
-                                        //         <span className="price text text_type_digits-medium">{item.price}</span>
-                                        //         <CurrencyIcon type="primary" />
-                                        //     </div>
-                                
-                                        //     <div className="item-name text text_type_main-medium">
-                                        //         {item.name}
-                                        //     </div>
-                                
-                                        // </li>
+                                            </li>
                                         )
                                     })}
 

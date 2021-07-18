@@ -13,12 +13,7 @@ function BurgerIngredientListItem(props: {
 }) {
 
     return (
-        <li
-            key={props.item._id}
-            className="list-item"
-            onClick={() => props.onClickOnItem(props.item)}
-        >
-
+        <>
             <div className="counter-wrapper">
                 {props.quantity > 0 ?
                     <Counter count={props.quantity} size="default" />
@@ -42,8 +37,7 @@ function BurgerIngredientListItem(props: {
             <div className="item-name text text_type_main-medium">
                 {props.item.name}
             </div>
-
-        </li>
+        </>
     )
 }
 
