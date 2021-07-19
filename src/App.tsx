@@ -3,13 +3,17 @@ import React from 'react';
 import AppHeader from './components/AppHeader/AppHeader';
 import BurgerIngredients from './components/BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from './components/BurgerConstructor/BurgerConstructor';
-import IngredientInfo from './components/IngredientInfo/IngridientInfo';
+import IngredientInfo from './components/IngredientInfo/IngredientInfo';
 
 import json from './utils/data.json';
 
 import IDataItem from './components/Interfaces/IDataItem';
 
-class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, selectedIngredientsId: string[], quantityData: { id: string, quantity: number }[] }> {
+import Modal from './components/Modal/Modal';
+
+import CheckoutInfo from './components/CheckoutInfo/CheckoutInfo';
+
+class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, selectedIngredientsId: string[], quantityData: { id: string, quantity: number }[], orderInfo:any }> {
 
   constructor(props: any) {
 
@@ -24,7 +28,8 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
           id: v._id,
           quantity: Math.floor(Math.random() * 10)
         };
-      })
+      }),
+      orderInfo :null,
     };
 
     this.state.selectedIngredientsId.push(this.state.data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id);
@@ -90,15 +95,25 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
     this.setState({ ...this.state, idForPopup: id });
   };
 
-  getElementForPopup = () => {
-    return this.state.data.find((v: any) => { return v._id === this.state.idForPopup });
+  getIngredientById = (id:string) => {
+    return this.state.data.find((v: any) => { return v._id === id });
   }
 
-  clearPopup = (e: Event) => {
-
-    e.stopPropagation();
-
+  clearIdForPopup = () => {
     this.setState({ ...this.state, idForPopup: null });
+  }
+
+  setOrderInfo = (orderData: any) => {
+    this.setState({ ...this.state, orderInfo: orderData });
+  }
+
+  clearOrderInfo = () => {
+    
+    let defaultIngredients = [];
+
+    defaultIngredients.push(this.state.data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id);
+
+    this.setState({ ...this.state, orderInfo: null, selectedIngredientsId: defaultIngredients });
   }
 
   render() {
@@ -122,13 +137,22 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
               data={this.state.data}
               selectedIngredientsId={this.state.selectedIngredientsId}
               removeIngredient={this.removeIngredient}
+              completeCheckout={this.setOrderInfo}
             ></BurgerConstructor>
 
           </div>
         </section>
 
-        {this.state.idForPopup !== null ?
-          <IngredientInfo element={this.getElementForPopup()} clearPopup={this.clearPopup}></IngredientInfo>
+        {this.state.orderInfo != null ?
+          <Modal title={null} onCloseModalCallback={this.clearOrderInfo}>
+            <CheckoutInfo orderInfo={this.state.orderInfo}></CheckoutInfo>
+          </Modal>
+          : null}
+
+        {this.state.idForPopup != null ?
+          <Modal title={'Детали ингридиента'} onCloseModalCallback={this.clearIdForPopup}>
+            <IngredientInfo element={this.getIngredientById(this.state.idForPopup)}></IngredientInfo>
+          </Modal>
           : null}
       </>
     );

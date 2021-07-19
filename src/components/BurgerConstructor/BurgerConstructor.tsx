@@ -13,7 +13,7 @@ import IDataItem from '../Interfaces/IDataItem';
 
 import PropTypes from 'prop-types';
 
-function BurgerConstructor(props: { data: IDataItem[], selectedIngredientsId: string[], removeIngredient: (id: string) => void }) {
+function BurgerConstructor(props: { data: IDataItem[], selectedIngredientsId: string[], removeIngredient: (id: string) => void, completeCheckout:(orderData: any)=>void }) {
 
     let ingredientItems = Array.from(props.selectedIngredientsId)
         .map((v: string) => { return props.data.find((val: IDataItem) => { return val._id === v; }) });
@@ -31,6 +31,17 @@ function BurgerConstructor(props: { data: IDataItem[], selectedIngredientsId: st
     const removeIngredient = (id: string) => {
         props.removeIngredient(id);
     };
+
+    const checkout = () => {
+
+        let orderData = {
+            orderNumber: Math.floor(Math.random() * 999999),
+            selectedIngredientsId: props.selectedIngredientsId,
+            total: total
+        }
+
+        props.completeCheckout(orderData);
+    }
 
     return (
         <div className="burger-constructor pt-25 pl-4">
@@ -102,7 +113,7 @@ function BurgerConstructor(props: { data: IDataItem[], selectedIngredientsId: st
                         <CurrencyIcon type="primary" onClick={undefined} />
                     </div>
                     <div className="button-wrapper ml-10">
-                        <Button type="primary" size="large" onClick={() => alert('Оформить заказ')}>
+                        <Button type="primary" size="large" onClick={checkout}>
                             Оформить заказ
                         </Button>
                     </div>
@@ -129,7 +140,8 @@ BurgerConstructor.propTypes = {
         __v: PropTypes.number
     })),
     selectedIngredientsId: PropTypes.arrayOf(PropTypes.string),
-    removeIngredient: PropTypes.func
+    removeIngredient: PropTypes.func,
+    completeCheckout: PropTypes.func,
 };
 
 export default BurgerConstructor;

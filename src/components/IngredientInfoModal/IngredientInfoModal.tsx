@@ -4,9 +4,9 @@ import {
     CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import './IngredientInfo.css';
+import './IngredientInfoModal.css';
 
-function IngredientInfo(props: { element: any, clearPopup:any }) {
+function IngredientInfoModal(props: { element: any, clearPopup:any }) {
 
     return (
         <div className="ingredient-info" onClick={props.clearPopup}>
@@ -69,4 +69,4 @@ function IngredientInfo(props: { element: any, clearPopup:any }) {
     );
 }
 
-export default IngredientInfo;
+export default IngredientInfoModal;
