@@ -7,24 +7,23 @@ import {
     DragIcon
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import './BurgerConstructor.css';
-
-import IDataItem from '../Interfaces/IDataItem';
+import styles from './BurgerConstructor.module.css';
 
 import PropTypes from 'prop-types';
 
-function BurgerConstructor(props: { data: IDataItem[], selectedIngredientsId: string[], removeIngredient: (id: string) => void, completeCheckout:(orderData: any)=>void }) {
+function BurgerConstructor(props: any) {
 
-    let ingredientItems = Array.from(props.selectedIngredientsId)
-        .map((v: string) => { return props.data.find((val: IDataItem) => { return val._id === v; }) });
+    const ingredientItems = Array.from(props.selectedIngredientsId)
+        .map((v: any) => { return props.data.find((val: any) => { return val._id === v; }) });
 
-    let bunList = ingredientItems
-        .filter((v: any) => { return v.type === 'bun' });
+    const bunList = ingredientItems
+        .filter((v: any) => { return v.type === 'bun' })
+        .filter((v, i, a) => { return a.indexOf(v) === i; });
 
-    let ingredientList = ingredientItems
+    const ingredientList = ingredientItems
         .filter((v: any) => { return v.type !== 'bun' });
 
-    let total = Array.from(ingredientItems)
+    const total = Array.from(ingredientItems)
         .map((v: any) => { return v.price })
         .reduce((previousValue, currentValue) => previousValue + currentValue, 0);
 
@@ -34,7 +33,7 @@ function BurgerConstructor(props: { data: IDataItem[], selectedIngredientsId: st
 
     const checkout = () => {
 
-        let orderData = {
+        const orderData = {
             orderNumber: Math.floor(Math.random() * 999999),
             selectedIngredientsId: props.selectedIngredientsId,
             total: total
@@ -44,9 +43,9 @@ function BurgerConstructor(props: { data: IDataItem[], selectedIngredientsId: st
     }
 
     return (
-        <div className="burger-constructor pt-25 pl-4">
+        <div className={styles['burger-constructor'] + ' pt-25 pl-4'}>
 
-            <ul className="top pr-4">
+            <ul className={styles['top'] + " pr-4"}>
                 {bunList.map((item: any, i) => (
                     <li key={`${item._id}_${i}`}>
                         {bunList.length > 1 ? <DragIcon type="primary" /> : null}
@@ -86,7 +85,7 @@ function BurgerConstructor(props: { data: IDataItem[], selectedIngredientsId: st
 
             </ul>
 
-            <ul className="bottom pr-4">
+            <ul className={styles.bottom + " pr-4"}>
                 {bunList.map((item: any, i) => (
                     <li key={`${item._id}_${i}`}>
                         {bunList.length > 1 ? <DragIcon type="primary" /> : null}
@@ -103,16 +102,16 @@ function BurgerConstructor(props: { data: IDataItem[], selectedIngredientsId: st
             </ul>
 
             {total > 0 ?
-                <div className="checkout-block mt-10 pr-4">
-                    <div className="total">
+                <div className={styles["checkout-block"] + " mt-10 pr-4"}>
+                    <div className={styles.total}>
                         <span className="text text_type_digits-medium">
                             {total}
                         </span>
                     </div>
-                    <div className="currency-icon-wrapper ml-2">
+                    <div className={styles["currency-icon-wrapper"] + " ml-2"}>
                         <CurrencyIcon type="primary" onClick={undefined} />
                     </div>
-                    <div className="button-wrapper ml-10">
+                    <div className={styles["button-wrapper"] + " ml-10"}>
                         <Button type="primary" size="large" onClick={checkout}>
                             Оформить заказ
                         </Button>

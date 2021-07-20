@@ -15,14 +15,16 @@ function BurgerIngredientListItem(props: {
     return (
         <>
             <div className="counter-wrapper">
-                {props.quantity > 0 ?
-                    <Counter count={props.quantity} size="default" />
+                {props.count > 0 ?
+                    <Counter count={props.count} size="default" />
                     : null}
             </div>
 
             {/* TODO сначала не понял для чего нужен счетчик, думал это количество выбранных элементов, а оказалось количество оставшихся */}
             {/* <div className="counter-wrapper counter-wrapper-left">
-                    {props.count > 0 ? <Counter count={props.count} size="default" /> : null}
+                    {props.quantity > 0 ? 
+                        <Counter count={props.quantity} size="default" /> 
+                        : null}
                 </div> */}
 
             <div className="illustration pl-4 pr-4">

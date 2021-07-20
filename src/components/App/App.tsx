@@ -1,19 +1,19 @@
 import React from 'react';
 
-import AppHeader from './components/AppHeader/AppHeader';
-import BurgerIngredients from './components/BurgerIngredients/BurgerIngredients';
-import BurgerConstructor from './components/BurgerConstructor/BurgerConstructor';
-import IngredientInfo from './components/IngredientInfo/IngredientInfo';
+import AppHeader from '../AppHeader/AppHeader';
+import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
+import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
+import IngredientInfo from '../IngredientInfo/IngredientInfo';
 
-import json from './utils/data.json';
+import json from '../../utils/data.json';
 
-import IDataItem from './components/Interfaces/IDataItem';
+import IDataItem from '../Interfaces/IDataItem';
 
-import Modal from './components/Modal/Modal';
+import Modal from '../Modal/Modal';
 
-import CheckoutInfo from './components/CheckoutInfo/CheckoutInfo';
+import CheckoutInfo from '../CheckoutInfo/CheckoutInfo';
 
-class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, selectedIngredientsId: string[], quantityData: { id: string, quantity: number }[], orderInfo:any }> {
+class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, selectedIngredientsId: string[], quantityData: { id: string, quantity: number }[], orderInfo: any }> {
 
   constructor(props: any) {
 
@@ -29,10 +29,12 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
           quantity: Math.floor(Math.random() * 10)
         };
       }),
-      orderInfo :null,
+      orderInfo: null,
     };
 
-    this.state.selectedIngredientsId.push(this.state.data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id);
+    let defaultBunIngredientId = this.state.data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
+    this.state.selectedIngredientsId.push(defaultBunIngredientId);
+    this.state.selectedIngredientsId.push(defaultBunIngredientId);
 
     this.setIdForPopup = this.setIdForPopup.bind(this);
     this.addIngredient = this.addIngredient.bind(this);
@@ -47,10 +49,10 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
 
   addIngredient = (id: any) => {
 
-    if (this.state.quantityData.find((v) => { return v.id === id })?.quantity === 0) {
-      this.setState({ ...this.state, idForPopup: id });
-      return;
-    }
+    // if (this.state.quantityData.find((v) => { return v.id === id })?.quantity === 0) {
+    //   this.setState({ ...this.state, idForPopup: id });
+    //   return;
+    // }
 
     let newQuantityData = this.state.quantityData.map((v) => {
 
@@ -63,7 +65,21 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
 
     let selectedIngredientsId = Array.from(this.state.selectedIngredientsId);
     let alreadyExist = selectedIngredientsId.includes(id);
-    selectedIngredientsId.push(id);
+
+    let chosenIngredient = this.state.data.find((v) => v._id === id);
+
+    if (chosenIngredient?.type === 'bun') {
+
+      selectedIngredientsId = selectedIngredientsId.filter((v, i, a) => {
+        return this.state.data.find((x) => x._id === v)?.type !== 'bun';
+      });
+
+      selectedIngredientsId.push(id);
+      selectedIngredientsId.push(id);
+
+    } else {
+      selectedIngredientsId.push(id);
+    }
 
     if (alreadyExist) {
       this.setState({ ...this.state, selectedIngredientsId: selectedIngredientsId, quantityData: newQuantityData });
@@ -95,7 +111,7 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
     this.setState({ ...this.state, idForPopup: id });
   };
 
-  getIngredientById = (id:string) => {
+  getIngredientById = (id: string) => {
     return this.state.data.find((v: any) => { return v._id === id });
   }
 
@@ -108,10 +124,13 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
   }
 
   clearOrderInfo = () => {
-    
+
     let defaultIngredients = [];
 
-    defaultIngredients.push(this.state.data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id);
+    let defaultBunIngredientId = this.state.data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
+    
+    defaultIngredients.push(defaultBunIngredientId);
+    defaultIngredients.push(defaultBunIngredientId);
 
     this.setState({ ...this.state, orderInfo: null, selectedIngredientsId: defaultIngredients });
   }

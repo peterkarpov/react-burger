@@ -8,6 +8,8 @@ import './BurgerIngredients.css';
 
 import IDataItem from '../Interfaces/IDataItem';
 
+import PropTypes from 'prop-types';
+
 import BurgerIngredientListItem from '../BurgerIngredientListItem/BurgerIngredientListItem';
 
 interface BurgerIngredientsProps {
@@ -15,7 +17,7 @@ interface BurgerIngredientsProps {
     setIdForPopup: (id: string) => void,
     addIngredient: (id: string) => void,
     selectedIngredientsId: string[],
-    quantityData: {id:string, quantity:number}[]
+    quantityData: { id: string, quantity: number }[]
 };
 
 interface BurgerIngredientsState {
@@ -24,6 +26,30 @@ interface BurgerIngredientsState {
 };
 
 class BurgerIngredients extends React.Component<BurgerIngredientsProps, BurgerIngredientsState> {
+
+    static propTypes = {
+        data: PropTypes.arrayOf(PropTypes.shape({
+            _id: PropTypes.string,
+            name: PropTypes.string,
+            type: PropTypes.string,
+            proteins: PropTypes.number,
+            fat: PropTypes.number,
+            carbohydrates: PropTypes.number,
+            calories: PropTypes.number,
+            price: PropTypes.number,
+            image: PropTypes.string,
+            image_mobile: PropTypes.string,
+            image_large: PropTypes.string,
+            __v: PropTypes.number
+        })),
+        selectedIngredientsId: PropTypes.arrayOf(PropTypes.string),
+        setIdForPopup: PropTypes.func,
+        addIngredient: PropTypes.func,
+        quantityData: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.string,
+            quantity: PropTypes.number,
+        }))
+    };
 
     state = {
         current: '',
@@ -65,13 +91,14 @@ class BurgerIngredients extends React.Component<BurgerIngredientsProps, BurgerIn
     };
 
     getSelectedCountById = (id: string) => {
+
         return Array.from(this.props.selectedIngredientsId).filter((v: string) => v === id).length;
     }
 
     getQuantityCountById = (id: string) => {
         return this.props.quantityData.find((v: { id: string, quantity: number }) => v.id === id)?.quantity || 0;
     }
-    
+
     getTitleByType = (current: string) => {
 
         let title = '';
@@ -86,7 +113,7 @@ class BurgerIngredients extends React.Component<BurgerIngredientsProps, BurgerIn
 
         return title;
     };
- 
+
     onClickOnItem = (item: IDataItem) => {
 
         this.props.addIngredient(item._id);
