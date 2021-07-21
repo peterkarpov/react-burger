@@ -1,5 +1,4 @@
 @import url('./reset.module.css');
-@import url('./scrollable.module.css');
 
 * {
   -webkit-touch-callout: none;
@@ -25,10 +24,10 @@ body {
   font-family: 'Courier New', Courier, monospace;
 }
 
-body .wrapper {
+/* body .wrapper {
   width       : 1280px;
   width       : calc(var(--offset-base-size) * 320);
   margin-left : auto;
   margin-right: auto;
-}
+} */
 

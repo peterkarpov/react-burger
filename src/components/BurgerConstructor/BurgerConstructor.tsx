@@ -8,7 +8,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './BurgerConstructor.module.css';
-import stylesScrollable from '../css/scrollable.module.css';
+import stylesScrollable from '../../css/scrollable.module.css';
 
 
 import PropTypes from 'prop-types';

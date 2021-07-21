@@ -5,7 +5,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './BurgerIngredients.module.css';
-import stylesScrollable from '../css/scrollable.module.css';
+import stylesScrollable from '../../css/scrollable.module.css';
 
 import IDataItem from '../Interfaces/IDataItem';
 
@@ -76,10 +76,6 @@ class BurgerIngredients extends React.Component<BurgerIngredientsProps, BurgerIn
             currentItems: Array.from(this.props.data).filter((v: any, i, a) => { return v.type === this.state.current })
         });
     };
-
-    componentDidMount() {
-        console.log('BurgerIngredients componentDidMount');
-    }
 
     getUnicleType = (data: IDataItem[]) => {
         return Array.from(data)
