@@ -8,6 +8,8 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './BurgerConstructor.module.css';
+import stylesScrollable from '../css/scrollable.module.css';
+
 
 import PropTypes from 'prop-types';
 
@@ -61,7 +63,7 @@ function BurgerConstructor(props: any) {
                 ))}
             </ul>
 
-            <ul className="scrollable pr-2 pt-4 pb-4">
+            <ul className={stylesScrollable.scrollable + " pr-2 pt-4 pb-4"}>
                 {ingredientList.map((item: any, i: any) => (
 
                     <li key={`${item._id}_${i}`}>

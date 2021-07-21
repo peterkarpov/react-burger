@@ -41,12 +41,6 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
     this.removeIngredient = this.removeIngredient.bind(this);
   }
 
-  mainWrapperStyle = {
-    display: 'flex',
-    gap: 'calc(var(--offset-base-size) * 10)',
-    justifyContent: 'space-evenly'
-  };
-
   addIngredient = (id: any) => {
 
     // if (this.state.quantityData.find((v) => { return v.id === id })?.quantity === 0) {
@@ -134,6 +128,16 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
 
     this.setState({ ...this.state, orderInfo: null, selectedIngredientsId: defaultIngredients });
   }
+
+  mainWrapperStyle = {
+    display: 'flex',
+    gap: 'calc(var(--offset-base-size) * 10)',
+    justifyContent: 'space-evenly',
+
+    width: 'calc(var(--offset-base-size) * 320)',
+    marginLeft: 'auto',
+    marginRight: 'auto'
+  };
 
   render() {
 

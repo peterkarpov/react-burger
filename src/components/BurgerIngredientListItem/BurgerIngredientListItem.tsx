@@ -5,6 +5,8 @@ import {
     CurrencyIcon
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
+import styles from '../BurgerIngredients/BurgerIngredients.module.css';
+
 function BurgerIngredientListItem(props: {
     item: IDataItem,
     quantity: number,
@@ -14,7 +16,7 @@ function BurgerIngredientListItem(props: {
 
     return (
         <>
-            <div className="counter-wrapper">
+            <div className={styles["counter-wrapper"]}>
                 {props.count > 0 ?
                     <Counter count={props.count} size="default" />
                     : null}
@@ -27,16 +29,16 @@ function BurgerIngredientListItem(props: {
                         : null}
                 </div> */}
 
-            <div className="illustration pl-4 pr-4">
+            <div className={`${styles["illustration"]} pl-4 pr-4`}>
                 <img alt="illustration" src={props.item.image} />
             </div>
 
-            <div className="price-block pt-1 pb-1">
-                <span className="price text text_type_digits-medium">{props.item.price}</span>
+            <div className={`${styles["price-block"]} pt-1 pb-1`}>
+                <span className={`${styles.price} text text_type_digits-medium`}>{props.item.price}</span>
                 <CurrencyIcon type="primary" />
             </div>
 
-            <div className="item-name text text_type_main-medium">
+            <div className={`${styles["item-name"]} text text_type_main-medium`}>
                 {props.item.name}
             </div>
         </>

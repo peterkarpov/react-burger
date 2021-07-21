@@ -4,7 +4,8 @@ import {
     Tab,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import './BurgerIngredients.css';
+import styles from './BurgerIngredients.module.css';
+import stylesScrollable from '../css/scrollable.module.css';
 
 import IDataItem from '../Interfaces/IDataItem';
 
@@ -77,7 +78,7 @@ class BurgerIngredients extends React.Component<BurgerIngredientsProps, BurgerIn
     };
 
     componentDidMount() {
-        console.log('componentDidMount');
+        console.log('BurgerIngredients componentDidMount');
     }
 
     getUnicleType = (data: IDataItem[]) => {
@@ -122,13 +123,13 @@ class BurgerIngredients extends React.Component<BurgerIngredientsProps, BurgerIn
 
     render() {
         return (
-            <div className="burger-ingredients">
+            <div className={styles["burger-ingredients"]}>
 
                 <div className="text text_type_main-large mt-10 mb-5">
                     Соберите бургер
                 </div>
 
-                <div className="tab-bar mt-5 mb-10">
+                <div className={styles["tab-bar"] + " mt-5 mb-10"}>
                     {['bun', 'sauce', 'main'].map((tab: string, i) => {
                         return (
                             <React.Fragment key={tab}>
@@ -143,7 +144,7 @@ class BurgerIngredients extends React.Component<BurgerIngredientsProps, BurgerIn
                     })}
                 </div>
 
-                <ul className="tab-elements scrollable">
+                <ul className={`${styles["tab-elements"]} ${stylesScrollable.scrollable}`}>
 
                     {/* TODO задел на то, что типы в исходном json могут быть еще добавлены и не придется переписывать много логики */}
                     {this.getUnicleType(this.state.currentItems).map((type, i) => {
@@ -157,7 +158,7 @@ class BurgerIngredients extends React.Component<BurgerIngredientsProps, BurgerIn
                                     {this.getTitleByType(type)}
                                 </div>
 
-                                <ul className="ingredients-list pt-6 pl-4 pr-4 pb-10">
+                                <ul className={`${styles["ingredients-list"]} pt-6 pl-4 pr-4 pb-10`}>
 
                                     {items.map((item: IDataItem, i: any) => {
 
@@ -168,7 +169,7 @@ class BurgerIngredients extends React.Component<BurgerIngredientsProps, BurgerIn
                                             // TODO если вот так, то не ругается на обязательный key  
                                             <li
                                                 key={item._id}
-                                                className="list-item"
+                                                className={styles["list-item"]}
                                                 onClick={() => this.onClickOnItem(item)}
                                             >
                                                 <BurgerIngredientListItem
