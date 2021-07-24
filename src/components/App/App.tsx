@@ -200,6 +200,8 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
           </div>
         </section>
 
+        <div id="for-modal"></div>
+
         {this.state.orderInfo != null ?
           <Modal title={null} onCloseModalCallback={this.clearOrderInfo}>
             <OrderDetails orderInfo={this.state.orderInfo}></OrderDetails>
