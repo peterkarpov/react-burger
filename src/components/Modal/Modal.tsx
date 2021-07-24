@@ -5,6 +5,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import './Modal.css';
+import ModalOverlay from '../ModalOverlay/ModalOverlay';
 
 class Modal extends React.Component<{ onCloseModalCallback: any, title: any }, { enable: boolean }> {
 
@@ -20,16 +21,24 @@ class Modal extends React.Component<{ onCloseModalCallback: any, title: any }, {
     }
 
     closeModal = (e: any) => {
+
+        console.log(e);
+        console.log(e.target);
+        console.log(e.currentTarget);
+
+        if (`${e.target.className}`.includes('modal-background') || `${e.currentTarget.className}`.includes('close-icon-wrapper')) {
+            this.props.onCloseModalCallback();
+            this.setState({ ...this.state, enable: false });
+        }
+
         e.stopPropagation();
-        this.props.onCloseModalCallback();
-        this.setState({ ...this.state, enable: false });
     }
 
     render() {
         return (
             <>
                 {this.state.enable ?
-                    <div className="modal-background" onClick={this.closeModal}>
+                    <ModalOverlay onClick={this.closeModal}>
                         <div className="modal-body pt-10 pl-10 pr-10 pb-15">
                             <div className="modal-header">
                                 <span className="modal-title text text_type_main-large">
@@ -41,7 +50,7 @@ class Modal extends React.Component<{ onCloseModalCallback: any, title: any }, {
                             </div>
                             {this.props.children}
                         </div>
-                    </div>
+                    </ModalOverlay>
                     : null}
             </>
         )

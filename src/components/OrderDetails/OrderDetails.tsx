@@ -1,10 +1,10 @@
 import React from 'react';
 
-import styles from './CheckoutInfo.module.css';
+import styles from './OrderDetails.module.css';
 
 import orderAccpeted from '../../images/order accpeted/popup/done.png';
 
-class CheckoutInfo extends React.Component<{ orderInfo: any }, {}> {
+class OrderDetails extends React.Component<{ orderInfo: any }, {}> {
 
     render() {
 
@@ -30,7 +30,6 @@ class CheckoutInfo extends React.Component<{ orderInfo: any }, {}> {
             </div>
         )
     }
-
 }
 
-export default CheckoutInfo;
+export default OrderDetails;

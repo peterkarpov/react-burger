@@ -31,9 +31,12 @@
   align-items: center;
   justify-content: space-between;
 }
-.burger-constructor ul > li .constructor-element {
+.burger-constructor ul > li > div {
   min-width: 488px;
   min-width: calc(var(--offset-base-size) * 122);
+}
+.burger-constructor ul > li > div > span {
+  justify-content: space-between;
 }
 .burger-constructor .checkout-block {
   display: flex;

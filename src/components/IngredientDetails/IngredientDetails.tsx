@@ -1,6 +1,6 @@
-import styles from './IngredientInfo.module.css';
+import styles from './IngredientDetails.module.css';
 
-function IngredientInfo(props: { element: any }) {
+function IngredientDetails(props: { element: any }) {
 
     return (
         <div className={styles["ingredient-info"]}>
@@ -48,4 +48,4 @@ function IngredientInfo(props: { element: any }) {
     );
 }
 
-export default IngredientInfo;
+export default IngredientDetails;
