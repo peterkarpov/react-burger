@@ -1,0 +1,34 @@
+header.app-header {
+    background-color: #1C1C21
+}
+
+header.app-header .wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header.app-header .logo-wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    display: inline-block;
+    width: 290px;
+    margin: auto;
+}
+
+header.app-header ul.navigation-bar {
+    display: flex;
+    gap: 8px;
+}
+
+header.app-header ul.navigation-bar li.navigation-link {
+    display: inline-block;
+    border-radius: 40px;
+}
+
+header.app-header ul.navigation-bar li.navigation-link .navigation-text {
+    line-height: 24px;
+    vertical-align: top;
+}

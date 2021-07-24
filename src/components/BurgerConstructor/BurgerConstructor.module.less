@@ -1,0 +1,69 @@
+.burger-constructor {
+    width: 100%;
+
+    ul {
+        max-height: 40vh;
+
+        display       : flex;
+        align-items   : center;
+        flex-direction: column;
+        gap           : calc(var(--offset-base-size) * 4);
+
+        &.top,
+        &.bottom {
+            max-height: 100%;
+
+            >li {
+                justify-content: flex-end;
+                position: relative;
+                
+                >svg{
+                    position:absolute;
+                    left: 0;
+                }
+
+            }
+        }
+
+        >li {
+
+
+            width         : 100%;
+            display       : flex;
+            flex-direction: row;
+            flex-wrap     : nowrap;
+            align-content : center;
+            align-items   : center;
+
+            justify-content: space-between;
+
+            .constructor-element{
+                min-width: 488px;
+                min-width: calc(var(--offset-base-size) * 122);
+            }
+        }
+
+    }
+    
+    .checkout-block {
+        display        : flex;
+        flex-direction : row;
+        flex-wrap      : nowrap;
+        align-content  : center;
+        justify-content: flex-end;
+        align-items    : center;
+
+        .total {
+            font-size: calc(var(--offset-base-size) * 12);
+
+        }
+
+        .currency-icon-wrapper {
+            svg {
+                width : calc(var(--offset-base-size) * 12);
+                height: calc(var(--offset-base-size) * 12);
+            }
+        }
+
+    }
+}

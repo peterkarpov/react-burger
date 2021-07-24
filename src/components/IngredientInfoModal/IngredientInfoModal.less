@@ -1,0 +1,91 @@
+.ingredient-info {
+
+    background-color  : rgba(0, 0, 0, 0.6);
+    //background-color: red;
+
+    position: absolute;
+    left    : 0;
+    right   : 0;
+    top     : 0;
+    bottom  : 0;
+
+    overflow: hidden;
+
+    z-index: 1000;
+
+    display        : flex;
+    justify-content: center;
+    align-items    : center;
+
+    .wrapper {
+        width: 520px;
+        width: calc(var(--offset-base-size) * 130);
+    }
+
+    .modal {
+
+        background-color: #1C1C21;
+        width           : 720px;
+        width           : calc(var(--offset-base-size) * 180);
+        max-height      : 540px;
+        max-height      : calc(var(--offset-base-size) * 135);
+
+        border-radius: 40px;
+
+        .modal-header {
+            display        : flex;
+            align-items    : center;
+            justify-content: space-between;
+            line-height    : 64px;
+            line-height    : calc(var(--offset-base-size) * 16);
+
+            .close-icon-wrapper {
+                cursor: pointer;
+
+                svg {
+                    vertical-align: middle;
+                    cursor        : pointer;
+                }
+            }
+
+        }
+
+        .icon-wrapper {
+            text-align  : center;
+            margin-left : auto;
+            margin-right: auto;
+            width       : 520px;
+            width       : calc(var(--offset-base-size) * 130);
+            height      : 240px;
+            height      : calc(var(--offset-base-size) * 60);
+
+            img {
+                height: 100%;
+                width : auto;
+            }
+        }
+
+        ul.composition-list {
+
+            display        : flex;
+            gap            : calc(var(--offset-base-size) * 5);
+            justify-content: space-between;
+            text-align     : center;
+
+            li.composition-item {
+
+                display        : flex;
+                flex-direction : column;
+                justify-content: space-between;
+
+                .title {
+                    font-size: calc(var(--offset-base-size) * 4);
+                }
+
+                .value {
+                    font-size: calc(var(--offset-base-size) * 7);
+                }
+            }
+        }
+    }
+}

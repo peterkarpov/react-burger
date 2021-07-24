@@ -1,0 +1,33 @@
+@import url('./reset.module.css');
+
+* {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select  : none;
+  /* Chrome/Safari/Opera */
+  -khtml-user-select   : none;
+  /* Konqueror */
+  -moz-user-select     : none;
+  /* Firefox */
+  -ms-user-select      : none;
+  /* Internet Explorer/Edge */
+  user-select          : none;
+  /* Non-prefixed version, currently not supported by any browser */
+}
+
+/* * {
+  outline: 1px dotted red;
+  cursor: default;
+} */
+
+body {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* body .wrapper {
+  width       : 1280px;
+  width       : calc(var(--offset-base-size) * 320);
+  margin-left : auto;
+  margin-right: auto;
+} */
+

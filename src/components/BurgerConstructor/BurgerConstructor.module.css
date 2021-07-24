@@ -1,0 +1,52 @@
+.burger-constructor {
+  width: 100%;
+}
+.burger-constructor ul {
+  max-height: 40vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: calc(var(--offset-base-size) * 4);
+}
+.burger-constructor ul.top,
+.burger-constructor ul.bottom {
+  max-height: 100%;
+}
+.burger-constructor ul.top > li,
+.burger-constructor ul.bottom > li {
+  justify-content: flex-end;
+  position: relative;
+}
+.burger-constructor ul.top > li > svg,
+.burger-constructor ul.bottom > li > svg {
+  position: absolute;
+  left: 0;
+}
+.burger-constructor ul > li {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+}
+.burger-constructor ul > li .constructor-element {
+  min-width: 488px;
+  min-width: calc(var(--offset-base-size) * 122);
+}
+.burger-constructor .checkout-block {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: flex-end;
+  align-items: center;
+}
+.burger-constructor .checkout-block .total {
+  font-size: calc(var(--offset-base-size) * 12);
+}
+.burger-constructor .checkout-block .currency-icon-wrapper svg {
+  width: calc(var(--offset-base-size) * 12);
+  height: calc(var(--offset-base-size) * 12);
+}
