@@ -45,25 +45,22 @@ class Modal extends React.Component<{ onCloseModalCallback: any, title: any }, {
         const modalRoot: any = document.getElementById("for-modal");
 
         return ReactDOM.createPortal(
-            (
-                <>
-                    {this.state.enable ?
-                        <ModalOverlay onClick={this.closeModal}>
-                            <div className={`${styles["modal-body"]} pt-10 pl-10 pr-10 pb-15`}>
-                                <div className={styles["modal-header"]}>
-                                    <span className={styles['modal-title'] + " text text_type_main-large"}>
-                                        {this.props.title}
-                                    </span>
-                                    <div className={styles["close-icon-wrapper"]} onClick={this.closeModal}>
-                                        <CloseIcon type="primary" />
-                                    </div>
-                                </div>
-                                {this.props.children}
+            this.state.enable ?
+                <ModalOverlay onClick={this.closeModal}>
+                    <div className={`${styles["modal-body"]} pt-10 pl-10 pr-10 pb-15`}>
+                        <div className={styles["modal-header"]}>
+                            <span className={styles['modal-title'] + " text text_type_main-large"}>
+                                {this.props.title}
+                            </span>
+                            <div className={styles["close-icon-wrapper"]} onClick={this.closeModal}>
+                                <CloseIcon type="primary" />
                             </div>
-                        </ModalOverlay>
-                        : null}
-                </>
-            ),
+                        </div>
+                        {this.props.children}
+                    </div>
+                </ModalOverlay>
+                : null
+            ,
             modalRoot
         )
     }

@@ -10,7 +10,6 @@ import {
 import styles from './BurgerConstructor.module.css';
 import stylesScrollable from '../../css/scrollable.module.css';
 
-
 import PropTypes from 'prop-types';
 
 function BurgerConstructor(props: any) {
@@ -81,7 +80,7 @@ function BurgerConstructor(props: any) {
 
                 {ingredientList.length === 0 ?
                     <li className="text text_type_main-default" style={{ justifyContent: 'center' }}>
-                        Вы можете выбрать начинку или соус
+                        Вы можете выбрать булку, начинку или соус
                     </li>
                     : null}
 

@@ -26,7 +26,7 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
       idForPopup: null,
       selectedIngredientsId: (() => {
 
-        let result = Array.from<string>([])
+        let result = Array.from<string>([]);
 
         let defaultBunIngredientId = Array.from(json).filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
         result.push(defaultBunIngredientId);
@@ -55,11 +55,11 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
       .then(
         (result) => {
 
-          let defaultBunIngredientId = result.data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
-
           let defaultSelectedIngredientsId = Array.from<string>([]);
-          defaultSelectedIngredientsId.push(defaultBunIngredientId);
-          defaultSelectedIngredientsId.push(defaultBunIngredientId);
+          
+          //let defaultBunIngredientId = result.data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
+          //defaultSelectedIngredientsId.push(defaultBunIngredientId);
+          //defaultSelectedIngredientsId.push(defaultBunIngredientId);
 
           this.setState({ ...this.state, data: Array.from(result.data), selectedIngredientsId: defaultSelectedIngredientsId });
         },
@@ -92,7 +92,6 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
     });
 
     let selectedIngredientsId = Array.from(this.state.selectedIngredientsId);
-    let alreadyExist = selectedIngredientsId.includes(id);
 
     let chosenIngredient = this.state.data.find((v) => v._id === id);
 
@@ -109,11 +108,7 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
       selectedIngredientsId.push(id);
     }
 
-    if (alreadyExist) {
-      this.setState({ ...this.state, selectedIngredientsId: selectedIngredientsId, quantityData: newQuantityData });
-    } else {
-      this.setState({ ...this.state, selectedIngredientsId: selectedIngredientsId, quantityData: newQuantityData, idForPopup: id });
-    }
+    this.setState({ ...this.state, selectedIngredientsId: selectedIngredientsId, quantityData: newQuantityData, idForPopup: id });
 
   };
 
@@ -199,8 +194,6 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
 
           </div>
         </section>
-
-        <div id="for-modal"></div>
 
         {this.state.orderInfo != null ?
           <Modal title={null} onCloseModalCallback={this.clearOrderInfo}>
