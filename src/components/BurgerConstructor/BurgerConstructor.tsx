@@ -60,6 +60,13 @@ function BurgerConstructor(props: any) {
                         />
                     </li>
                 ))}
+
+                {bunList.length === 0 ?
+                    <li className="text text_type_main-default" style={{ justifyContent: 'center' }}>
+                        Обязательно попробуйте наши булки
+                    </li>
+                    : null}
+
             </ul>
 
             <ul className={stylesScrollable.scrollable + " pr-2 pt-4 pb-4"}>
@@ -80,7 +87,7 @@ function BurgerConstructor(props: any) {
 
                 {ingredientList.length === 0 ?
                     <li className="text text_type_main-default" style={{ justifyContent: 'center' }}>
-                        Вы можете выбрать булку, начинку или соус
+                        Вы можете выбрать начинку или соус
                     </li>
                     : null}
 
@@ -102,7 +109,7 @@ function BurgerConstructor(props: any) {
                 ))}
             </ul>
 
-            {total > 0 ?
+            {bunList.length !== 0 ?
                 <div className={styles["checkout-block"] + " mt-10 pr-4"}>
                     <div className={styles.total}>
                         <span className="text text_type_digits-medium">

@@ -26,9 +26,9 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
       idForPopup: null,
       selectedIngredientsId: (() => {
 
-        let result = Array.from<string>([]);
+        const result = Array.from<string>([]);
 
-        let defaultBunIngredientId = Array.from(json).filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
+        const defaultBunIngredientId = Array.from(json).filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
         result.push(defaultBunIngredientId);
         result.push(defaultBunIngredientId);
 
@@ -51,11 +51,16 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
 
   componentDidMount() {
     fetch(DATA_URL)
-      .then(res => res.json())
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка ${res.status}`);
+      })
       .then(
         (result) => {
 
-          let defaultSelectedIngredientsId = Array.from<string>([]);
+          const defaultSelectedIngredientsId = Array.from<string>([]);
           
           //let defaultBunIngredientId = result.data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
           //defaultSelectedIngredientsId.push(defaultBunIngredientId);
