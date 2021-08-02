@@ -1,6 +1,8 @@
-import styles from './IngredientInfo.module.css';
+import styles from './IngredientDetails.module.css';
 
-function IngredientInfo(props: { element: any }) {
+import PropTypes from 'prop-types';
+
+function IngredientDetails(props: { element: any }) {
 
     return (
         <div className={styles["ingredient-info"]}>
@@ -48,4 +50,21 @@ function IngredientInfo(props: { element: any }) {
     );
 }
 
-export default IngredientInfo;
+IngredientDetails.propTypes = {
+    element: PropTypes.shape({
+        _id: PropTypes.string,
+        name: PropTypes.string,
+        type: PropTypes.string,
+        proteins: PropTypes.number,
+        fat: PropTypes.number,
+        carbohydrates: PropTypes.number,
+        calories: PropTypes.number,
+        price: PropTypes.number,
+        image: PropTypes.string,
+        image_mobile: PropTypes.string,
+        image_large: PropTypes.string,
+        __v: PropTypes.number
+    }),
+};
+
+export default IngredientDetails;

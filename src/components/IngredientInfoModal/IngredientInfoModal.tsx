@@ -6,7 +6,9 @@ import {
 
 import './IngredientInfoModal.css';
 
-function IngredientInfoModal(props: { element: any, clearPopup:any }) {
+import PropTypes from 'prop-types';
+
+function IngredientInfoModal(props: { element: any, clearPopup: any }) {
 
     return (
         <div className="ingredient-info" onClick={props.clearPopup}>
@@ -68,5 +70,23 @@ function IngredientInfoModal(props: { element: any, clearPopup:any }) {
         </div>
     );
 }
+
+IngredientInfoModal.propTypes = {
+    element: PropTypes.shape({
+        _id: PropTypes.string,
+        name: PropTypes.string,
+        type: PropTypes.string,
+        proteins: PropTypes.number,
+        fat: PropTypes.number,
+        carbohydrates: PropTypes.number,
+        calories: PropTypes.number,
+        price: PropTypes.number,
+        image: PropTypes.string,
+        image_mobile: PropTypes.string,
+        image_large: PropTypes.string,
+        __v: PropTypes.number
+    }),
+    clearPopup: PropTypes.func,
+};
 
 export default IngredientInfoModal;

@@ -1,10 +1,20 @@
 import React from 'react';
 
-import styles from './CheckoutInfo.module.css';
+import styles from './OrderDetails.module.css';
 
 import orderAccpeted from '../../images/order accpeted/popup/done.png';
 
-class CheckoutInfo extends React.Component<{ orderInfo: any }, {}> {
+import PropTypes from 'prop-types';
+
+class OrderDetails extends React.Component<{ orderInfo: { orderNumber: number, selectedIngredientsId: string[], total: number } }, {}> {
+
+    static propTypes = {
+        orderInfo: PropTypes.shape({
+            orderNumber: PropTypes.number,
+            selectedIngredientsId: PropTypes.arrayOf(PropTypes.string),
+            total: PropTypes.number,
+        }),
+    };
 
     render() {
 
@@ -30,7 +40,6 @@ class CheckoutInfo extends React.Component<{ orderInfo: any }, {}> {
             </div>
         )
     }
-
 }
 
-export default CheckoutInfo;
+export default OrderDetails;
