@@ -13,6 +13,8 @@ import Modal from '../Modal/Modal';
 
 import OrderDetails from '../OrderDetails/OrderDetails';
 
+import { BurgerConstructorContext } from '../../services/BurgerConstructorContext';
+
 const DATA_URL = 'https://norma.nomoreparties.space/api/ingredients';
 const DATA_URL_CHECKOUT = 'https://norma.nomoreparties.space/api/orders';
 
@@ -223,20 +225,24 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
         <section className="main">
           <div className="wrapper" style={this.mainWrapperStyle}>
 
-            <BurgerIngredients
-              data={this.state.data}
-              selectedIngredientsId={this.state.selectedIngredientsId}
-              setIdForPopup={this.setIdForPopup}
-              addIngredient={this.addIngredient}
-              quantityData={this.state.quantityData}
-            ></BurgerIngredients>
+            <BurgerConstructorContext.Provider value={{ 
+              selectedIngredientsId: this.state.selectedIngredientsId, 
+              removeIngredient: this.removeIngredient, 
+              addIngredient: this.addIngredient 
+              }}>
 
-            <BurgerConstructor
-              data={this.state.data}
-              selectedIngredientsId={this.state.selectedIngredientsId}
-              removeIngredient={this.removeIngredient}
-              completeCheckout={this.setOrderInfo}
-            ></BurgerConstructor>
+              <BurgerIngredients
+                data={this.state.data}
+                setIdForPopup={this.setIdForPopup}
+                quantityData={this.state.quantityData}
+              ></BurgerIngredients>
+
+              <BurgerConstructor
+                data={this.state.data}
+                completeCheckout={this.setOrderInfo}
+              ></BurgerConstructor>
+
+            </BurgerConstructorContext.Provider>
 
           </div>
         </section>
