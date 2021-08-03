@@ -14,6 +14,7 @@ import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
 
 const DATA_URL = 'https://norma.nomoreparties.space/api/ingredients';
+const DATA_URL_CHECKOUT = 'https://norma.nomoreparties.space/api/orders';
 
 class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, selectedIngredientsId: string[], quantityData: { id: string, quantity: number }[], orderInfo: any }> {
 
@@ -61,7 +62,7 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
         (result) => {
 
           const defaultSelectedIngredientsId = Array.from<string>([]);
-          
+
           //let defaultBunIngredientId = result.data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
           //defaultSelectedIngredientsId.push(defaultBunIngredientId);
           //defaultSelectedIngredientsId.push(defaultBunIngredientId);
@@ -148,7 +149,47 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
   }
 
   setOrderInfo = (orderData: any) => {
-    this.setState({ ...this.state, orderInfo: orderData });
+
+    fetch(DATA_URL_CHECKOUT, {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ingredients: orderData.selectedIngredientsId
+      })
+    })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка ${res.status}`);
+      })
+      .then(
+        (result) => {
+
+          if (result && result.success) {
+
+            orderData = {
+              orderNumber: result.order.number,
+              selectedIngredientsId: orderData.selectedIngredientsId,
+              total: orderData.total
+            }
+
+            this.setState({ ...this.state, orderInfo: orderData });
+
+          } else {
+            console.log(result);
+          }
+
+        },
+        (error) => {
+          console.log(error);
+
+        }
+      )
+      .catch((error) => {
+        console.log(error);
+      });
+
   }
 
   clearOrderInfo = () => {

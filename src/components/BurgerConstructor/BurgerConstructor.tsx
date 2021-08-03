@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 
 import {
     Button,
@@ -11,6 +11,7 @@ import styles from './BurgerConstructor.module.css';
 import stylesScrollable from '../../css/scrollable.module.css';
 
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 
 function BurgerConstructor(props: any) {
 
@@ -24,23 +25,34 @@ function BurgerConstructor(props: any) {
     const ingredientList = ingredientItems
         .filter((v: any) => { return v.type !== 'bun' });
 
-    const total = Array.from(ingredientItems)
-        .map((v: any) => { return v.price })
-        .reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+    const [total, dispatchTotal] = useReducer(((state: any) => {
+
+        return Array.from(ingredientItems)
+            .map((v: any) => { return v.price })
+            .reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+    }), 0);
+
+    useEffect(() => {
+
+        dispatchTotal();
+
+    }, [props.selectedIngredientsId]);
 
     const removeIngredient = (id: string) => {
         props.removeIngredient(id);
+        dispatchTotal();
     };
 
     const checkout = () => {
 
         const orderData = {
-            orderNumber: Math.floor(Math.random() * 999999),
+            orderNumber: null,//Math.floor(Math.random() * 999999)
             selectedIngredientsId: props.selectedIngredientsId,
             total: total
         }
 
         props.completeCheckout(orderData);
+
     }
 
     return (
