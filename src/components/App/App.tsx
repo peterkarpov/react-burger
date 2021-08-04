@@ -5,152 +5,132 @@ import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 
-import json from '../../utils/data.json';
+//import json from '../../utils/data.json';
 
-import IDataItem from '../Interfaces/IDataItem';
+import IDataItem from '../../utils/Interfaces/IDataItem';
 
 import Modal from '../Modal/Modal';
 
 import OrderDetails from '../OrderDetails/OrderDetails';
 
 import { BurgerConstructorContext } from '../../services/BurgerConstructorContext';
+import { useEffect } from 'react';
 
 const DATA_URL = 'https://norma.nomoreparties.space/api/ingredients';
 const DATA_URL_CHECKOUT = 'https://norma.nomoreparties.space/api/orders';
 
-class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, selectedIngredientsId: string[], quantityData: { id: string, quantity: number }[], orderInfo: any }> {
+function App() {
 
-  constructor(props: any) {
+  const [data, setData] = React.useState<IDataItem[]>([]);
+  const [selectedIngredientsId, setSelectedIngredientsId] = React.useState<string[]>([]);
 
-    super(props);
+  const [state, setState] = React.useState<{
+    idForPopup: any,
+    quantityData: {
+      id: string,
+      quantity: number
+    }[],
+    orderInfo: any
+  }>({
+    idForPopup: null,
+    quantityData: Array.from([]).map((v: IDataItem) => {
+      return {
+        id: v._id,
+        quantity: Math.floor(Math.random() * 10)
+      };
+    }),
+    orderInfo: null,
+  });
 
-    this.state = {
-      data: json,
-      idForPopup: null,
-      selectedIngredientsId: (() => {
+  useEffect(() => {
 
-        const result = Array.from<string>([]);
+    const getDataRequest = (url: string) => {
 
-        const defaultBunIngredientId = Array.from(json).filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
-        result.push(defaultBunIngredientId);
-        result.push(defaultBunIngredientId);
+      return fetch(url)
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+          return Promise.reject(`Ошибка ${res.status}`);
+        })
+        .then(
+          (result) => {
 
-        return result;
+            // TODO default
+            const defaultSelectedIngredientsId = Array.from<string>([]);
+            let defaultBunIngredientId = result.data.filter((v: IDataItem) => { return v.type === 'bun' }).sort(() => Math.random() - 0.5).find(() => { return true })?._id;
 
-      })(),
-      quantityData: Array.from(json).map((v: IDataItem) => {
-        return {
-          id: v._id,
-          quantity: Math.floor(Math.random() * 10)
-        };
-      }),
-      orderInfo: null,
+            defaultSelectedIngredientsId.push(defaultBunIngredientId);
+            defaultSelectedIngredientsId.push(defaultBunIngredientId);
+
+            defaultSelectedIngredientsId.push(result.data.filter((v: IDataItem) => { return v.type !== 'bun' }).sort(() => Math.random() - 0.5).find(() => { return true })?._id);
+            defaultSelectedIngredientsId.push(result.data.filter((v: IDataItem) => { return v.type !== 'bun' }).sort(() => Math.random() - 0.5).find(() => { return true })?._id);
+            defaultSelectedIngredientsId.push(result.data.filter((v: IDataItem) => { return v.type !== 'bun' }).sort(() => Math.random() - 0.5).find(() => { return true })?._id);
+
+            setSelectedIngredientsId(defaultSelectedIngredientsId);
+            setData(result.data);
+          },
+          // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
+          // чтобы не перехватывать исключения из ошибок в самих компонентах.
+          (error) => {
+            console.log(error);
+          }
+        )
+        .catch((error) => {
+          console.log(error);
+        });
+
     };
 
-    this.setIdForPopup = this.setIdForPopup.bind(this);
-    this.addIngredient = this.addIngredient.bind(this);
-    this.removeIngredient = this.removeIngredient.bind(this);
-  }
+    getDataRequest(DATA_URL);
 
-  componentDidMount() {
-    fetch(DATA_URL)
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка ${res.status}`);
-      })
-      .then(
-        (result) => {
+  }, []);
 
-          const defaultSelectedIngredientsId = Array.from<string>([]);
+  const addIngredient = (id: any) => {
 
-          //let defaultBunIngredientId = result.data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
-          //defaultSelectedIngredientsId.push(defaultBunIngredientId);
-          //defaultSelectedIngredientsId.push(defaultBunIngredientId);
+    let newSelectedIngredientsId = Array.from(selectedIngredientsId);
 
-          this.setState({ ...this.state, data: Array.from(result.data), selectedIngredientsId: defaultSelectedIngredientsId });
-        },
-        // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
-        // чтобы не перехватывать исключения из ошибок в самих компонентах.
-        (error) => {
-          console.log(error);
-          this.setState({ ...this.state, data: json });
-        }
-      )
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  addIngredient = (id: any) => {
-
-    // if (this.state.quantityData.find((v) => { return v.id === id })?.quantity === 0) {
-    //   this.setState({ ...this.state, idForPopup: id });
-    //   return;
-    // }
-
-    let newQuantityData = this.state.quantityData.map((v) => {
-
-      if (v.id === id) {
-        v.quantity = v.quantity - 1;
-      }
-
-      return v;
-    });
-
-    let selectedIngredientsId = Array.from(this.state.selectedIngredientsId);
-
-    let chosenIngredient = this.state.data.find((v) => v._id === id);
+    let chosenIngredient = data.find((v) => v._id === id);
 
     if (chosenIngredient?.type === 'bun') {
 
-      selectedIngredientsId = selectedIngredientsId.filter((v, i, a) => {
-        return this.state.data.find((x) => x._id === v)?.type !== 'bun';
+      newSelectedIngredientsId = newSelectedIngredientsId.filter((v, i, a) => {
+        return data.find((x) => x._id === v)?.type !== 'bun';
       });
 
-      selectedIngredientsId.push(id);
-      selectedIngredientsId.push(id);
+      newSelectedIngredientsId.push(id);
+      newSelectedIngredientsId.push(id);
 
     } else {
-      selectedIngredientsId.push(id);
+      newSelectedIngredientsId.push(id);
     }
 
-    this.setState({ ...this.state, selectedIngredientsId: selectedIngredientsId, quantityData: newQuantityData, idForPopup: id });
-
+    setState({ ...state, idForPopup: id });
+    //setSelectedIngredientsId(newSelectedIngredientsId); // TODO будет переделано на DnD
   };
 
-  removeIngredient = (id: any) => {
+  const removeIngredient = (id: any) => {
 
-    let newQuantityData = this.state.quantityData.map((v) => {
-
-      if (v.id === id) {
-        v.quantity = v.quantity + 1;
-      }
-
-      return v;
-    });
-
-    let selectedIngredientsId = this.state.selectedIngredientsId;
-    let index = this.state.selectedIngredientsId.indexOf(id);
+    let newSelectedIngredientsId = selectedIngredientsId;
+    let index = selectedIngredientsId.indexOf(id);
     selectedIngredientsId.splice(index, 1);
 
-    this.setState({ ...this.state, selectedIngredientsId: selectedIngredientsId, quantityData: newQuantityData });
+    setSelectedIngredientsId(newSelectedIngredientsId);
   };
 
-  setIdForPopup = (id: any) => {
-    this.setState({ ...this.state, idForPopup: id });
+  const setIdForPopup = (id: any) => {
+    setState({ ...state, idForPopup: id });
   };
 
-  getIngredientById = (id: string) => {
-    return this.state.data.find((v: any) => { return v._id === id });
+  const getIngredientById = (id: string) => {
+    return data.find((v: any) => { return v._id === id });
   }
 
-  clearIdForPopup = () => {
-    this.setState({ ...this.state, idForPopup: null });
+  const clearIdForPopup = () => {
+    setState({ ...state, idForPopup: null });
   }
 
-  setOrderInfo = (orderData: any) => {
+  const setOrderInfo = (orderData: any) => {
 
     fetch(DATA_URL_CHECKOUT, {
       method: 'post',
@@ -176,7 +156,7 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
               total: orderData.total
             }
 
-            this.setState({ ...this.state, orderInfo: orderData });
+            setState({ ...state, orderInfo: orderData });
 
           } else {
             console.log(result);
@@ -194,19 +174,19 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
 
   }
 
-  clearOrderInfo = () => {
+  const clearOrderInfo = () => {
 
     let defaultIngredients = [];
 
-    let defaultBunIngredientId = this.state.data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
+    let defaultBunIngredientId = data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
 
     defaultIngredients.push(defaultBunIngredientId);
     defaultIngredients.push(defaultBunIngredientId);
 
-    this.setState({ ...this.state, orderInfo: null, selectedIngredientsId: defaultIngredients });
+    setSelectedIngredientsId(defaultIngredients);
   }
 
-  mainWrapperStyle = {
+  const mainWrapperStyle = {
     display: 'flex',
     gap: 'calc(var(--offset-base-size) * 10)',
     justifyContent: 'space-evenly',
@@ -216,51 +196,52 @@ class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, sele
     marginRight: 'auto'
   };
 
-  render() {
+  return (
+    <>
+      <AppHeader />
 
-    return (
-      <>
-        <AppHeader />
+      <section className="main">
+        <div className="wrapper" style={mainWrapperStyle}>
 
-        <section className="main">
-          <div className="wrapper" style={this.mainWrapperStyle}>
+          <BurgerConstructorContext.Provider value={{
+            selectedIngredientsId: selectedIngredientsId,
+            removeIngredient: removeIngredient,
+            addIngredient: addIngredient
+          }}>
 
-            <BurgerConstructorContext.Provider value={{ 
-              selectedIngredientsId: this.state.selectedIngredientsId, 
-              removeIngredient: this.removeIngredient, 
-              addIngredient: this.addIngredient 
-              }}>
-
-              <BurgerIngredients
-                data={this.state.data}
-                setIdForPopup={this.setIdForPopup}
-                quantityData={this.state.quantityData}
+            {data.length > 0
+              ? <BurgerIngredients
+                data={data}
+                setIdForPopup={setIdForPopup}
+                quantityData={state.quantityData}
               ></BurgerIngredients>
+              : null}
 
-              <BurgerConstructor
-                data={this.state.data}
-                completeCheckout={this.setOrderInfo}
+            {data.length > 0
+              ? <BurgerConstructor
+                data={data}
+                completeCheckout={setOrderInfo}
               ></BurgerConstructor>
+              : null}
 
-            </BurgerConstructorContext.Provider>
+          </BurgerConstructorContext.Provider>
 
-          </div>
-        </section>
+        </div>
+      </section>
 
-        {this.state.orderInfo != null ?
-          <Modal title={null} onCloseModalCallback={this.clearOrderInfo}>
-            <OrderDetails orderInfo={this.state.orderInfo}></OrderDetails>
-          </Modal>
-          : null}
+      {state.orderInfo != null ?
+        <Modal title={null} onCloseModalCallback={clearOrderInfo}>
+          <OrderDetails orderInfo={state.orderInfo}></OrderDetails>
+        </Modal>
+        : null}
 
-        {this.state.idForPopup != null ?
-          <Modal title={'Детали ингридиента'} onCloseModalCallback={this.clearIdForPopup}>
-            <IngredientDetails element={this.getIngredientById(this.state.idForPopup)}></IngredientDetails>
-          </Modal>
-          : null}
-      </>
-    );
-  }
+      {state.idForPopup != null ?
+        <Modal title={'Детали ингридиента'} onCloseModalCallback={clearIdForPopup}>
+          <IngredientDetails element={getIngredientById(state.idForPopup)}></IngredientDetails>
+        </Modal>
+        : null}
+    </>
+  );
 }
 
 export default App;

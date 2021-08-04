@@ -10,19 +10,15 @@ import {
 import styles from './BurgerConstructor.module.css';
 import stylesScrollable from '../../css/scrollable.module.css';
 
-import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 
 import { BurgerConstructorContext } from '../../services/BurgerConstructorContext';
 
-import IDataItem from '../Interfaces/IDataItem';
+import IDataItem from '../../utils/Interfaces/IDataItem';
 
-interface IBurgerConstructorContext {
-    selectedIngredientsId: string[],
-    removeIngredient: (id: string) => void
-};
+import { IBurgerConstructorContext } from '../../utils/Interfaces/IBurgerConstructorContext';
 
-function BurgerConstructor(props: { data: IDataItem[], completeCheckout: (orderData: any) => void }) {
+function BurgerConstructor(props: { data: IDataItem[], completeCheckout: (orderData: { orderNumber: (number | null), selectedIngredientsId: string[], total: number }) => void }) {
 
     const { selectedIngredientsId, removeIngredient } = React.useContext<IBurgerConstructorContext>(BurgerConstructorContext);
 
@@ -32,8 +28,8 @@ function BurgerConstructor(props: { data: IDataItem[], completeCheckout: (orderD
         });
 
     const bunList = ingredientItems
-        .filter((v: any) => { return v.type === 'bun' })
-        .filter((v: any, i: number, a: any) => { return a.indexOf(v) === i; });
+        .filter((v: (IDataItem | undefined)) => { return v?.type === 'bun' })
+        .filter((v: (IDataItem | undefined), i: number, a: (IDataItem | undefined)[]) => { return a.indexOf(v) === i; });
 
     const ingredientList = ingredientItems
         .filter((v: any) => { return v.type !== 'bun' });
@@ -53,8 +49,10 @@ function BurgerConstructor(props: { data: IDataItem[], completeCheckout: (orderD
 
     const removeIngredientHandler = (id: string) => {
 
-        removeIngredient(id);
         dispatchTotal();
+
+        removeIngredient(id);
+
     };
 
     const checkout = () => {
@@ -105,7 +103,7 @@ function BurgerConstructor(props: { data: IDataItem[], completeCheckout: (orderD
                             text={item.name}
                             price={item.price}
                             thumbnail={item.image}
-                            handleClose={() => removeIngredient(item._id)}
+                            handleClose={() => removeIngredientHandler(item._id)}
                         />
                     </li>
 
@@ -129,7 +127,7 @@ function BurgerConstructor(props: { data: IDataItem[], completeCheckout: (orderD
                             text={item.name}
                             price={item.price}
                             thumbnail={item.image}
-                            handleClose={() => removeIngredient(item._id)}
+                            handleClose={() => removeIngredientHandler(item._id)}
                         />
                     </li>
                 ))}
@@ -156,23 +154,5 @@ function BurgerConstructor(props: { data: IDataItem[], completeCheckout: (orderD
         </div>
     );
 }
-
-BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string,
-        name: PropTypes.string,
-        type: PropTypes.string,
-        proteins: PropTypes.number,
-        fat: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        calories: PropTypes.number,
-        price: PropTypes.number,
-        image: PropTypes.string,
-        image_mobile: PropTypes.string,
-        image_large: PropTypes.string,
-        __v: PropTypes.number
-    })),
-    completeCheckout: PropTypes.func,
-};
 
 export default BurgerConstructor;

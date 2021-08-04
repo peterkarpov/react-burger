@@ -7,24 +7,15 @@ import {
 import styles from './BurgerIngredients.module.css';
 import stylesScrollable from '../../css/scrollable.module.css';
 
-import IDataItem from '../Interfaces/IDataItem';
-
-import PropTypes from 'prop-types';
+import IDataItem from '../../utils/Interfaces/IDataItem';
 
 import BurgerIngredientListItem from '../BurgerIngredientListItem/BurgerIngredientListItem';
 
 import { BurgerConstructorContext } from '../../services/BurgerConstructorContext';
 
-interface IBurgerIngredientsProps {
-    data: IDataItem[],
-    setIdForPopup: (id: string) => void,
-    quantityData: { id: string, quantity: number }[]
-};
+import { IBurgerIngredientsProps } from '../../utils/Interfaces/IBurgerIngredientsProps';
 
-interface IBurgerIngredientsState {
-    current: string,
-    currentItems: IDataItem[]
-};
+import { IBurgerIngredientsState } from '../../utils/Interfaces/IBurgerIngredientsState';
 
 function BurgerIngredients(props: IBurgerIngredientsProps) {
 
@@ -47,7 +38,13 @@ function BurgerIngredients(props: IBurgerIngredientsProps) {
     };
 
     const getItemsByType = (type: string, data: IDataItem[]) => {
-        return data.filter((v: IDataItem) => { return v.type === type });
+
+        if (type === '') {
+            return data;
+        } else {
+            return data.filter((v: IDataItem) => { return v.type === type });
+        }
+
     };
 
     const getSelectedCountById = (id: string) => {
@@ -106,8 +103,6 @@ function BurgerIngredients(props: IBurgerIngredientsProps) {
                 {/* TODO задел на то, что типы в исходном json могут быть еще добавлены и не придется переписывать много логики */}
                 {getUnicleType(state.currentItems).map((type, i) => {
 
-                    let items = getItemsByType(type, state.currentItems);
-
                     return (
                         <li key={type}>
 
@@ -117,7 +112,7 @@ function BurgerIngredients(props: IBurgerIngredientsProps) {
 
                             <ul className={`${styles["ingredients-list"]} pt-6 pl-4 pr-4 pb-10`}>
 
-                                {items.map((item: IDataItem) => {
+                                {getItemsByType(type, state.currentItems).map((item: IDataItem) => {
 
                                     let count = getSelectedCountById(item._id);
                                     let quantity = getQuantityCountById(item._id);
@@ -151,27 +146,5 @@ function BurgerIngredients(props: IBurgerIngredientsProps) {
         </div>
     );
 }
-
-BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string,
-        name: PropTypes.string,
-        type: PropTypes.string,
-        proteins: PropTypes.number,
-        fat: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        calories: PropTypes.number,
-        price: PropTypes.number,
-        image: PropTypes.string,
-        image_mobile: PropTypes.string,
-        image_large: PropTypes.string,
-        __v: PropTypes.number
-    })),
-    setIdForPopup: PropTypes.func,
-    quantityData: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string,
-        quantity: PropTypes.number,
-    }))
-};
 
 export default BurgerIngredients;

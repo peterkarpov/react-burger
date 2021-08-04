@@ -1,4 +1,4 @@
-import IDataItem from '../Interfaces/IDataItem';
+import IDataItem from '../../utils/Interfaces/IDataItem';
 
 import {
     Counter,
