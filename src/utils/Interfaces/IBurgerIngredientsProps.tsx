@@ -3,5 +3,6 @@ import IDataItem from './IDataItem';
 export interface IBurgerIngredientsProps {
     data: IDataItem[],
     setIdForPopup: (id: string) => void,
-    quantityData: { id: string, quantity: number }[]
+    quantityData: { id: string, quantity: number }[],
+    addIngredient: (id: string) => void
 };

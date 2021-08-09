@@ -11,17 +11,20 @@ import IDataItem from '../../utils/Interfaces/IDataItem';
 
 import BurgerIngredientListItem from '../BurgerIngredientListItem/BurgerIngredientListItem';
 
-import { BurgerConstructorContext } from '../../services/BurgerConstructorContext';
+//import { BurgerConstructorContext } from '../../services/BurgerConstructorContext';
 
 import { IBurgerIngredientsProps } from '../../utils/Interfaces/IBurgerIngredientsProps';
 
 import { IBurgerIngredientsState } from '../../utils/Interfaces/IBurgerIngredientsState';
 
+import { useSelector } from 'react-redux';
+
 function BurgerIngredients(props: IBurgerIngredientsProps) {
 
     const [state, setState] = React.useState<IBurgerIngredientsState>({ current: '', currentItems: props.data });
 
-    const { selectedIngredientsId, addIngredient } = React.useContext<{ selectedIngredientsId: string[], addIngredient: (id: string) => void }>(BurgerConstructorContext)
+    //const { selectedIngredientsId, addIngredient } = React.useContext<{ selectedIngredientsId: string[], addIngredient: (id: string) => void }>(BurgerConstructorContext);
+    const { selectedIngredientsId } = useSelector<any, any>(state => state.basic);
 
     const setCurrent = (value: string) => {
         setState({
@@ -48,7 +51,7 @@ function BurgerIngredients(props: IBurgerIngredientsProps) {
     };
 
     const getSelectedCountById = (id: string) => {
-        return Array.from(selectedIngredientsId).filter((v: string) => v === id).length;
+        return Array.from(selectedIngredientsId).filter((v: any) => v === id).length;
     }
 
     const getQuantityCountById = (id: string) => {
@@ -72,7 +75,7 @@ function BurgerIngredients(props: IBurgerIngredientsProps) {
 
     const onClickOnItem = (item: IDataItem) => {
 
-        addIngredient(item._id);
+        props.addIngredient(item._id);
         //this.props.setIdForPopup(item._id);
     }
 

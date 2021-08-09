@@ -12,18 +12,21 @@ import stylesScrollable from '../../css/scrollable.module.css';
 
 import { useEffect } from 'react';
 
-import { BurgerConstructorContext } from '../../services/BurgerConstructorContext';
-
 import IDataItem from '../../utils/Interfaces/IDataItem';
 
-import { IBurgerConstructorContext } from '../../utils/Interfaces/IBurgerConstructorContext';
+//import { BurgerConstructorContext } from '../../services/BurgerConstructorContext';
+//import { IBurgerConstructorContext } from '../../utils/Interfaces/IBurgerConstructorContext';
 
-function BurgerConstructor(props: { data: IDataItem[], completeCheckout: (orderData: { orderNumber: (number | null), selectedIngredientsId: string[], total: number }) => void }) {
+import { useSelector } from 'react-redux';
 
-    const { selectedIngredientsId, removeIngredient } = React.useContext<IBurgerConstructorContext>(BurgerConstructorContext);
+
+function BurgerConstructor(props: { removeIngredient: (id:string)=>void, data: IDataItem[], completeCheckout: (orderData: { orderNumber: (number | null), selectedIngredientsId: string[], total: number }) => void }) {
+
+    //const { selectedIngredientsId, removeIngredient } = React.useContext<IBurgerConstructorContext>(BurgerConstructorContext);
+    const { selectedIngredientsId } = useSelector<any, any>(state => state.basic);
 
     const ingredientItems = Array.from(selectedIngredientsId)
-        .map((v: string) => {
+        .map((v: any) => {
             return props.data.find((val: IDataItem) => { return val._id === v; })
         });
 
@@ -51,7 +54,7 @@ function BurgerConstructor(props: { data: IDataItem[], completeCheckout: (orderD
 
         dispatchTotal();
 
-        removeIngredient(id);
+        props.removeIngredient(id);
 
     };
 
