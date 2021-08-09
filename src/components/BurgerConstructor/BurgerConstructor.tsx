@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 
 import {
     Button,
@@ -10,37 +10,61 @@ import {
 import styles from './BurgerConstructor.module.css';
 import stylesScrollable from '../../css/scrollable.module.css';
 
-import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 
-function BurgerConstructor(props: any) {
+import { BurgerConstructorContext } from '../../services/BurgerConstructorContext';
 
-    const ingredientItems = Array.from(props.selectedIngredientsId)
-        .map((v: any) => { return props.data.find((val: any) => { return val._id === v; }) });
+import IDataItem from '../../utils/Interfaces/IDataItem';
+
+import { IBurgerConstructorContext } from '../../utils/Interfaces/IBurgerConstructorContext';
+
+function BurgerConstructor(props: { data: IDataItem[], completeCheckout: (orderData: { orderNumber: (number | null), selectedIngredientsId: string[], total: number }) => void }) {
+
+    const { selectedIngredientsId, removeIngredient } = React.useContext<IBurgerConstructorContext>(BurgerConstructorContext);
+
+    const ingredientItems = Array.from(selectedIngredientsId)
+        .map((v: string) => {
+            return props.data.find((val: IDataItem) => { return val._id === v; })
+        });
 
     const bunList = ingredientItems
-        .filter((v: any) => { return v.type === 'bun' })
-        .filter((v, i, a) => { return a.indexOf(v) === i; });
+        .filter((v: (IDataItem | undefined)) => { return v?.type === 'bun' })
+        .filter((v: (IDataItem | undefined), i: number, a: (IDataItem | undefined)[]) => { return a.indexOf(v) === i; });
 
     const ingredientList = ingredientItems
         .filter((v: any) => { return v.type !== 'bun' });
 
-    const total = Array.from(ingredientItems)
-        .map((v: any) => { return v.price })
-        .reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+    const [total, dispatchTotal] = useReducer(((state: number) => {
 
-    const removeIngredient = (id: string) => {
-        props.removeIngredient(id);
+        return Array.from(ingredientItems)
+            .map((v: (IDataItem | undefined)) => { return v!.price })
+            .reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+    }), 0);
+
+    useEffect(() => {
+
+        dispatchTotal();
+
+    }, [selectedIngredientsId]);
+
+    const removeIngredientHandler = (id: string) => {
+
+        dispatchTotal();
+
+        removeIngredient(id);
+
     };
 
     const checkout = () => {
 
         const orderData = {
-            orderNumber: Math.floor(Math.random() * 999999),
-            selectedIngredientsId: props.selectedIngredientsId,
+            orderNumber: null,//Math.floor(Math.random() * 999999)
+            selectedIngredientsId: selectedIngredientsId,
             total: total
         }
 
         props.completeCheckout(orderData);
+
     }
 
     return (
@@ -56,7 +80,7 @@ function BurgerConstructor(props: any) {
                             text={item.name}
                             price={item.price}
                             thumbnail={item.image}
-                            handleClose={() => removeIngredient(item._id)}
+                            handleClose={() => removeIngredientHandler(item._id)}
                         />
                     </li>
                 ))}
@@ -79,7 +103,7 @@ function BurgerConstructor(props: any) {
                             text={item.name}
                             price={item.price}
                             thumbnail={item.image}
-                            handleClose={() => removeIngredient(item._id)}
+                            handleClose={() => removeIngredientHandler(item._id)}
                         />
                     </li>
 
@@ -103,7 +127,7 @@ function BurgerConstructor(props: any) {
                             text={item.name}
                             price={item.price}
                             thumbnail={item.image}
-                            handleClose={() => removeIngredient(item._id)}
+                            handleClose={() => removeIngredientHandler(item._id)}
                         />
                     </li>
                 ))}
@@ -130,25 +154,5 @@ function BurgerConstructor(props: any) {
         </div>
     );
 }
-
-BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string,
-        name: PropTypes.string,
-        type: PropTypes.string,
-        proteins: PropTypes.number,
-        fat: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        calories: PropTypes.number,
-        price: PropTypes.number,
-        image: PropTypes.string,
-        image_mobile: PropTypes.string,
-        image_large: PropTypes.string,
-        __v: PropTypes.number
-    })),
-    selectedIngredientsId: PropTypes.arrayOf(PropTypes.string),
-    removeIngredient: PropTypes.func,
-    completeCheckout: PropTypes.func,
-};
 
 export default BurgerConstructor;
