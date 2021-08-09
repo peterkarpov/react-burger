@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import {
     Tab,
@@ -21,10 +21,60 @@ import { useSelector } from 'react-redux';
 
 function BurgerIngredients(props: IBurgerIngredientsProps) {
 
-    const [state, setState] = React.useState<IBurgerIngredientsState>({ current: '', currentItems: props.data });
+    const [state, setState] = React.useState<IBurgerIngredientsState>({ current: 'bun', currentItems: props.data });
 
     //const { selectedIngredientsId, addIngredient } = React.useContext<{ selectedIngredientsId: string[], addIngredient: (id: string) => void }>(BurgerConstructorContext);
     const { selectedIngredientsId } = useSelector<any, any>(state => state.basic);
+
+    const tabElementsRef = useRef<any>(null);
+    const forBunRef = useRef<any>(null);
+    const forSauceRef = useRef<any>(null);
+    const forMainRef = useRef<any>(null);
+
+    const getRefByType = (type: string) => {
+
+        if (type === 'bun') {
+            return forBunRef;
+        } else if (type === 'sauce') {
+            return forSauceRef;
+        } else if (type === 'main') {
+            return forMainRef;
+        };
+
+    }
+
+    const tabElementsRef_current = tabElementsRef.current;
+
+    useEffect(() => {
+
+        const onScroll = (e: any) => {
+
+            // console.log('-------------------------------');
+
+            // console.log(`e.currentTarget.scrollTop  ${e.currentTarget.scrollTop}`);
+
+            // console.log(`forBunRef\toffsetHeight: ${forBunRef.current?.offsetHeight}\toffsetTop: ${forBunRef.current?.offsetTop}\tscrollTop: ${forBunRef.current?.scrollTop}\tdistance: ${forBunRef.current?.offsetTop - e.currentTarget?.scrollTop}   `);
+            // console.log(`forMainRef\toffsetHeight: ${forMainRef.current?.offsetHeight}\toffsetTop: ${forMainRef.current?.offsetTop}\tscrollTop: ${forMainRef.current?.scrollTop}\tdistance: ${forMainRef.current?.offsetTop - e.currentTarget?.scrollTop}  `);
+            // console.log(`forSauceRef\toffsetHeight: ${forSauceRef.current?.offsetHeight}\toffsetTop: ${forSauceRef.current?.offsetTop}\tscrollTop: ${forSauceRef.current?.scrollTop}\tdistance: ${forSauceRef.current?.offsetTop - e.currentTarget?.scrollTop} `);
+
+            if (0 < e.currentTarget.scrollTop && e.currentTarget.scrollTop < forBunRef.current?.offsetTop) {
+                //console.log(getTitleByType(forBunRef.current?.getAttribute('data-type')));
+                setState({ ...state, current: forBunRef.current?.getAttribute('data-type') });
+            } else if (forBunRef.current?.offsetTop < e.currentTarget.scrollTop && e.currentTarget.scrollTop < (forBunRef.current?.offsetTop + forMainRef.current?.offsetTop)) {
+                //console.log('начинка');
+                setState({ ...state, current: 'main' });
+            } else if ((forBunRef.current?.offsetTop + forMainRef.current?.offsetTop) < e.currentTarget.scrollTop && e.currentTarget.scrollTop < (forBunRef.current?.offsetTop + forMainRef.current?.offsetTop + forSauceRef.current?.offsetTop)) {
+                //console.log('соус');
+                setState({ ...state, current: 'sauce' });
+            }
+
+        };
+
+        tabElementsRef_current?.addEventListener("scroll", onScroll);
+
+        return () => tabElementsRef_current?.removeEventListener("scroll", onScroll);
+
+    }, [tabElementsRef, state, tabElementsRef_current]);
 
     const setCurrent = (value: string) => {
         setState({
@@ -101,13 +151,13 @@ function BurgerIngredients(props: IBurgerIngredientsProps) {
                 })}
             </div>
 
-            <ul className={`${styles["tab-elements"]} ${stylesScrollable.scrollable}`}>
+            <ul className={`${styles["tab-elements"]} ${stylesScrollable.scrollable}`} ref={tabElementsRef}>
 
                 {/* TODO задел на то, что типы в исходном json могут быть еще добавлены и не придется переписывать много логики */}
                 {getUnicleType(state.currentItems).map((type, i) => {
 
                     return (
-                        <li key={type}>
+                        <li key={type} ref={getRefByType(type)} data-type={type}>
 
                             <div className="text text_type_main-medium">
                                 {getTitleByType(type)}
