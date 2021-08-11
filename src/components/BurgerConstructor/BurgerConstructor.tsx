@@ -12,20 +12,23 @@ import stylesScrollable from '../../css/scrollable.module.css';
 
 import { useEffect } from 'react';
 
+import { SET_SELECTED_INGREDIENTS } from '../../services/actions/basic';
+
 import IDataItem from '../../utils/Interfaces/IDataItem';
 
 //import { BurgerConstructorContext } from '../../services/BurgerConstructorContext';
 //import { IBurgerConstructorContext } from '../../utils/Interfaces/IBurgerConstructorContext';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import DraggableElement from './DraggableElement';
-import { useState } from 'react';
 
 function BurgerConstructor(props: { removeIngredient: (id: string) => void, data: IDataItem[], completeCheckout: (orderData: { orderNumber: (number | null), selectedIngredientsId: string[], total: number }) => void }) {
 
     //const { selectedIngredientsId, removeIngredient } = React.useContext<IBurgerConstructorContext>(BurgerConstructorContext);
     const { selectedIngredientsId } = useSelector<any, any>(state => state.basic);
+
+    const dispatch = useDispatch();
 
     const ingredientItems = Array.from(selectedIngredientsId)
         .map((v: any) => {
@@ -36,24 +39,8 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, data
         .filter((v: (IDataItem | undefined)) => { return v?.type === 'bun' })
         .filter((v: (IDataItem | undefined), i: number, a: (IDataItem | undefined)[]) => { return a.indexOf(v) === i; });
 
-    const initIngredientList = ingredientItems
+    const ingredientList = ingredientItems
         .filter((v: any) => { return v.type !== 'bun' });
-
-    const [ingredientList, setIngredientList] = useState<(IDataItem | undefined)[]>([...initIngredientList]);
-
-    useEffect(() => {
-
-        const ingredientItems = Array.from(selectedIngredientsId)
-        .map((v: any) => {
-            return props.data.find((val: IDataItem) => { return val._id === v; })
-        });
-
-        const initIngredientList = ingredientItems
-        .filter((v: any) => { return v.type !== 'bun' });
-
-        setIngredientList([...initIngredientList]);
-
-    }, [props.data, selectedIngredientsId]);
 
     const [total, dispatchTotal] = useReducer(((state: number) => {
 
@@ -88,19 +75,25 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, data
 
     }
 
-
     const moveItem = (from: string, to: string) => {
 
-        let newIngredientList = ingredientList;
+        let tempArray = selectedIngredientsId;
 
-        let fromIndex = newIngredientList.findIndex((v, i, a) => { return v?._id === from });
-        let toIndex = newIngredientList.findIndex((v, i, a) => { return v?._id === to });
+        //console.log(tempArray);
 
-        let temp = newIngredientList[toIndex];
-        newIngredientList[toIndex] = newIngredientList[fromIndex];
-        newIngredientList[fromIndex] = temp;
+        let fromIndex = tempArray.findIndex((v: string) => { return v === from });
+        let toIndex = tempArray.findIndex((v: string) => { return v === to });
 
-        setIngredientList([...newIngredientList]);
+        let temp = tempArray[toIndex];
+        tempArray[toIndex] = tempArray[fromIndex];
+        tempArray[fromIndex] = temp;
+
+        //console.log(tempArray);
+
+        dispatch({
+            type: SET_SELECTED_INGREDIENTS,
+            selectedIngredientsId: tempArray
+        });
     }
 
     return (

@@ -148,7 +148,6 @@ function App() {
 
           <DndProvider backend={HTML5Backend}>
 
-
             {Array.from(data).length > 0
               ? <BurgerIngredients
                 data={data}
