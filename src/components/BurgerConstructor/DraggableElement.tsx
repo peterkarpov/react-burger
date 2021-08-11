@@ -20,15 +20,15 @@ function DraggableElement(props: any) {
         }),
         drop(item: any) {
 
-            props.onMoveItem(item.id, props.id);
+            props.onMoveItem(item.id, props.id, item.oldIndex, props.index);
 
         },
     });
 
     return (
         <>
-            <span style={{ outline: `2px dashed ${isHover ? '#4c4cff' : 'transparent'}`, }} ref={dragRef}>
-                <span style={{ opacity: opacity, cursor: 'grab' }} ref={dropTarget}>
+            <span style={{ outline: `2px dashed ${isHover ? '#4c4cff' : 'transparent'}` }} ref={dragRef}>
+                <span style={{ opacity: opacity, cursor: 'grab', display: `${opacity === 0 ? 'none' : 'inherit'}` }} ref={dropTarget}>
 
                     {props.children}
 

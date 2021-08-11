@@ -77,20 +77,25 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, data
 
     }
 
-    const moveItem = (from: string, to: string) => {
+    const moveItem = (from: string, to: string, indexFrom:number, indexTo:number) => {
 
-        let tempArray = selectedIngredientsId;
+        let tempArray = ingredientList.map((v)=>v?._id);
 
         //console.log(tempArray);
 
-        let fromIndex = tempArray.findIndex((v: string) => { return v === from });
-        let toIndex = tempArray.findIndex((v: string) => { return v === to });
+        //let fromIndex = tempArray.findIndex((v: string) => { return v === from });
+        //let toIndex = tempArray.findIndex((v: string) => { return v === to });
+
+        let fromIndex = tempArray.findIndex((v, i: number) => { return i === indexFrom });
+        let toIndex = tempArray.findIndex((v, i: number) => { return i === indexTo });
 
         let temp = tempArray[toIndex];
         tempArray[toIndex] = tempArray[fromIndex];
         tempArray[fromIndex] = temp;
 
         //console.log(tempArray);
+
+        tempArray = tempArray.concat(bunList.map((v) => v?._id));
 
         dispatch({
             type: SET_SELECTED_INGREDIENTS,
