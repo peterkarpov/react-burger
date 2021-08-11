@@ -57,16 +57,42 @@ function BurgerIngredients(props: IBurgerIngredientsProps) {
             // console.log(`forMainRef\toffsetHeight: ${forMainRef.current?.offsetHeight}\toffsetTop: ${forMainRef.current?.offsetTop}\tscrollTop: ${forMainRef.current?.scrollTop}\tdistance: ${forMainRef.current?.offsetTop - e.currentTarget?.scrollTop}  `);
             // console.log(`forSauceRef\toffsetHeight: ${forSauceRef.current?.offsetHeight}\toffsetTop: ${forSauceRef.current?.offsetTop}\tscrollTop: ${forSauceRef.current?.scrollTop}\tdistance: ${forSauceRef.current?.offsetTop - e.currentTarget?.scrollTop} `);
 
-            if (0 < e.currentTarget.scrollTop && e.currentTarget.scrollTop < forBunRef.current?.offsetTop) {
-                //console.log(getTitleByType(forBunRef.current?.getAttribute('data-type')));
-                setState({ ...state, current: forBunRef.current?.getAttribute('data-type') });
-            } else if (forBunRef.current?.offsetTop < e.currentTarget.scrollTop && e.currentTarget.scrollTop < (forBunRef.current?.offsetTop + forMainRef.current?.offsetTop)) {
-                //console.log('начинка');
-                setState({ ...state, current: 'main' });
-            } else if ((forBunRef.current?.offsetTop + forMainRef.current?.offsetTop) < e.currentTarget.scrollTop && e.currentTarget.scrollTop < (forBunRef.current?.offsetTop + forMainRef.current?.offsetTop + forSauceRef.current?.offsetTop)) {
-                //console.log('соус');
-                setState({ ...state, current: 'sauce' });
-            }
+            ////    old version
+            // if (0 < e.currentTarget.scrollTop && e.currentTarget.scrollTop < forBunRef.current?.offsetTop) {
+            //     //console.log(getTitleByType(forBunRef.current?.getAttribute('data-type')));
+            //     setState({ ...state, current: forBunRef.current?.getAttribute('data-type') });
+            // } else if (forBunRef.current?.offsetTop < e.currentTarget.scrollTop && e.currentTarget.scrollTop < (forBunRef.current?.offsetTop + forMainRef.current?.offsetTop)) {
+            //     //console.log('начинка');
+            //     setState({ ...state, current: 'main' });
+            // } else if ((forBunRef.current?.offsetTop + forMainRef.current?.offsetTop) < e.currentTarget.scrollTop && e.currentTarget.scrollTop < (forBunRef.current?.offsetTop + forMainRef.current?.offsetTop + forSauceRef.current?.offsetTop)) {
+            //     //console.log('соус');
+            //     setState({ ...state, current: 'sauce' });
+            // }
+
+            let previousValue = 0;
+            Array.from(getUnicleType(state.currentItems))
+                .map((v) => {
+                    return {
+                        ref: getRefByType(v),
+                        type: v
+                    }
+                })
+                .some((v) => {
+
+                    if (previousValue < e.currentTarget.scrollTop && e.currentTarget.scrollTop < v.ref?.current?.offsetTop) {
+
+                        setState({ ...state, current: v.type });
+
+                        return true;
+
+                    } else {
+
+                        previousValue += v.ref?.current?.offsetTop;
+
+                        return false;
+                    }
+
+                });
 
         };
 

@@ -21,6 +21,9 @@ import { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
 //const DATA_URL = 'https://norma.nomoreparties.space/api/ingredients';
 //const DATA_URL_CHECKOUT = 'https://norma.nomoreparties.space/api/orders';
 
@@ -143,22 +146,27 @@ function App() {
       <section className="main">
         <div className="wrapper" style={mainWrapperStyle}>
 
-          {Array.from(data).length > 0
-            ? <BurgerIngredients
-              data={data}
-              setIdForPopup={setIdForPopup}
-              quantityData={state.quantityData}
-              addIngredient={addIngredient}
-            ></BurgerIngredients>
-            : null}
+          <DndProvider backend={HTML5Backend}>
 
-          {Array.from(data).length > 0
-            ? <BurgerConstructor
-              data={data}
-              completeCheckout={setOrderInfo}
-              removeIngredient={removeIngredient}
-            ></BurgerConstructor>
-            : null}
+
+            {Array.from(data).length > 0
+              ? <BurgerIngredients
+                data={data}
+                setIdForPopup={setIdForPopup}
+                quantityData={state.quantityData}
+                addIngredient={addIngredient}
+              ></BurgerIngredients>
+              : null}
+
+            {Array.from(data).length > 0
+              ? <BurgerConstructor
+                data={data}
+                completeCheckout={setOrderInfo}
+                removeIngredient={removeIngredient}
+              ></BurgerConstructor>
+              : null}
+
+          </DndProvider>
 
         </div>
       </section>
