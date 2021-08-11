@@ -151,7 +151,7 @@ function BurgerIngredients(props: IBurgerIngredientsProps) {
 
     const onClickOnItem = (item: IDataItem) => {
 
-        props.addIngredient(item._id);
+        props.onClickOnIngredient(item._id);
         //this.props.setIdForPopup(item._id);
     }
 

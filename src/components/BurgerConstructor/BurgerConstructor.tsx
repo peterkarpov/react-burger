@@ -23,7 +23,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import DraggableElement from './DraggableElement';
 
-function BurgerConstructor(props: { removeIngredient: (id: string) => void, data: IDataItem[], completeCheckout: (orderData: { orderNumber: (number | null), selectedIngredientsId: string[], total: number }) => void }) {
+import { useDrop } from "react-dnd";
+
+function BurgerConstructor(props: { removeIngredient: (id: string) => void, data: IDataItem[], addIngredient: (id: string) => void, completeCheckout: (orderData: { orderNumber: (number | null), selectedIngredientsId: string[], total: number }) => void }) {
 
     //const { selectedIngredientsId, removeIngredient } = React.useContext<IBurgerConstructorContext>(BurgerConstructorContext);
     const { selectedIngredientsId } = useSelector<any, any>(state => state.basic);
@@ -96,8 +98,19 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, data
         });
     }
 
+    const [{ isHover }, dropTarget] = useDrop({
+        accept: 'add-ingredient',
+        collect: (monitor: any) => ({
+            isHover: monitor.isOver()
+        }),
+        drop(item: any) {
+
+            props.addIngredient(item.id)
+        },
+    });
+
     return (
-        <div className={styles['burger-constructor'] + ' pt-25 pl-4'}>
+        <div className={styles['burger-constructor'] + ' pt-10 mt-15 pb-10 pl-4'} ref={dropTarget} style={{ outline: `2px dashed ${isHover ? '#4c4cff' : 'transparent'}`, }}>
 
             <ul className={styles['top'] + " pr-4"}>
                 {bunList.map((item: any, i) => (

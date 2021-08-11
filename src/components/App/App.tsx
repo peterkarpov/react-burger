@@ -53,6 +53,13 @@ function App() {
 
   }, [dispatch]);
 
+  const openPopup = (id: any) => {
+    dispatch({
+      type: SET_ID_FOR_POPUP,
+      idForPopup: id
+    });
+  }
+
   const addIngredient = (id: any) => {
 
     let newSelectedIngredientsId = Array.from(selectedIngredientsId);
@@ -73,10 +80,10 @@ function App() {
     }
 
     dispatch({
-      type: SET_ID_FOR_POPUP,
-      idForPopup: id
+      type: SET_SELECTED_INGREDIENTS,
+      selectedIngredientsId: newSelectedIngredientsId
     });
-    //setSelectedIngredientsId(newSelectedIngredientsId); // TODO будет переделано на DnD
+    
   };
 
   const removeIngredient = (id: any) => {
@@ -153,7 +160,7 @@ function App() {
                 data={data}
                 setIdForPopup={setIdForPopup}
                 quantityData={state.quantityData}
-                addIngredient={addIngredient}
+                onClickOnIngredient={openPopup}
               ></BurgerIngredients>
               : null}
 
@@ -162,6 +169,7 @@ function App() {
                 data={data}
                 completeCheckout={setOrderInfo}
                 removeIngredient={removeIngredient}
+                addIngredient={addIngredient}
               ></BurgerConstructor>
               : null}
 

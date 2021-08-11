@@ -4,5 +4,5 @@ export interface IBurgerIngredientsProps {
     data: IDataItem[],
     setIdForPopup: (id: string) => void,
     quantityData: { id: string, quantity: number }[],
-    addIngredient: (id: string) => void
+    onClickOnIngredient: (id: string) => void
 };
