@@ -27,8 +27,15 @@ function DraggableElement(props: any) {
 
     return (
         <>
-            <span style={{ outline: `2px dashed ${isHover ? '#4c4cff' : 'transparent'}` }} ref={dragRef}>
-                <span style={{ opacity: opacity, cursor: 'grab', display: `${opacity === 0 ? 'none' : 'inherit'}` }} ref={dropTarget}>
+            <span style={{ 
+                outline: `2px dashed ${isHover ? '#4c4cff' : 'transparent'}`,
+                //  paddingBottom: `${isHover ? '100px' : '0'}`
+                 }} ref={dragRef}>
+                <span style={{ 
+                    opacity: opacity, 
+                    cursor: 'grab', 
+                    // display: `${opacity === 0 ? 'none' : 'inherit'}` 
+                    }} ref={dropTarget}>
 
                     {props.children}
 

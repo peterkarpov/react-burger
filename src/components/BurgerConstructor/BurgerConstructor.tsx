@@ -96,6 +96,7 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, data
         //console.log(tempArray);
 
         tempArray = tempArray.concat(bunList.map((v) => v?._id));
+        tempArray = tempArray.concat(bunList.map((v) => v?._id));
 
         dispatch({
             type: SET_SELECTED_INGREDIENTS,
