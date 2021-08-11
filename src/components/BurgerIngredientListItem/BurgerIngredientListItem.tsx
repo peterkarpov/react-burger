@@ -29,7 +29,6 @@ function BurgerIngredientListItem(props: {
 
     return (
         <>
-
             <div style={{ opacity: opacity, cursor: 'grab' }} ref={dragRef}>
 
                 <div className={styles["counter-wrapper"]}>
