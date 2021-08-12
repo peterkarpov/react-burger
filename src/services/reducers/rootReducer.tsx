@@ -5,7 +5,7 @@ import IDataItem from '../../utils/Interfaces/IDataItem';
 import { 
     SET_DATA_REQUEST, 
     SET_SELECTED_INGREDIENTS, 
-    GET_ORDER_DATA, 
+    SET_ORDER_DATA, 
     SET_ID_FOR_POPUP, 
     DELETE_ID_FOR_POPUP 
 } from '../actions/basic';
@@ -31,7 +31,8 @@ const basicReducer = (state = initialState, action: any) => {
                 selectedIngredientsId: action.selectedIngredientsId
             };
         }
-        case GET_ORDER_DATA: {
+        case SET_ORDER_DATA: {
+
             return {
                 ...state,
                 orderInfo: action.orderData

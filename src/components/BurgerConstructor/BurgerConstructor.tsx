@@ -25,16 +25,16 @@ import DraggableElement from './DraggableElement';
 
 import { useDrop } from "react-dnd";
 
-function BurgerConstructor(props: { removeIngredient: (id: string) => void, data: IDataItem[], addIngredient: (id: string) => void, completeCheckout: (orderData: { orderNumber: (number | null), selectedIngredientsId: string[], total: number }) => void }) {
+function BurgerConstructor(props: { removeIngredient: (id: string) => void, addIngredient: (id: string) => void, completeCheckout: (orderData: { orderNumber: (number | null), selectedIngredientsId: string[], total: number }) => void }) {
 
     //const { selectedIngredientsId, removeIngredient } = React.useContext<IBurgerConstructorContext>(BurgerConstructorContext);
-    const { selectedIngredientsId } = useSelector<any, any>(state => state.basic);
+    const { selectedIngredientsId, data } = useSelector<any, any>(state => state.basic);
 
     const dispatch = useDispatch();
 
     const ingredientItems = Array.from(selectedIngredientsId)
         .map((v: any) => {
-            return props.data.find((val: IDataItem) => { return val._id === v; })
+            return data.find((val: IDataItem) => { return val._id === v; })
         });
 
     const bunList = ingredientItems

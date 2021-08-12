@@ -27,10 +27,7 @@ export const getDataRequest = (url: string = '') => {
             (error) => {
                 console.log(error);
             }
-        )
-        .catch((error) => {
-            console.log(error);
-        });
+        );
 
 };
 
@@ -71,9 +68,6 @@ export const setOrderInfoRequest = (orderData: any) => {
                 console.log(error);
 
             }
-        )
-        .catch((error) => {
-            console.log(error);
-        });
+        );
 
 };

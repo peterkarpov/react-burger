@@ -7,7 +7,7 @@ import IngredientDetails from '../IngredientDetails/IngredientDetails';
 
 //import json from '../../utils/data.json';
 
-import { actionInitData, actionSetOrderInfo, SET_SELECTED_INGREDIENTS, SET_ID_FOR_POPUP, DELETE_ID_FOR_POPUP } from '../../services/actions/basic';
+import { actionInitData, actionSetOrderInfo, SET_SELECTED_INGREDIENTS, SET_ID_FOR_POPUP, DELETE_ID_FOR_POPUP, SET_ORDER_DATA } from '../../services/actions/basic';
 
 import IDataItem from '../../utils/Interfaces/IDataItem';
 
@@ -49,7 +49,7 @@ function App() {
 
   useEffect(() => {
 
-    actionInitData()(dispatch);
+    dispatch(actionInitData())
 
   }, [dispatch]);
 
@@ -64,9 +64,7 @@ function App() {
 
     let newSelectedIngredientsId = Array.from(selectedIngredientsId);
 
-    let chosenIngredient = data.find((v: IDataItem) => v._id === id);
-
-    if (chosenIngredient?.type === 'bun') {
+    if (data.find((v: IDataItem) => v._id === id)?.type === 'bun') {
 
       newSelectedIngredientsId = newSelectedIngredientsId.filter((v, i, a) => {
         return data.find((x: IDataItem) => x._id === v)?.type !== 'bun';
@@ -83,7 +81,7 @@ function App() {
       type: SET_SELECTED_INGREDIENTS,
       selectedIngredientsId: newSelectedIngredientsId
     });
-    
+
   };
 
   const removeIngredient = (id: any) => {
@@ -117,17 +115,23 @@ function App() {
   }
 
   const setOrderInfo = (orderData: any) => {
-    actionSetOrderInfo(orderData)(dispatch);
+    dispatch(actionSetOrderInfo(orderData));
   }
 
   const clearOrderInfo = () => {
 
-    let defaultIngredients = [];
+    dispatch({
+      type: SET_ORDER_DATA,
+      orderInfo: null
+    });
 
-    let defaultBunIngredientId = data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
+    let defaultIngredients = Array.from<IDataItem>([]);
 
-    defaultIngredients.push(defaultBunIngredientId);
-    defaultIngredients.push(defaultBunIngredientId);
+    //// demo
+    // let defaultBunIngredientId = data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
+
+    // defaultIngredients.push(defaultBunIngredientId);
+    // defaultIngredients.push(defaultBunIngredientId);
 
     dispatch({
       type: SET_SELECTED_INGREDIENTS,
@@ -157,7 +161,6 @@ function App() {
 
             {Array.from(data).length > 0
               ? <BurgerIngredients
-                data={data}
                 setIdForPopup={setIdForPopup}
                 quantityData={state.quantityData}
                 onClickOnIngredient={openPopup}
@@ -166,7 +169,6 @@ function App() {
 
             {Array.from(data).length > 0
               ? <BurgerConstructor
-                data={data}
                 completeCheckout={setOrderInfo}
                 removeIngredient={removeIngredient}
                 addIngredient={addIngredient}

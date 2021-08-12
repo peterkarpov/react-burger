@@ -21,10 +21,10 @@ import { useSelector } from 'react-redux';
 
 function BurgerIngredients(props: IBurgerIngredientsProps) {
 
-    const [state, setState] = React.useState<IBurgerIngredientsState>({ current: 'bun', currentItems: props.data });
-
     //const { selectedIngredientsId, addIngredient } = React.useContext<{ selectedIngredientsId: string[], addIngredient: (id: string) => void }>(BurgerConstructorContext);
-    const { selectedIngredientsId } = useSelector<any, any>(state => state.basic);
+    const { selectedIngredientsId, data } = useSelector<any, any>(state => state.basic);
+
+    const [state, setState] = React.useState<IBurgerIngredientsState>({ current: 'bun', currentItems: data });
 
     const tabElementsRef = useRef<any>(null);
     const forBunRef = useRef<any>(null);
@@ -106,7 +106,7 @@ function BurgerIngredients(props: IBurgerIngredientsProps) {
         setState({
             ...state,
             current: value,
-            currentItems: Array.from(props.data).filter((v: IDataItem) => { return v.type === value })
+            currentItems: Array.from<IDataItem>(data).filter((v: IDataItem) => { return v.type === value })
         });
     };
 
