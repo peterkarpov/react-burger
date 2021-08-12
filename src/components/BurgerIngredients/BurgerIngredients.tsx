@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import {
     Tab,
@@ -11,23 +11,102 @@ import IDataItem from '../../utils/Interfaces/IDataItem';
 
 import BurgerIngredientListItem from '../BurgerIngredientListItem/BurgerIngredientListItem';
 
-import { BurgerConstructorContext } from '../../services/BurgerConstructorContext';
+//import { BurgerConstructorContext } from '../../services/BurgerConstructorContext';
 
 import { IBurgerIngredientsProps } from '../../utils/Interfaces/IBurgerIngredientsProps';
 
 import { IBurgerIngredientsState } from '../../utils/Interfaces/IBurgerIngredientsState';
 
+import { useSelector } from 'react-redux';
+
 function BurgerIngredients(props: IBurgerIngredientsProps) {
 
-    const [state, setState] = React.useState<IBurgerIngredientsState>({ current: '', currentItems: props.data });
+    //const { selectedIngredientsId, addIngredient } = React.useContext<{ selectedIngredientsId: string[], addIngredient: (id: string) => void }>(BurgerConstructorContext);
+    const { selectedIngredientsId, data } = useSelector<any, any>(state => state.basic);
 
-    const { selectedIngredientsId, addIngredient } = React.useContext<{ selectedIngredientsId: string[], addIngredient: (id: string) => void }>(BurgerConstructorContext)
+    const [state, setState] = React.useState<IBurgerIngredientsState>({ current: 'bun', currentItems: data });
+
+    const tabElementsRef = useRef<any>(null);
+    const forBunRef = useRef<any>(null);
+    const forSauceRef = useRef<any>(null);
+    const forMainRef = useRef<any>(null);
+
+    const getRefByType = (type: string) => {
+
+        if (type === 'bun') {
+            return forBunRef;
+        } else if (type === 'sauce') {
+            return forSauceRef;
+        } else if (type === 'main') {
+            return forMainRef;
+        };
+
+    }
+
+    const tabElementsRef_current = tabElementsRef.current;
+
+    useEffect(() => {
+
+        const onScroll = (e: any) => {
+
+            // console.log('-------------------------------');
+
+            // console.log(`e.currentTarget.scrollTop  ${e.currentTarget.scrollTop}`);
+
+            // console.log(`forBunRef\toffsetHeight: ${forBunRef.current?.offsetHeight}\toffsetTop: ${forBunRef.current?.offsetTop}\tscrollTop: ${forBunRef.current?.scrollTop}\tdistance: ${forBunRef.current?.offsetTop - e.currentTarget?.scrollTop}   `);
+            // console.log(`forMainRef\toffsetHeight: ${forMainRef.current?.offsetHeight}\toffsetTop: ${forMainRef.current?.offsetTop}\tscrollTop: ${forMainRef.current?.scrollTop}\tdistance: ${forMainRef.current?.offsetTop - e.currentTarget?.scrollTop}  `);
+            // console.log(`forSauceRef\toffsetHeight: ${forSauceRef.current?.offsetHeight}\toffsetTop: ${forSauceRef.current?.offsetTop}\tscrollTop: ${forSauceRef.current?.scrollTop}\tdistance: ${forSauceRef.current?.offsetTop - e.currentTarget?.scrollTop} `);
+
+            ////    old version
+            // if (0 < e.currentTarget.scrollTop && e.currentTarget.scrollTop < forBunRef.current?.offsetTop) {
+            //     //console.log(getTitleByType(forBunRef.current?.getAttribute('data-type')));
+            //     setState({ ...state, current: forBunRef.current?.getAttribute('data-type') });
+            // } else if (forBunRef.current?.offsetTop < e.currentTarget.scrollTop && e.currentTarget.scrollTop < (forBunRef.current?.offsetTop + forMainRef.current?.offsetTop)) {
+            //     //console.log('начинка');
+            //     setState({ ...state, current: 'main' });
+            // } else if ((forBunRef.current?.offsetTop + forMainRef.current?.offsetTop) < e.currentTarget.scrollTop && e.currentTarget.scrollTop < (forBunRef.current?.offsetTop + forMainRef.current?.offsetTop + forSauceRef.current?.offsetTop)) {
+            //     //console.log('соус');
+            //     setState({ ...state, current: 'sauce' });
+            // }
+
+            let previousValue = 0;
+            Array.from(getUnicleType(state.currentItems))
+                .map((v) => {
+                    return {
+                        ref: getRefByType(v),
+                        type: v
+                    }
+                })
+                .some((v) => {
+
+                    if (previousValue < e.currentTarget.scrollTop && e.currentTarget.scrollTop < v.ref?.current?.offsetTop) {
+
+                        setState({ ...state, current: v.type });
+
+                        return true;
+
+                    } else {
+
+                        previousValue += v.ref?.current?.offsetTop;
+
+                        return false;
+                    }
+
+                });
+
+        };
+
+        tabElementsRef_current?.addEventListener("scroll", onScroll);
+
+        return () => tabElementsRef_current?.removeEventListener("scroll", onScroll);
+
+    }, [tabElementsRef, state, tabElementsRef_current]);
 
     const setCurrent = (value: string) => {
         setState({
             ...state,
             current: value,
-            currentItems: Array.from(props.data).filter((v: IDataItem) => { return v.type === value })
+            currentItems: Array.from<IDataItem>(data).filter((v: IDataItem) => { return v.type === value })
         });
     };
 
@@ -48,7 +127,7 @@ function BurgerIngredients(props: IBurgerIngredientsProps) {
     };
 
     const getSelectedCountById = (id: string) => {
-        return Array.from(selectedIngredientsId).filter((v: string) => v === id).length;
+        return Array.from(selectedIngredientsId).filter((v: any) => v === id).length;
     }
 
     const getQuantityCountById = (id: string) => {
@@ -72,7 +151,7 @@ function BurgerIngredients(props: IBurgerIngredientsProps) {
 
     const onClickOnItem = (item: IDataItem) => {
 
-        addIngredient(item._id);
+        props.onClickOnIngredient(item._id);
         //this.props.setIdForPopup(item._id);
     }
 
@@ -98,13 +177,13 @@ function BurgerIngredients(props: IBurgerIngredientsProps) {
                 })}
             </div>
 
-            <ul className={`${styles["tab-elements"]} ${stylesScrollable.scrollable}`}>
+            <ul className={`${styles["tab-elements"]} ${stylesScrollable.scrollable}`} ref={tabElementsRef}>
 
                 {/* TODO задел на то, что типы в исходном json могут быть еще добавлены и не придется переписывать много логики */}
                 {getUnicleType(state.currentItems).map((type, i) => {
 
                     return (
-                        <li key={type}>
+                        <li key={type} ref={getRefByType(type)} data-type={type}>
 
                             <div className="text text_type_main-medium">
                                 {getTitleByType(type)}

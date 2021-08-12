@@ -12,19 +12,29 @@ import stylesScrollable from '../../css/scrollable.module.css';
 
 import { useEffect } from 'react';
 
-import { BurgerConstructorContext } from '../../services/BurgerConstructorContext';
+import { SET_SELECTED_INGREDIENTS } from '../../services/actions/basic';
 
 import IDataItem from '../../utils/Interfaces/IDataItem';
 
-import { IBurgerConstructorContext } from '../../utils/Interfaces/IBurgerConstructorContext';
+//import { BurgerConstructorContext } from '../../services/BurgerConstructorContext';
+//import { IBurgerConstructorContext } from '../../utils/Interfaces/IBurgerConstructorContext';
 
-function BurgerConstructor(props: { data: IDataItem[], completeCheckout: (orderData: { orderNumber: (number | null), selectedIngredientsId: string[], total: number }) => void }) {
+import { useDispatch, useSelector } from 'react-redux';
 
-    const { selectedIngredientsId, removeIngredient } = React.useContext<IBurgerConstructorContext>(BurgerConstructorContext);
+import DraggableElement from './DraggableElement';
+
+import { useDrop } from "react-dnd";
+
+function BurgerConstructor(props: { removeIngredient: (id: string) => void, addIngredient: (id: string) => void, completeCheckout: (orderData: { orderNumber: (number | null), selectedIngredientsId: string[], total: number }) => void }) {
+
+    //const { selectedIngredientsId, removeIngredient } = React.useContext<IBurgerConstructorContext>(BurgerConstructorContext);
+    const { selectedIngredientsId, data } = useSelector<any, any>(state => state.basic);
+
+    const dispatch = useDispatch();
 
     const ingredientItems = Array.from(selectedIngredientsId)
-        .map((v: string) => {
-            return props.data.find((val: IDataItem) => { return val._id === v; })
+        .map((v: any) => {
+            return data.find((val: IDataItem) => { return val._id === v; })
         });
 
     const bunList = ingredientItems
@@ -51,7 +61,7 @@ function BurgerConstructor(props: { data: IDataItem[], completeCheckout: (orderD
 
         dispatchTotal();
 
-        removeIngredient(id);
+        props.removeIngredient(id);
 
     };
 
@@ -67,8 +77,46 @@ function BurgerConstructor(props: { data: IDataItem[], completeCheckout: (orderD
 
     }
 
+    const moveItem = (from: string, to: string, indexFrom:number, indexTo:number) => {
+
+        let tempArray = ingredientList.map((v)=>v?._id);
+
+        //console.log(tempArray);
+
+        //let fromIndex = tempArray.findIndex((v: string) => { return v === from });
+        //let toIndex = tempArray.findIndex((v: string) => { return v === to });
+
+        let fromIndex = tempArray.findIndex((v, i: number) => { return i === indexFrom });
+        let toIndex = tempArray.findIndex((v, i: number) => { return i === indexTo });
+
+        let temp = tempArray[toIndex];
+        tempArray[toIndex] = tempArray[fromIndex];
+        tempArray[fromIndex] = temp;
+
+        //console.log(tempArray);
+
+        tempArray = tempArray.concat(bunList.map((v) => v?._id));
+        tempArray = tempArray.concat(bunList.map((v) => v?._id));
+
+        dispatch({
+            type: SET_SELECTED_INGREDIENTS,
+            selectedIngredientsId: tempArray
+        });
+    }
+
+    const [{ isHover }, dropTarget] = useDrop({
+        accept: 'add-ingredient',
+        collect: (monitor: any) => ({
+            isHover: monitor.isOver()
+        }),
+        drop(item: any) {
+
+            props.addIngredient(item.id)
+        },
+    });
+
     return (
-        <div className={styles['burger-constructor'] + ' pt-25 pl-4'}>
+        <div className={styles['burger-constructor'] + ' pt-10 mt-15 pb-10 pl-4'} ref={dropTarget} style={{ outline: `2px dashed ${isHover ? '#4c4cff' : 'transparent'}`, }}>
 
             <ul className={styles['top'] + " pr-4"}>
                 {bunList.map((item: any, i) => (
@@ -94,17 +142,24 @@ function BurgerConstructor(props: { data: IDataItem[], completeCheckout: (orderD
             </ul>
 
             <ul className={stylesScrollable.scrollable + " pr-2 pt-4 pb-4"}>
+
                 {ingredientList.map((item: any, i: any) => (
 
-                    <li key={`${item._id}_${i}`}>
-                        <DragIcon type="primary" />
-                        <ConstructorElement
-                            isLocked={false}
-                            text={item.name}
-                            price={item.price}
-                            thumbnail={item.image}
-                            handleClose={() => removeIngredientHandler(item._id)}
-                        />
+                    <li key={`${item._id}_${i}`} data-index={i}>
+
+                        <DraggableElement id={item._id} index={i} onMoveItem={moveItem}>
+
+                            <DragIcon type="primary" />
+
+                            <ConstructorElement
+                                isLocked={false}
+                                text={item.name}
+                                price={item.price}
+                                thumbnail={item.image}
+                                handleClose={() => removeIngredientHandler(item._id)}
+                            />
+                        </DraggableElement>
+
                     </li>
 
                 ))}

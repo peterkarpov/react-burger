@@ -7,95 +7,67 @@ import IngredientDetails from '../IngredientDetails/IngredientDetails';
 
 //import json from '../../utils/data.json';
 
+import { actionInitData, actionSetOrderInfo, SET_SELECTED_INGREDIENTS, SET_ID_FOR_POPUP, DELETE_ID_FOR_POPUP, SET_ORDER_DATA } from '../../services/actions/basic';
+
 import IDataItem from '../../utils/Interfaces/IDataItem';
 
 import Modal from '../Modal/Modal';
 
 import OrderDetails from '../OrderDetails/OrderDetails';
 
-import { BurgerConstructorContext } from '../../services/BurgerConstructorContext';
+//import { BurgerConstructorContext } from '../../services/BurgerConstructorContext';
+
 import { useEffect } from 'react';
 
-const DATA_URL = 'https://norma.nomoreparties.space/api/ingredients';
-const DATA_URL_CHECKOUT = 'https://norma.nomoreparties.space/api/orders';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
+//const DATA_URL = 'https://norma.nomoreparties.space/api/ingredients';
+//const DATA_URL_CHECKOUT = 'https://norma.nomoreparties.space/api/orders';
 
 function App() {
 
-  const [data, setData] = React.useState<IDataItem[]>([]);
-  const [selectedIngredientsId, setSelectedIngredientsId] = React.useState<string[]>([]);
+  const { data, selectedIngredientsId, orderInfo, idForPopup } = useSelector<any, any>(state => state.basic);
 
-  const [state, setState] = React.useState<{
-    idForPopup: any,
+  const dispatch = useDispatch();
+
+  const [state] = React.useState<{
     quantityData: {
       id: string,
       quantity: number
     }[],
-    orderInfo: any
   }>({
-    idForPopup: null,
     quantityData: Array.from([]).map((v: IDataItem) => {
       return {
         id: v._id,
         quantity: Math.floor(Math.random() * 10)
       };
     }),
-    orderInfo: null,
   });
 
   useEffect(() => {
 
-    const getDataRequest = (url: string) => {
+    dispatch(actionInitData())
 
-      return fetch(url)
-        .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
-          return Promise.reject(`Ошибка ${res.status}`);
-        })
-        .then(
-          (result) => {
+  }, [dispatch]);
 
-            // TODO default
-            const defaultSelectedIngredientsId = Array.from<string>([]);
-            let defaultBunIngredientId = result.data.filter((v: IDataItem) => { return v.type === 'bun' }).sort(() => Math.random() - 0.5).find(() => { return true })?._id;
-
-            defaultSelectedIngredientsId.push(defaultBunIngredientId);
-            defaultSelectedIngredientsId.push(defaultBunIngredientId);
-
-            defaultSelectedIngredientsId.push(result.data.filter((v: IDataItem) => { return v.type !== 'bun' }).sort(() => Math.random() - 0.5).find(() => { return true })?._id);
-            defaultSelectedIngredientsId.push(result.data.filter((v: IDataItem) => { return v.type !== 'bun' }).sort(() => Math.random() - 0.5).find(() => { return true })?._id);
-            defaultSelectedIngredientsId.push(result.data.filter((v: IDataItem) => { return v.type !== 'bun' }).sort(() => Math.random() - 0.5).find(() => { return true })?._id);
-
-            setSelectedIngredientsId(defaultSelectedIngredientsId);
-            setData(result.data);
-          },
-          // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
-          // чтобы не перехватывать исключения из ошибок в самих компонентах.
-          (error) => {
-            console.log(error);
-          }
-        )
-        .catch((error) => {
-          console.log(error);
-        });
-
-    };
-
-    getDataRequest(DATA_URL);
-
-  }, []);
+  const openPopup = (id: any) => {
+    dispatch({
+      type: SET_ID_FOR_POPUP,
+      idForPopup: id
+    });
+  }
 
   const addIngredient = (id: any) => {
 
     let newSelectedIngredientsId = Array.from(selectedIngredientsId);
 
-    let chosenIngredient = data.find((v) => v._id === id);
-
-    if (chosenIngredient?.type === 'bun') {
+    if (data.find((v: IDataItem) => v._id === id)?.type === 'bun') {
 
       newSelectedIngredientsId = newSelectedIngredientsId.filter((v, i, a) => {
-        return data.find((x) => x._id === v)?.type !== 'bun';
+        return data.find((x: IDataItem) => x._id === v)?.type !== 'bun';
       });
 
       newSelectedIngredientsId.push(id);
@@ -105,8 +77,11 @@ function App() {
       newSelectedIngredientsId.push(id);
     }
 
-    setState({ ...state, idForPopup: id });
-    //setSelectedIngredientsId(newSelectedIngredientsId); // TODO будет переделано на DnD
+    dispatch({
+      type: SET_SELECTED_INGREDIENTS,
+      selectedIngredientsId: newSelectedIngredientsId
+    });
+
   };
 
   const removeIngredient = (id: any) => {
@@ -115,11 +90,18 @@ function App() {
     let index = selectedIngredientsId.indexOf(id);
     selectedIngredientsId.splice(index, 1);
 
-    setSelectedIngredientsId(newSelectedIngredientsId);
+    dispatch({
+      type: SET_SELECTED_INGREDIENTS,
+      selectedIngredientsId: newSelectedIngredientsId
+    });
+
   };
 
   const setIdForPopup = (id: any) => {
-    setState({ ...state, idForPopup: id });
+    dispatch({
+      type: SET_ID_FOR_POPUP,
+      idForPopup: id
+    });
   };
 
   const getIngredientById = (id: string) => {
@@ -127,63 +109,35 @@ function App() {
   }
 
   const clearIdForPopup = () => {
-    setState({ ...state, idForPopup: null });
+    dispatch({
+      type: DELETE_ID_FOR_POPUP,
+    });
   }
 
   const setOrderInfo = (orderData: any) => {
-
-    fetch(DATA_URL_CHECKOUT, {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ingredients: orderData.selectedIngredientsId
-      })
-    })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка ${res.status}`);
-      })
-      .then(
-        (result) => {
-
-          if (result && result.success) {
-
-            orderData = {
-              orderNumber: result.order.number,
-              selectedIngredientsId: orderData.selectedIngredientsId,
-              total: orderData.total
-            }
-
-            setState({ ...state, orderInfo: orderData });
-
-          } else {
-            console.log(result);
-          }
-
-        },
-        (error) => {
-          console.log(error);
-
-        }
-      )
-      .catch((error) => {
-        console.log(error);
-      });
-
+    dispatch(actionSetOrderInfo(orderData));
   }
 
   const clearOrderInfo = () => {
 
-    let defaultIngredients = [];
+    dispatch({
+      type: SET_ORDER_DATA,
+      orderInfo: null
+    });
 
-    let defaultBunIngredientId = data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
+    let defaultIngredients = Array.from<IDataItem>([]);
 
-    defaultIngredients.push(defaultBunIngredientId);
-    defaultIngredients.push(defaultBunIngredientId);
+    //// demo
+    // let defaultBunIngredientId = data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
 
-    setSelectedIngredientsId(defaultIngredients);
+    // defaultIngredients.push(defaultBunIngredientId);
+    // defaultIngredients.push(defaultBunIngredientId);
+
+    dispatch({
+      type: SET_SELECTED_INGREDIENTS,
+      selectedIngredientsId: defaultIngredients
+    });
+
   }
 
   const mainWrapperStyle = {
@@ -203,43 +157,40 @@ function App() {
       <section className="main">
         <div className="wrapper" style={mainWrapperStyle}>
 
-          <BurgerConstructorContext.Provider value={{
-            selectedIngredientsId: selectedIngredientsId,
-            removeIngredient: removeIngredient,
-            addIngredient: addIngredient
-          }}>
+          <DndProvider backend={HTML5Backend}>
 
-            {data.length > 0
+            {Array.from(data).length > 0
               ? <BurgerIngredients
-                data={data}
                 setIdForPopup={setIdForPopup}
                 quantityData={state.quantityData}
+                onClickOnIngredient={openPopup}
               ></BurgerIngredients>
               : null}
 
-            {data.length > 0
+            {Array.from(data).length > 0
               ? <BurgerConstructor
-                data={data}
                 completeCheckout={setOrderInfo}
+                removeIngredient={removeIngredient}
+                addIngredient={addIngredient}
               ></BurgerConstructor>
               : null}
 
-          </BurgerConstructorContext.Provider>
+          </DndProvider>
 
         </div>
       </section>
 
-      {state.orderInfo != null ?
+      {orderInfo &&
         <Modal title={null} onCloseModalCallback={clearOrderInfo}>
-          <OrderDetails orderInfo={state.orderInfo}></OrderDetails>
+          <OrderDetails orderInfo={orderInfo}></OrderDetails>
         </Modal>
-        : null}
+      }
 
-      {state.idForPopup != null ?
-        <Modal title={'Детали ингридиента'} onCloseModalCallback={clearIdForPopup}>
-          <IngredientDetails element={getIngredientById(state.idForPopup)}></IngredientDetails>
+      {idForPopup &&
+        <Modal title={'Детали ингредиента'} onCloseModalCallback={clearIdForPopup}>
+          <IngredientDetails element={getIngredientById(idForPopup)}></IngredientDetails>
         </Modal>
-        : null}
+      }
     </>
   );
 }
