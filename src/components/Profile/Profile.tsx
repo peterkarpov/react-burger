@@ -1,7 +1,7 @@
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from './../../services/auth';
 import React from "react";
-import { Input, EmailInput, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Input, EmailInput, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './Profile.module.css';
 
 function Profile() {
@@ -35,6 +35,13 @@ function Profile() {
     const [password, setPassword] = React.useState('')
     const onPasswordChange = (e: any) => {
         setPassword(e.target.value)
+    }
+
+    const onSaveHandler = () => {
+        auth.updateUser({ name, email, password })
+            .then((data: any) => {
+
+            });
     }
 
     return (
@@ -84,6 +91,12 @@ function Profile() {
 
                         <PasswordInput onChange={onPasswordChange} value={password} name={'Пароль'} />
 
+                        {email !== '' && name !== '' && password !== '' &&
+                            <Button type="primary" size="medium" onClick={onSaveHandler}>
+                                Сохранить
+                            </Button>
+                        }
+                        
                     </div>
                     : null}
 

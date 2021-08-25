@@ -1,7 +1,16 @@
 import { useContext, useState, createContext } from 'react';
 import { deleteCookie, setCookie } from './utils';
 import React from 'react';
-import { loginRequest, getUserRequest, logoutRequest, refreshTokenRequest } from './authApi';
+import {
+  loginRequest,
+  getUserRequest,
+  logoutRequest,
+  refreshTokenRequest,
+  registerRequest,
+  restorePasswordRequest,
+  resetPasswordRequest,
+  updateUserRequest
+} from './authApi';
 import { getCookie } from './utils';
 
 const AuthContext = createContext<any>(undefined);
@@ -24,9 +33,9 @@ export function useProvideAuth() {
   const [user, setUser] = useState(null);
 
   const isHasCookie = () => {
-    
+
     const isHas = !!(getCookie('token') && getCookie('refresh-token'));
-    
+
     return isHas;
   }
 
@@ -41,7 +50,7 @@ export function useProvideAuth() {
       })
       .catch((error) => {
         if (error.message === 'jwt expired') {
-          refreshToken(getUser);
+          return refreshToken(getUser);
         }
       });
   };
@@ -77,21 +86,10 @@ export function useProvideAuth() {
 
   };
 
-  const signIn = async (form: any) => {
+  const signIn = async (form: { email: string, password: string }) => {
 
     const data = await loginRequest(form)
       .then(res => {
-
-        // let authToken;
-        // res.headers.forEach(header => {
-        //   if (header.indexOf('Bearer') === 0) {
-        //     authToken = header.split('Bearer ')[1];
-        //   }
-        // });
-        // if (authToken) {
-        //   setCookie('token', authToken, null);
-        // }
-
         return res.json();
       })
       .then(data => {
@@ -108,13 +106,16 @@ export function useProvideAuth() {
           setCookie('refresh-token', data.refreshToken, null);
         }
 
-        return data
+        return data;
+      })
+      .catch((error) => {
+        console.log(error);
       });
 
-    if (data.success) {
+    if (data?.success) {
       setUser({ ...data.user, id: data.user.email });
     }
-    
+
   };
 
   const signOut = async () => {
@@ -129,17 +130,132 @@ export function useProvideAuth() {
     await logoutRequest({ token: token })
       .catch((error) => {
         if (error.message === 'jwt expired') {
-          refreshToken(signOut);
+          return refreshToken(signOut);
         }
       });;
   };
+
+  const signUp = async (form: { name: string, password: string, email: string }) => {
+
+    const data = await registerRequest(form)
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+
+        if (data.accessToken) {
+          const authToken = data.accessToken.split('Bearer ')[1];
+
+          if (authToken) {
+            setCookie('token', authToken, null);
+          }
+        }
+
+        if (data.refreshToken) {
+          setCookie('refresh-token', data.refreshToken, null);
+        }
+
+        if (!data.success) {
+          console.log(data.message)
+        }
+
+        return data;
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+
+    if (data?.success) {
+      setUser({ ...data.user, id: data.user.email });
+    }
+  }
+
+  const restorePassword = async (form: { email: string }) => {
+
+    const data = await restorePasswordRequest(form)
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+
+        if (!data.success) {
+          console.log(data.message)
+        }
+
+        return data;
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+
+    return data;
+  }
+
+  const resetPassword = async (form: { token: string, password: string }) => {
+
+    const data = await resetPasswordRequest(form)
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+
+        if (!data.success) {
+          console.log(data.message)
+        }
+
+        return data;
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+
+    return data;
+  }
+
+  const updateUser = async (form: { name: string, email: string, password: string }) => {
+    const data = await updateUserRequest(form)
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+
+        if (!data.success) {
+          console.log(data.message)
+        }
+
+        return data;
+      })
+      .then(async (data) => {
+
+        if (data.success) {
+          await signOut();
+
+          await signIn({ email: form.email, password: form.password });
+        }
+
+        return data;
+      })
+      .catch((error) => {
+        if (error.message === 'jwt expired') {
+          return refreshToken(signOut);
+        }
+        console.log(error)
+      });
+
+    return data;
+  }
 
   return {
     user,
     getUser,
     signIn,
     signOut,
+    signUp,
     isHasCookie,
-    refreshToken
+    refreshToken,
+    registerRequest,
+    restorePassword,
+    resetPassword,
+    updateUser
   };
 }

@@ -29,6 +29,10 @@ function Registration() {
         history.replace({ pathname: '/login', state });
     }
 
+    const onRegistrationClickHandler = () => {
+        auth.signUp({ name, password, email });
+    }
+
     if (auth.isHasCookie()) {
         return (
             <Redirect
@@ -64,7 +68,7 @@ function Registration() {
 
                 <PasswordInput onChange={onPasswordChange} value={password} name={'Пароль'} />
 
-                <Button type="primary" size="medium">
+                <Button type="primary" size="medium" onClick={onRegistrationClickHandler}>
                     Зарегистрироваться
                 </Button>
 

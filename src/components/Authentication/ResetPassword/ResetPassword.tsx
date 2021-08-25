@@ -44,6 +44,15 @@ function ResetPassword() {
         );
     }
 
+    const onResetClickHandler = () => {
+        auth.resetPassword({ token, password })
+            .then((data: any) => {
+                if (data.success) {
+                    history.replace({ pathname: '/', state });
+                }
+            });
+    }
+
     return (
         <section style={{}} className={styles["reset-password"] + " "}>
 
@@ -67,7 +76,7 @@ function ResetPassword() {
                     size={'default'}
                 />
 
-                <Button type="primary" size="medium">
+                <Button type="primary" size="medium" onClick={onResetClickHandler}>
                     Восстановить
                 </Button>
 

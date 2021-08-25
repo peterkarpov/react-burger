@@ -125,9 +125,7 @@ export function HomePage() {
 
     if (!auth.isHasCookie()) {
 
-      const { state } = location;
-
-      history.replace({ pathname: '/', state });
+      history.replace({ pathname: '/login', state: { from: location } });
 
     } else {
       dispatch(actionSetOrderInfo(orderData));
