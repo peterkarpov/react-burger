@@ -38,10 +38,15 @@ export function useProvideAuth() {
           setUser({ ...data.user, id: data.user._id });
         }
         return data.success;
+      })
+      .catch((error) => {
+        if (error.message === 'jwt expired') {
+          refreshToken(getUser);
+        }
       });
   };
 
-  const refreshToken = async () => {
+  const refreshToken = async (callback: Function) => {
 
     const data = await refreshTokenRequest({ token: getCookie('refresh-token') || '' })
       .then(res => {
@@ -67,6 +72,8 @@ export function useProvideAuth() {
     if (data.success && data.user) {
       setUser({ ...data.user, id: data.user.email });
     }
+
+    callback();
 
   };
 
@@ -119,9 +126,13 @@ export function useProvideAuth() {
     deleteCookie('token');
     deleteCookie('refresh-token');
 
-    await logoutRequest({ token: token });    
+    await logoutRequest({ token: token })
+      .catch((error) => {
+        if (error.message === 'jwt expired') {
+          refreshToken(signOut);
+        }
+      });;
   };
-
 
   return {
     user,
