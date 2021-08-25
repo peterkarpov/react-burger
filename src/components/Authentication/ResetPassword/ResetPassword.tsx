@@ -2,8 +2,12 @@ import { PasswordInput, Button, Input } from "@ya.praktikum/react-developer-burg
 import React from "react";
 import styles from './ResetPassword.module.css';
 import { useHistory, useLocation } from 'react-router-dom';
+import { useAuth } from "../../../services/auth";
+import { Redirect } from "react-router";
 
 function ResetPassword() {
+
+    const auth = useAuth();
 
     const [token, setToken] = React.useState('')
     const inputTokenRef = React.useRef(null)
@@ -14,14 +18,34 @@ function ResetPassword() {
     }
 
     const history = useHistory();
-    const { state } = useLocation();
+    const { state } = useLocation<any>();
 
     const onLoginHandler = () => {
         history.replace({ pathname: '/login', state });
     }
 
+    if (auth.isHasCookie()) {
+        return (
+            <Redirect
+                to={{
+                    pathname: '/'
+                }}
+            />
+        );
+    }
+
+    if (state?.from?.pathname !== '/forgot-password') {
+        return (
+            <Redirect
+                to={{
+                    pathname: '/forgot-password'
+                }}
+            />
+        );
+    }
+
     return (
-        <section style={{}} className={styles["forgot-password"] + " "}>
+        <section style={{}} className={styles["reset-password"] + " "}>
 
             <div className={styles.title + " text text_type_main-default"}>
                 Восстановление пароля

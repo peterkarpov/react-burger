@@ -5,7 +5,8 @@ import {
   RegistrationPage,
   ProfilePage,
   ForgotPasswordPage,
-  ResetPasswordPage
+  ResetPasswordPage,
+  IngredientPage
 } from './../pages';
 import { ProtectedRoute } from '../protected-route';
 import { ProvideAuth } from '../../services/auth';
@@ -38,9 +39,13 @@ function App() {
             <ProfilePage />
           </ProtectedRoute>
 
-          <ProtectedRoute path="/" exact={true}>
+          <Route path="/ingredients/:id" exact={true}>
+            <IngredientPage />
+          </Route>
+
+          <Route path="/" exact={true}>
             <HomePage />
-          </ProtectedRoute>
+          </Route>
 
           <Route>
             <h1>Oops! 404 Error</h1>

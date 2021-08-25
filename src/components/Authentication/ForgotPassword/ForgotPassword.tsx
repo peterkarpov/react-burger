@@ -2,8 +2,12 @@ import { EmailInput, Button } from "@ya.praktikum/react-developer-burger-ui-comp
 import React from "react";
 import styles from './ForgotPassword.module.css';
 import { useHistory, useLocation } from 'react-router-dom';
+import { useAuth } from "../../../services/auth";
+import { Redirect } from "react-router";
 
 function ForgotPassword() {
+
+    const auth = useAuth();
 
     const [email, setEmail] = React.useState('')
     const onEmailChange = (e: any) => {
@@ -15,6 +19,16 @@ function ForgotPassword() {
 
     const onLoginHandler = () => {
         history.replace({ pathname: '/login', state });
+    }
+
+    if (auth.isHasCookie()) {
+        return (
+            <Redirect
+                to={{
+                    pathname: '/'
+                }}
+            />
+        );
     }
 
     return (

@@ -21,13 +21,13 @@ export function ProtectedRoute({ children, ...rest }) {
     // return null;
   }
 
-  const isHas = auth.isHasCookie();
+  const isHas = auth.isHasCookie() || auth.user;
 
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        (auth.user && isHas) ? (
+        isHas ? (
           children
         ) : (
           <Redirect

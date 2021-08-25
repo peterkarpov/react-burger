@@ -37,7 +37,7 @@ function Login() {
         [auth, email, password]
     );
 
-    if (auth.user) {
+    if (auth.isHasCookie()) {
         return (
             <Redirect
                 to={{

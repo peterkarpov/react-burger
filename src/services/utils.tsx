@@ -7,7 +7,7 @@ export function getCookie(name: string) {
 
 export function setCookie(name: string, value: string, props: any) {
   props = props || {};
-  let exp = props.expires;
+  let exp = props.expires || 20 * 60;
   if (typeof exp == 'number' && exp) {
     const d = new Date();
     d.setTime(d.getTime() + exp * 1000);

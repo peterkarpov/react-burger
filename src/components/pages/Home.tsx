@@ -23,13 +23,19 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { useAuth } from '../../services/auth';
+import { useHistory, useLocation } from 'react-router-dom';
 
 //const DATA_URL = 'https://norma.nomoreparties.space/api/ingredients';
 //const DATA_URL_CHECKOUT = 'https://norma.nomoreparties.space/api/orders';
 
-export function HomePage(){
+export function HomePage() {
 
-    const { data, selectedIngredientsId, orderInfo, idForPopup } = useSelector<any, any>(state => state.basic);
+  const auth = useAuth();
+  const history = useHistory();
+  const location = useLocation<any>();
+
+  const { data, selectedIngredientsId, orderInfo, idForPopup } = useSelector<any, any>(state => state.basic);
 
   const dispatch = useDispatch();
 
@@ -54,10 +60,9 @@ export function HomePage(){
   }, [dispatch]);
 
   const openPopup = (id: any) => {
-    dispatch({
-      type: SET_ID_FOR_POPUP,
-      idForPopup: id
-    });
+    setIdForPopup(id);
+
+    window.history.replaceState(null, `id:${id}`, `/ingredients/${id}`);
   }
 
   const addIngredient = (id: any) => {
@@ -112,10 +117,22 @@ export function HomePage(){
     dispatch({
       type: DELETE_ID_FOR_POPUP,
     });
+
+    window.history.replaceState(null, `react-burger`, `/`)
   }
 
   const setOrderInfo = (orderData: any) => {
-    dispatch(actionSetOrderInfo(orderData));
+
+    if (!auth.isHasCookie()) {
+
+      const { state } = location;
+
+      history.replace({ pathname: '/', state });
+
+    } else {
+      dispatch(actionSetOrderInfo(orderData));
+    }
+
   }
 
   const clearOrderInfo = () => {
@@ -150,9 +167,9 @@ export function HomePage(){
     marginRight: 'auto'
   };
 
-    return (
+  return (
 
-        <>
+    <>
       <AppHeader />
 
       <section className="main">
@@ -189,11 +206,11 @@ export function HomePage(){
 
       {idForPopup &&
         <Modal title={'Детали ингредиента'} onCloseModalCallback={clearIdForPopup}>
-          <IngredientDetails element={getIngredientById(idForPopup)}></IngredientDetails>
+          <IngredientDetails style={undefined} element={getIngredientById(idForPopup)}></IngredientDetails>
         </Modal>
       }
     </>
 
-    );
+  );
 }
 

@@ -2,8 +2,12 @@ import { Input, EmailInput, PasswordInput, Button } from "@ya.praktikum/react-de
 import React from "react";
 import styles from './Registration.module.css';
 import { useHistory, useLocation } from 'react-router-dom';
+import { useAuth } from "../../../services/auth";
+import { Redirect } from "react-router";
 
 function Registration() {
+
+    const auth = useAuth();
 
     const [name, setName] = React.useState('')
     const inputNameRef = React.useRef(null)
@@ -23,6 +27,16 @@ function Registration() {
 
     const onLoginHandler = () => {
         history.replace({ pathname: '/login', state });
+    }
+
+    if (auth.isHasCookie()) {
+        return (
+            <Redirect
+                to={{
+                    pathname: '/'
+                }}
+            />
+        );
     }
 
     return (
