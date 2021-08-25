@@ -55,7 +55,7 @@ export function HomePage() {
 
   useEffect(() => {
 
-    dispatch(actionInitData())
+    dispatch(actionInitData());
 
   }, [dispatch]);
 

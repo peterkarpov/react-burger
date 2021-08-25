@@ -24,10 +24,10 @@ function Profile() {
         history.replace({ pathname: '/login', state });
     }
 
-    const [name, setName] = React.useState(auth.user?.name)
+    const [name, setName] = React.useState(auth.user?.name || '')
     const inputNameRef = React.useRef(null)
 
-    const [email, setEmail] = React.useState(auth.user?.email)
+    const [email, setEmail] = React.useState(auth.user?.email || '')
     const onEmailChange = (e: any) => {
         setEmail(e.target.value)
     }

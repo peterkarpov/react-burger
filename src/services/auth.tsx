@@ -40,19 +40,23 @@ export function useProvideAuth() {
   }
 
   const getUser = async () => {
-    return await getUserRequest()
+    const data = await getUserRequest()
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          setUser({ ...data.user, id: data.user._id });
+          setUser({ ...data.user, id: data.user.email });
         }
         return data.success;
       })
       .catch((error) => {
         if (error.message === 'jwt expired') {
           return refreshToken(getUser);
+        } else {
+          console.log(error);
         }
       });
+
+      return data;
   };
 
   const refreshToken = async (callback: Function) => {

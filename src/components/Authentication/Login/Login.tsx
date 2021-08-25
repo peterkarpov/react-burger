@@ -60,20 +60,22 @@ function Login() {
 
                 <PasswordInput onChange={onPasswordChange} value={password} name={'Пароль'} />
 
-                <Button type="primary" size="medium" onClick={login}>
-                    Войти
-                </Button>
-
+                {email !== '' && password !== '' &&
+                    <Button type="primary" size="medium" onClick={login}>
+                        Войти
+                    </Button>
+                }
+                
             </form>
 
-            <div style={{ textAlign: "center" }} className={styles["title-bottom"] + "p-5 text text_type_main-default"}>
+            <div style={{ textAlign: "center" }} className={styles["title-bottom"] + " pt-4 text text_type_main-default"}>
                 Вы новый пользователь?
                 <Button type="secondary" size="medium" onClick={onRegisterHandler}>
                     Зарегистрироваться
                 </Button>
             </div>
 
-            <div style={{ textAlign: "center" }} className={styles["title-bottom"] + "p-5 text text_type_main-default"}>
+            <div style={{ textAlign: "center" }} className={styles["title-bottom"] + " pt-4 text text_type_main-default"}>
                 Забыли пароль?
                 <Button type="secondary" size="medium" onClick={onForgotPassword}>
                     Восстановить пароль

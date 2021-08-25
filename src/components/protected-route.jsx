@@ -1,33 +1,54 @@
 import { useAuth } from '../services/auth';
 import { Redirect, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useCallback } from 'react';
+import loader from './../images/loader.gif';
+import AppHeader from './AppHeader/AppHeader';
 
 export function ProtectedRoute({ children, ...rest }) {
 
-  let { getUser, ...auth } = useAuth();
+  let { getUser, user, ...auth } = useAuth();
   const [isUserLoaded, setUserLoaded] = useState(false);
 
-  const init = useCallback(() => async () => {
-    await getUser();
-    setUserLoaded(true);
+  useEffect(() => {
+    getUser()
+      .then((result) => {
+        setUserLoaded(result);
+      });
   }, [getUser]);
 
-  useEffect(() => {
-    init();
-  }, [init]);
+  const isHas = auth.isHasCookie();
 
-  if (!isUserLoaded) {
-    // return null;
+  if (isHas && !isUserLoaded) {
+    
+    //TODO убрать в отдельный компонент
+    
+    return (
+      <> 
+        <AppHeader />
+        <style>{"\
+        body{\
+          overflow:hidden;\
+        }\
+      "}</style>
+        <img
+          style={{
+            width: '100%',
+            height: '100vh',
+            objectFit: 'contain',
+            backgroundColor: 'black',
+            overflow: 'hidden'
+          }}
+          alt={'loading...'}
+          src={loader} />
+      </>
+    );
   }
-
-  const isHas = auth.isHasCookie() || auth.user;
 
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        isHas ? (
+      isUserLoaded ? (
           children
         ) : (
           <Redirect
