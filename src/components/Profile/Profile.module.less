@@ -1,0 +1,32 @@
+section.profile {
+
+    margin-top: 10vh;
+    display       : flex;
+    flex-direction: row;
+    flex-wrap     : nowrap;
+    gap           : calc(var(--offset-base-size) * 20);
+
+    .left-aside {
+
+        max-width: 30%;
+
+        .link {
+            padding-top: calc(var(--offset-base-size) * 5);
+            padding-bottom: calc(var(--offset-base-size) * 5);
+            cursor    : pointer;
+            transition: all ease 0.4s;
+
+            &:hover {
+                color: white;
+            }
+        }
+    }
+
+    .right-aside {
+        display       : flex;
+        flex-direction: column;
+        flex-wrap     : nowrap;
+        gap           : calc(var(--offset-base-size) * 6);
+    }
+
+}
