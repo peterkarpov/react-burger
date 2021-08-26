@@ -24,7 +24,8 @@ function ForgotPassword() {
         history.replace({ pathname: '/login', state });
     }
 
-    const onRestorePasswordClickHandler = () => {
+    const onRestorePasswordkHandler = (e: any) => {
+        e.preventDefault();
         dispatch(restorePassword({ email }))
             .then((data: any) => {
                 if (data.success) {
@@ -50,17 +51,17 @@ function ForgotPassword() {
                 Восстановление пароля
             </div>
 
-            <div className={styles.form + " pt-5 pb-20"}>
+            <form className={styles.form + " pt-5 pb-20"} onSubmit={(e) => { onRestorePasswordkHandler(e) }}>
 
                 <EmailInput onChange={onEmailChange} value={email} name={'E-mail'} />
 
                 {email !== '' &&
-                    <Button type="primary" size="medium" onClick={onRestorePasswordClickHandler}>
+                    <Button type="primary" size="medium">
                         Восстановить
                     </Button>
                 }
 
-            </div>
+            </form>
 
             <div style={{ textAlign: "center" }} className={styles["title-bottom"] + "p-5 text text_type_main-default"}>
                 Вспомнили пароль?

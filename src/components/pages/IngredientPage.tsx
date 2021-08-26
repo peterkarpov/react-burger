@@ -1,4 +1,3 @@
-import AppHeader from "../AppHeader/AppHeader";
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
@@ -44,27 +43,23 @@ export function IngredientPage() {
     // }
 
     return (
-        <>
-            <AppHeader />
+        <section className="main">
+            <div className="wrapper" style={mainWrapperStyle}>
 
-            <section className="main">
-                <div className="wrapper" style={mainWrapperStyle}>
+                {ingredient
+                    ?
+                    <>
+                        <span data-id={id} className={" text text_type_main-large mt-10"}>
+                            Детали ингредиента
+                        </span>
+                        <IngredientDetails style={{ backgroundColor: 'transparent' }} element={ingredient}></IngredientDetails>
+                    </>
+                    :
+                    <div>Ингредиент не найден по id: {id}</div>
+                }
 
-                    {ingredient
-                        ?
-                        <>
-                            <span data-id={id} className={" text text_type_main-large mt-10"}>
-                                Детали ингредиента
-                            </span>
-                            <IngredientDetails style={{ backgroundColor: 'transparent' }} element={ingredient}></IngredientDetails>
-                        </>
-                        :
-                        <div>Ингредиент не найден по id: {id}</div>
-                    }
-
-                </div>
-            </section>
-        </>
+            </div>
+        </section>
     );
 }
 

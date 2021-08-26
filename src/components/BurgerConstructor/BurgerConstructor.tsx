@@ -77,9 +77,9 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, addI
 
     }
 
-    const moveItem = (from: string, to: string, indexFrom:number, indexTo:number) => {
+    const moveItem = (from: string, to: string, indexFrom: number, indexTo: number) => {
 
-        let tempArray = ingredientList.map((v)=>v?._id);
+        let tempArray = ingredientList.map((v) => v?._id);
 
         //console.log(tempArray);
 
@@ -125,7 +125,7 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, addI
                         <ConstructorElement
                             type="top"
                             isLocked={bunList.length === 1}
-                            text={item.name}
+                            text={item.name + ' (верх)'}
                             price={item.price}
                             thumbnail={item.image}
                             handleClose={() => removeIngredientHandler(item._id)}
@@ -179,7 +179,7 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, addI
                         <ConstructorElement
                             type="bottom"
                             isLocked={bunList.length === 1}
-                            text={item.name}
+                            text={item.name + ' (низ)'}
                             price={item.price}
                             thumbnail={item.image}
                             handleClose={() => removeIngredientHandler(item._id)}

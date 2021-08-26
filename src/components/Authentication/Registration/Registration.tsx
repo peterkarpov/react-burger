@@ -32,7 +32,8 @@ function Registration() {
         history.replace({ pathname: '/login', state });
     }
 
-    const onRegistrationClickHandler = () => {
+    const onRegistrationHandler = (e: any) => {
+        e.preventDefault();
         dispatch(signUp({ name, password, email }));
     }
 
@@ -53,7 +54,7 @@ function Registration() {
                 Регистрация
             </div>
 
-            <form className={styles.form + " pt-5 pb-20"} onSubmit={(e) => { e.preventDefault() }}>
+            <form className={styles.form + " pt-5 pb-20"} onSubmit={(e) => { onRegistrationHandler(e) }}>
 
                 <Input
                     type={'text'}
@@ -71,7 +72,7 @@ function Registration() {
 
                 <PasswordInput onChange={onPasswordChange} value={password} name={'Пароль'} />
 
-                <Button type="primary" size="medium" onClick={onRegistrationClickHandler}>
+                <Button type="primary" size="medium">
                     Зарегистрироваться
                 </Button>
 

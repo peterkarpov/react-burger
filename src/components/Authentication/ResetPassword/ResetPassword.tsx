@@ -47,7 +47,8 @@ function ResetPassword() {
         );
     }
 
-    const onResetClickHandler = () => {
+    const onResetClickHandler = (e: any) => {
+        e.preventDefault();
         dispatch(resetPassword({ token, password }))
             .then((data: any) => {
                 if (data.success) {
@@ -63,7 +64,7 @@ function ResetPassword() {
                 Восстановление пароля
             </div>
 
-            <form className={styles.form + " pt-5 pb-20"} onSubmit={(e) => { e.preventDefault() }}>
+            <form className={styles.form + " pt-5 pb-20"} onSubmit={(e) => { onResetClickHandler(e) }}>
 
                 <PasswordInput onChange={onPasswordChange} value={password} name={'Введите новый пароль'} />
 
@@ -79,7 +80,7 @@ function ResetPassword() {
                     size={'default'}
                 />
 
-                <Button type="primary" size="medium" onClick={onResetClickHandler}>
+                <Button type="primary" size="medium">
                     Восстановить
                 </Button>
 

@@ -14,12 +14,12 @@ function Login() {
 
     //process.env.NODE_ENV !== 'production' // TODO
     
-    const [email, setEmail] = React.useState('') //bisotow677@bushdown.com
+    const [email, setEmail] = React.useState('bisotow677@bushdown.com') //bisotow677@bushdown.com
     const onEmailChange = (e: any) => {
         setEmail(e.target.value)
     }
 
-    const [password, setPassword] = React.useState('')  //123456
+    const [password, setPassword] = React.useState('123456')  //123456
     const onPasswordChange = (e: any) => {
         setPassword(e.target.value)
     }
@@ -36,7 +36,8 @@ function Login() {
     }
 
     const login = useCallback(
-        () => {
+        (e) => {
+            e.preventDefault();
             dispatch(signIn({ email, password }));
         },
         [email, password, dispatch]
@@ -59,14 +60,14 @@ function Login() {
                 Вход
             </div>
 
-            <form className={styles.form + " pt-5 pb-20"} onSubmit={(e) => { e.preventDefault() }} onClick={(e) => { e.preventDefault() }}>
+            <form className={styles.form + " pt-5 pb-20"} onSubmit={(e) => { login(e) }}>
 
                 <EmailInput onChange={onEmailChange} value={email} name={'E-mail'} />
 
                 <PasswordInput onChange={onPasswordChange} value={password} name={'Пароль'} />
 
                 {email !== '' && password !== '' &&
-                    <Button type="primary" size="medium" onClick={login}>
+                    <Button type="primary" size="medium">
                         Войти
                     </Button>
                 }

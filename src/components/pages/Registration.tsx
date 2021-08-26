@@ -1,4 +1,3 @@
-import AppHeader from "../AppHeader/AppHeader";
 import Registration from "../Authentication/Registration/Registration";
 
 export function RegistrationPage() {
@@ -14,20 +13,13 @@ export function RegistrationPage() {
     };
 
     return (
+        <section className="main">
+            <div className="wrapper" style={mainWrapperStyle}>
 
-        <>
-            <AppHeader />
+                <Registration></Registration>
 
-            <section className="main">
-                <div className="wrapper" style={mainWrapperStyle}>
-
-                    <Registration></Registration>
-
-                </div>
-            </section>
-
-        </>
-
+            </div>
+        </section>
     );
 }
 

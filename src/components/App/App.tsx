@@ -11,6 +11,7 @@ import {
 import { ProtectedRoute } from '../protected-route';
 import { ProvideAuth } from '../../services/auth';
 import Page404 from '../pages/Page404';
+import AppHeader from '../AppHeader/AppHeader';
 
 function App() {
 
@@ -18,6 +19,9 @@ function App() {
     <ProvideAuth>
 
       <Router>
+
+        <AppHeader />
+
         <Switch>
 
           <Route path="/login" exact={true}>

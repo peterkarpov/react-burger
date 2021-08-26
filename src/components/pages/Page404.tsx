@@ -1,12 +1,9 @@
 import { Link } from "react-router-dom";
-import AppHeader from "../AppHeader/AppHeader";
 import page404 from './../../images/page404v2.gif';
 
 function Page404() {
     return (
         <>
-            <AppHeader />
-
             <style>{"\
         body{\
           overflow:hidden;\

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import AppHeader from '../AppHeader/AppHeader';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
@@ -60,9 +59,25 @@ export function HomePage() {
   }, [dispatch]);
 
   const openPopup = (id: any) => {
-    setIdForPopup(id);
 
-    window.history.replaceState(null, `id:${id}`, `/ingredients/${id}`);
+    if (history.location.pathname === '/') {
+
+      setIdForPopup(id);
+      window.history.replaceState(null, `id:${id}`, `/ingredients/${id}`);
+
+    } else {
+
+      history.replace({ pathname: `/ingredients/${id}`, state: {from: history.location} });
+    }
+    
+  }
+
+  const clearIdForPopup = () => {
+    dispatch({
+      type: DELETE_ID_FOR_POPUP,
+    });
+
+    window.history.replaceState(null, `react-burger`, `/`)
   }
 
   const addIngredient = (id: any) => {
@@ -91,9 +106,9 @@ export function HomePage() {
 
   const removeIngredient = (id: any) => {
 
-    let newSelectedIngredientsId = selectedIngredientsId;
-    let index = selectedIngredientsId.indexOf(id);
-    selectedIngredientsId.splice(index, 1);
+    const newSelectedIngredientsId = selectedIngredientsId;
+    const index = selectedIngredientsId.indexOf(id);
+    newSelectedIngredientsId.splice(index, 1);
 
     dispatch({
       type: SET_SELECTED_INGREDIENTS,
@@ -111,14 +126,6 @@ export function HomePage() {
 
   const getIngredientById = (id: string) => {
     return data.find((v: any) => { return v._id === id });
-  }
-
-  const clearIdForPopup = () => {
-    dispatch({
-      type: DELETE_ID_FOR_POPUP,
-    });
-
-    window.history.replaceState(null, `react-burger`, `/`)
   }
 
   const setOrderInfo = (orderData: any) => {
@@ -166,10 +173,7 @@ export function HomePage() {
   };
 
   return (
-
     <>
-      <AppHeader />
-
       <section className="main">
         <div className="wrapper" style={mainWrapperStyle}>
 
@@ -208,7 +212,6 @@ export function HomePage() {
         </Modal>
       }
     </>
-
   );
 }
 

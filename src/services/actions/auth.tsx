@@ -79,7 +79,7 @@ export function refreshToken(callback: Function) {
 };
 
 export function signIn(form: { email: string, password: string }) {
-
+    
     return function (dispatch: any) {
 
         loginRequest(form)

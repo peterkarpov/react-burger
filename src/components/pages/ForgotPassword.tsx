@@ -1,4 +1,3 @@
-import AppHeader from "../AppHeader/AppHeader";
 import ForgotPassword from "../Authentication/ForgotPassword/ForgotPassword";
 
 export function ForgotPasswordPage() {
@@ -14,20 +13,13 @@ export function ForgotPasswordPage() {
     };
 
     return (
+        <section className="main">
+            <div className="wrapper" style={mainWrapperStyle}>
 
-        <>
-            <AppHeader />
+                <ForgotPassword></ForgotPassword>
 
-            <section className="main">
-                <div className="wrapper" style={mainWrapperStyle}>
-
-                    <ForgotPassword></ForgotPassword>
-
-                </div>
-            </section>
-
-        </>
-
+            </div>
+        </section>
     );
 }
 

@@ -1,4 +1,3 @@
-import AppHeader from "../AppHeader/AppHeader";
 import ResetPassword from "../Authentication/ResetPassword/ResetPassword";
 
 export function ResetPasswordPage() {
@@ -14,20 +13,13 @@ export function ResetPasswordPage() {
     };
 
     return (
+        <section className="main">
+            <div className="wrapper" style={mainWrapperStyle}>
 
-        <>
-            <AppHeader />
+                <ResetPassword></ResetPassword>
 
-            <section className="main">
-                <div className="wrapper" style={mainWrapperStyle}>
-
-                    <ResetPassword></ResetPassword>
-
-                </div>
-            </section>
-
-        </>
-
+            </div>
+        </section>
     );
 }
 
