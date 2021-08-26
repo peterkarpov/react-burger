@@ -18,7 +18,7 @@ function Page404() {
                     display: 'flex',
                     justifyContent: 'center',
                     height: '100vh',
-                    backgroundColor: 'black',
+                    // backgroundColor: 'black',
                     // alignItems: 'center'
                 }}>
                     <img
@@ -27,7 +27,7 @@ function Page404() {
                             maxWidth: '100%',
                             maxHeight: '60vh',
                             objectFit: 'cover',
-                            backgroundColor: 'black',
+                            // backgroundColor: 'black',
                             overflow: 'hidden'
                         }}
                         alt={'loading...'}

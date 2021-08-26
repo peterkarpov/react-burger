@@ -4,10 +4,13 @@ import styles from './Registration.module.css';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from "../../../services/auth";
 import { Redirect } from "react-router";
+import { signUp } from "../../../services/actions/auth";
+import { useDispatch } from "react-redux";
 
 function Registration() {
 
     const auth = useAuth();
+    const dispatch = useDispatch();
 
     const [name, setName] = React.useState('')
     const inputNameRef = React.useRef(null)
@@ -30,7 +33,7 @@ function Registration() {
     }
 
     const onRegistrationClickHandler = () => {
-        auth.signUp({ name, password, email });
+        dispatch(signUp({ name, password, email }));
     }
 
     if (auth.isHasCookie()) {

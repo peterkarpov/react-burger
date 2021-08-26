@@ -5,15 +5,14 @@ import Loader from './pages/Loader';
 
 export function ProtectedRoute({ children, ...rest }) {
 
-  let { getUser, user, ...auth } = useAuth();
+  let { user, ...auth } = useAuth();
   const [isUserLoaded, setUserLoaded] = useState(false);
 
   useEffect(() => {
-    getUser()
-      .then((result) => {
-        setUserLoaded(result);
-      });
-  }, [getUser]);
+
+    setUserLoaded(!!user);
+
+  }, [user]);
 
   const isHas = auth.isHasCookie();
 

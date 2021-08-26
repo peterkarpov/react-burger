@@ -3,11 +3,14 @@ import { useAuth } from './../../services/auth';
 import React from "react";
 import { Input, EmailInput, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './Profile.module.css';
+import { updateUser, signOut } from '../../services/actions/auth';
+import { useDispatch } from 'react-redux';
 
 function Profile() {
 
     const { pathname, state } = useLocation();
     const auth = useAuth();
+    const dispatch = useDispatch();
 
     const history = useHistory();
 
@@ -20,7 +23,7 @@ function Profile() {
     }
 
     const onLogoutClickHandler = () => {
-        auth.signOut();
+        dispatch(signOut());
         history.replace({ pathname: '/login', state });
     }
 
@@ -38,10 +41,7 @@ function Profile() {
     }
 
     const onSaveHandler = () => {
-        auth.updateUser({ name, email, password })
-            .then((data: any) => {
-
-            });
+        dispatch(updateUser({ name, email, password }));
     }
 
     return (
@@ -96,7 +96,7 @@ function Profile() {
                                 Сохранить
                             </Button>
                         }
-                        
+
                     </div>
                     : null}
 
@@ -108,11 +108,9 @@ function Profile() {
                     </div>
                     : null}
 
-
-
             </section>
         </>
     );
 }
 
-export default Profile
+export default Profile;

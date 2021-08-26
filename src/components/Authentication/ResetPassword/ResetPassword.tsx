@@ -4,10 +4,13 @@ import styles from './ResetPassword.module.css';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from "../../../services/auth";
 import { Redirect } from "react-router";
+import { resetPassword } from "../../../services/actions/auth";
+import { useDispatch } from "react-redux";
 
 function ResetPassword() {
 
     const auth = useAuth();
+    const dispatch = useDispatch<any>();
 
     const [token, setToken] = React.useState('')
     const inputTokenRef = React.useRef(null)
@@ -45,7 +48,7 @@ function ResetPassword() {
     }
 
     const onResetClickHandler = () => {
-        auth.resetPassword({ token, password })
+        dispatch(resetPassword({ token, password }))
             .then((data: any) => {
                 if (data.success) {
                     history.replace({ pathname: '/', state });

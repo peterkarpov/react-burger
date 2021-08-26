@@ -4,17 +4,22 @@ import styles from './Login.module.css';
 import { useHistory, useLocation, Redirect } from 'react-router-dom';
 import { useAuth } from '../../../services/auth';
 import { useCallback } from "react";
+import { signIn } from "../../../services/actions/auth";
+import { useDispatch } from "react-redux";
 
 function Login() {
 
     const auth = useAuth();
+    const dispatch = useDispatch();
 
-    const [email, setEmail] = React.useState('bisotow677@bushdown.com')
+    //process.env.NODE_ENV !== 'production' // TODO
+    
+    const [email, setEmail] = React.useState('') //bisotow677@bushdown.com
     const onEmailChange = (e: any) => {
         setEmail(e.target.value)
     }
 
-    const [password, setPassword] = React.useState('123')
+    const [password, setPassword] = React.useState('')  //123456
     const onPasswordChange = (e: any) => {
         setPassword(e.target.value)
     }
@@ -32,9 +37,9 @@ function Login() {
 
     const login = useCallback(
         () => {
-            auth.signIn({ email, password });
+            dispatch(signIn({ email, password }));
         },
-        [auth, email, password]
+        [email, password, dispatch]
     );
 
     if (auth.isHasCookie()) {

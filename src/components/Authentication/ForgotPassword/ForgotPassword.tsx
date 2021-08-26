@@ -4,10 +4,13 @@ import styles from './ForgotPassword.module.css';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from "../../../services/auth";
 import { Redirect } from "react-router";
+import { restorePassword } from "../../../services/actions/auth";
+import { useDispatch } from "react-redux";
 
 function ForgotPassword() {
 
     const auth = useAuth();
+    const dispatch = useDispatch<any>();
 
     const [email, setEmail] = React.useState('')
     const onEmailChange = (e: any) => {
@@ -22,7 +25,7 @@ function ForgotPassword() {
     }
 
     const onRestorePasswordClickHandler = () => {
-        auth.restorePassword({ email })
+        dispatch(restorePassword({ email }))
             .then((data: any) => {
                 if (data.success) {
                     history.replace({ pathname: '/reset-password', state: { from: history.location } });
