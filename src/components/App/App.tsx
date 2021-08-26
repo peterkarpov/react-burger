@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import {
   HomePage,
   LoginPage,
@@ -10,6 +10,7 @@ import {
 } from './../pages';
 import { ProtectedRoute } from '../protected-route';
 import { ProvideAuth } from '../../services/auth';
+import Page404 from '../pages/Page404';
 
 function App() {
 
@@ -48,10 +49,14 @@ function App() {
           </Route>
 
           <Route>
-            <h1>Oops! 404 Error</h1>
+
+            {/* <h1>Oops! 404 Error</h1>
             <p>The page you requested does not exist</p>
             <br />
-            <p>check the address or try <Link to='/' >homepage</Link></p>
+            <p>check the address or try <Link to='/' >homepage</Link></p> */}
+
+            <Page404 />
+
           </Route>
 
         </Switch>
