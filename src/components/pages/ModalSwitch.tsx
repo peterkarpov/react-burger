@@ -14,8 +14,8 @@ function ModalSwitch() {
     const history = useHistory<any>();
     const location = useLocation<any>();
 
-    const background = location.state && location.state.from;
-   
+    const background = (location.state && (history.action === 'PUSH' || history.action === 'REPLACE') && location.state.from) || null;
+
     const dispatch = useDispatch();
 
     useEffect(() => {

@@ -23,7 +23,7 @@ function HomeOrIngredientPage() {
 
     const history = useHistory<any>();
 
-    const isFromHome = history.location?.state?.from?.pathname === '/';
+    const isFromHome = history.location?.state?.from?.pathname === '/' && history.action !== 'POP';
 
     if (isFromHome) {
         return (
