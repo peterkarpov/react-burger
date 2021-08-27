@@ -60,16 +60,17 @@ export function HomePage() {
 
   const openPopup = (id: any) => {
 
-    if (history.location.pathname === '/') {
+    // if (history.location.pathname === '/') {
 
-      setIdForPopup(id);
-      window.history.replaceState(null, `id:${id}`, `/ingredients/${id}`);
+    //   setIdForPopup(id);
+    //   window.history.replaceState(null, `id:${id}`, `/ingredients/${id}`);
 
-    } else {
+    // } else {
 
-      history.replace({ pathname: `/ingredients/${id}`, state: {from: history.location} });
-    }
-    
+    //   history.replace({ pathname: `/ingredients/${id}`, state: {from: history.location} });
+    // }
+
+    history.replace({ pathname: `/ingredients/${id}`, state: { from: history.location } });
   }
 
   const clearIdForPopup = () => {
@@ -77,7 +78,9 @@ export function HomePage() {
       type: DELETE_ID_FOR_POPUP,
     });
 
-    window.history.replaceState(null, `react-burger`, `/`)
+    history.replace({ pathname: `/`, state: { from: history.location } });
+
+    //window.history.replaceState(null, `react-burger`, `/`)
   }
 
   const addIngredient = (id: any) => {

@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 
 function IngredientDetails(props: { element: any, style: React.CSSProperties | undefined }) {
 
+    if (!props.element) {
+        return null;
+    }
+
     return (
         <div className={styles["ingredient-info"]} style={props.style}>
             <div className={styles["icon-wrapper"] + " mb-4"}>

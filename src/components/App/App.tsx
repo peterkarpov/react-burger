@@ -5,13 +5,14 @@ import {
   RegistrationPage,
   ProfilePage,
   ForgotPasswordPage,
-  ResetPasswordPage,
-  IngredientPage
+  ResetPasswordPage
 } from './../pages';
 import { ProtectedRoute } from '../protected-route';
 import { ProvideAuth } from '../../services/auth';
 import Page404 from '../pages/Page404';
 import AppHeader from '../AppHeader/AppHeader';
+// import HomeOrIngredientPage from '../pages/HomeOrIngredientPage';
+import ModalSwitch from '../pages/ModalSwitch';
 
 function App() {
 
@@ -45,7 +46,8 @@ function App() {
           </ProtectedRoute>
 
           <Route path="/ingredients/:id" exact={true}>
-            <IngredientPage />
+              {/* <HomeOrIngredientPage /> */}
+              <ModalSwitch />
           </Route>
 
           <Route path="/" exact={true}>
