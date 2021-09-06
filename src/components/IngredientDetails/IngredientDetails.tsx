@@ -2,10 +2,14 @@ import styles from './IngredientDetails.module.css';
 
 import PropTypes from 'prop-types';
 
-function IngredientDetails(props: { element: any }) {
+function IngredientDetails(props: { element: any, style: React.CSSProperties | undefined }) {
+
+    if (!props.element) {
+        return null;
+    }
 
     return (
-        <div className={styles["ingredient-info"]}>
+        <div className={styles["ingredient-info"]} style={props.style}>
             <div className={styles["icon-wrapper"] + " mb-4"}>
                 <img src={props.element.image_large} alt="icon-wrapper-img" />
             </div>

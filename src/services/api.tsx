@@ -66,7 +66,6 @@ export const setOrderInfoRequest = (orderData: any) => {
             },
             (error) => {
                 console.log(error);
-
             }
         );
 
