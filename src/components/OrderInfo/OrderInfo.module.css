@@ -1,0 +1,72 @@
+section.order-info {
+  margin-top: 122px;
+  min-width: 640px;
+  max-width: 640px;
+}
+section.order-info .number {
+  font-size: 28px;
+  line-height: 24px;
+  text-align: center;
+}
+section.order-info .name,
+section.order-info .title {
+  font-size: 24px;
+  line-height: 30px;
+}
+section.order-info .status {
+  font-size: 16px;
+}
+section.order-info .status.complete {
+  color: #00CCCC;
+}
+section.order-info ul.order-elements {
+  max-height: 30vh;
+  padding-right: calc(var(--offset-base-size) * 6);
+}
+section.order-info ul.order-elements > li .order-elements-item {
+  line-height: 64px;
+}
+section.order-info ul.order-elements > li .order-elements-item::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+section.order-info ul.order-elements > li .order-elements-item .image {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  background-color: red;
+}
+section.order-info ul.order-elements > li .order-elements-item .name {
+  display: inline-block;
+  max-width: 400px;
+  vertical-align: middle;
+  font-size: 16px;
+  line-height: 24px;
+}
+section.order-info ul.order-elements > li .order-elements-item .total {
+  float: right;
+  font-size: 28px;
+  line-height: 64px;
+}
+section.order-info ul.order-elements > li .order-elements-item .total span {
+  vertical-align: middle;
+}
+section.order-info ul.order-elements > li .order-elements-item .total svg {
+  vertical-align: middle;
+}
+section.order-info .bottom-block::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+section.order-info .bottom-block .time {
+  float: left;
+  line-height: 24px;
+  font-size: 16px;
+}
+section.order-info .bottom-block .total {
+  float: right;
+  line-height: 24px;
+  font-size: 28px;
+}

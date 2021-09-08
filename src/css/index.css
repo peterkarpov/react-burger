@@ -15,10 +15,10 @@
   /* Non-prefixed version, currently not supported by any browser */
 }
 
-/* * {
+* {
   outline: 1px dotted red;
-  cursor: default;
-} */
+  /* cursor: default; */
+}
 
 body {
   font-family: 'Courier New', Courier, monospace;

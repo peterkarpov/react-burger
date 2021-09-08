@@ -5,6 +5,8 @@ import { Input, EmailInput, PasswordInput, Button } from "@ya.praktikum/react-de
 import styles from './Profile.module.css';
 import { updateUser, signOut } from '../../services/actions/auth';
 import { useDispatch } from 'react-redux';
+import ProfileOrdersListItem from '../ProfileOrdersListItem/ProfileOrdersListItem';
+import stylesScrollable from '../../css/scrollable.module.css';
 
 function Profile() {
 
@@ -42,6 +44,10 @@ function Profile() {
 
     const onSaveHandler = () => {
         dispatch(updateUser({ name, email, password }));
+    }
+
+    const onClickProfileOrderItem = (item: any) => {
+        history.replace({ pathname: `/profile/order/${item._id}`, state });
     }
 
     return (
@@ -103,7 +109,24 @@ function Profile() {
                 {pathname === '/profile/orders' ?
                     <div className={`${styles['right-aside']}`}>
 
-                        its profile orders
+                        <ul className={`profile-order-list ${stylesScrollable.scrollable} pr-2`} style={{maxHeight:"60vh"}}>
+
+                            {Array.from([1, 2, 3, 4, 5, 6]).map((item: any) => {
+
+                                return (
+                                    <li
+                                        key={item._id}
+                                        className={""}
+                                        onClick={() => onClickProfileOrderItem(item)}
+                                        style={{ cursor: "pointer" }}
+                                    >
+                                        <ProfileOrdersListItem />
+
+                                    </li>
+                                )
+                            })}
+
+                        </ul>
 
                     </div>
                     : null}

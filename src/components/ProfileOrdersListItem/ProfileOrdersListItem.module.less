@@ -1,0 +1,67 @@
+div.profile-order-item {
+
+    background-color: #1C1C21;
+    border-radius   : calc(var(--offset-base-size) * 10);
+
+    .number {
+        font-size  : 28px;
+        line-height: 24px;
+        float      : left;
+    }
+
+    .time {
+        font-size  : 16px;
+        line-height: 24px;
+        float      : right;
+    }
+
+    .name {
+        clear    : both;
+        font-size: 24px;
+    }
+
+    .status {
+        font-size: 16px;
+    }
+
+    .panel-bottom {
+
+        min-height: calc(var(--offset-base-size) * 6);
+
+        &::after {
+            display: block;
+            content: '';
+            clear  : both;
+        }
+
+        ul.image-list {
+            float: left;
+
+            >li {
+                display: inline-block;
+
+                .image-item {
+                    width           : 64px;
+                    height          : 64px;
+                    border-radius   : 50%;
+                    background-color: red;
+                    margin-right    : calc(var(--offset-base-size) * 2);
+                }
+            }
+        }
+
+        .total {
+            line-height: 64px;
+            float      : right;
+            font-size  : 28px;
+
+            >svg {
+                margin-right: calc(var(--offset-base-size) * 2);
+
+            }
+        }
+    }
+
+
+
+}

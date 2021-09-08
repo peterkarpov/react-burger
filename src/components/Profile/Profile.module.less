@@ -1,20 +1,21 @@
 section.profile {
 
-    margin-top: 10vh;
+    width         : 100%;
+    margin-top    : 10vh;
     display       : flex;
     flex-direction: row;
     flex-wrap     : nowrap;
-    gap           : calc(var(--offset-base-size) * 20);
+    gap           : calc(var(--offset-base-size) * 15);
 
     .left-aside {
 
         max-width: 30%;
 
         .link {
-            padding-top: calc(var(--offset-base-size) * 5);
+            padding-top   : calc(var(--offset-base-size) * 5);
             padding-bottom: calc(var(--offset-base-size) * 5);
-            cursor    : pointer;
-            transition: all ease 0.4s;
+            cursor        : pointer;
+            transition    : all ease 0.4s;
 
             &:hover {
                 color: white;
@@ -23,6 +24,7 @@ section.profile {
     }
 
     .right-aside {
+        width: 100%;
         display       : flex;
         flex-direction: column;
         flex-wrap     : nowrap;

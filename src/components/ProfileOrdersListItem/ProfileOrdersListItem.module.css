@@ -1,0 +1,50 @@
+div.profile-order-item {
+  background-color: #1C1C21;
+  border-radius: calc(var(--offset-base-size) * 10);
+}
+div.profile-order-item .number {
+  font-size: 28px;
+  line-height: 24px;
+  float: left;
+}
+div.profile-order-item .time {
+  font-size: 16px;
+  line-height: 24px;
+  float: right;
+}
+div.profile-order-item .name {
+  clear: both;
+  font-size: 24px;
+}
+div.profile-order-item .status {
+  font-size: 16px;
+}
+div.profile-order-item .panel-bottom {
+  min-height: calc(var(--offset-base-size) * 6);
+}
+div.profile-order-item .panel-bottom::after {
+  display: block;
+  content: '';
+  clear: both;
+}
+div.profile-order-item .panel-bottom ul.image-list {
+  float: left;
+}
+div.profile-order-item .panel-bottom ul.image-list > li {
+  display: inline-block;
+}
+div.profile-order-item .panel-bottom ul.image-list > li .image-item {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: red;
+  margin-right: calc(var(--offset-base-size) * 2);
+}
+div.profile-order-item .panel-bottom .total {
+  line-height: 64px;
+  float: right;
+  font-size: 28px;
+}
+div.profile-order-item .panel-bottom .total > svg {
+  margin-right: calc(var(--offset-base-size) * 2);
+}
