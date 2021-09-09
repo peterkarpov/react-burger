@@ -23,10 +23,6 @@ function AppHeader() {
         history.replace({ pathname: '/', state });
     }
     
-    const onOrdersClickHandler = () => {
-        history.replace({ pathname: '/profile/orders', state });
-    }
-
     const onFeedClickHandler = () => {
         history.replace({ pathname: '/feed', state });
     }
@@ -57,7 +53,7 @@ function AppHeader() {
 
                 <ul className={styles["navigation-bar"]}>
                     <li className={styles["navigation-link"] + " p-5"} onClick={onProfileClickHandler}>
-                        <ProfileIcon type="secondary" />
+                        <ProfileIcon type={`${pathname === '/profile' ? 'primary' : 'secondary'}`} />
                         <span className={styles["navigation-text"] + ` text text_type_main-default ${pathname !== '/profile' ? 'text_color_inactive' : null} ml-2`} >Личный кабинет</span>
                     </li>
                 </ul>

@@ -1,18 +1,18 @@
 section.order-info {
 
     margin-top: 122px;
-    min-width: 640px;
-    max-width: 640px;
+    min-width : 640px;
+    max-width : 640px;
 
     .number {
-        font-size: 28px;
+        font-size  : 28px;
         line-height: 24px;
-        text-align: center;
+        text-align : center;
     }
 
-    .name, 
+    .name,
     .title {
-        font-size: 24px;
+        font-size  : 24px;
         line-height: 30px;
     }
 
@@ -20,13 +20,13 @@ section.order-info {
         font-size: 16px;
 
         &.complete {
-           color: #00CCCC; 
+            color: #00CCCC;
         }
     }
 
     ul.order-elements {
 
-        max-height: 30vh;
+        max-height   : 30vh;
         padding-right: calc(var(--offset-base-size) * 6);
 
         >li {
@@ -35,21 +35,26 @@ section.order-info {
                 &::after {
                     content: '';
                     display: block;
-                    clear: both;
+                    clear  : both;
                 }
 
                 line-height: 64px;
 
                 .image {
 
-                    display: inline-block;
+                    display         : inline-block;
+                    border-radius   : 50%;
+                    width           : 64px;
+                    height          : 64px;
+                    border          : 2px solid #4C4CFF;
+                    background-color: black;
+                    vertical-align  : middle;
 
-                    width: 64px;
-                    height: 64px;
-
-                    background-color: red;
-
-                    img {}
+                    img {
+                        width     : 64px;
+                        height    : 64px;
+                        object-fit: cover;
+                    }
                 }
 
                 .name {
@@ -58,10 +63,10 @@ section.order-info {
 
                     max-width: 400px;
 
-                    
+
                     vertical-align: middle;
 
-                    font-size: 16px;
+                    font-size  : 16px;
                     line-height: 24px;
                 }
 
@@ -69,7 +74,7 @@ section.order-info {
 
                     float: right;
 
-                    font-size: 28px;
+                    font-size  : 28px;
                     line-height: 64px;
 
                     span {
@@ -89,19 +94,19 @@ section.order-info {
         &::after {
             content: '';
             display: block;
-            clear: both;
+            clear  : both;
         }
 
         .time {
-            float: left;
+            float      : left;
             line-height: 24px;
-            font-size: 16px;
+            font-size  : 16px;
         }
 
         .total {
-            float: right;
+            float      : right;
             line-height: 24px;
-            font-size: 28px;
+            font-size  : 28px;
         }
     }
 }

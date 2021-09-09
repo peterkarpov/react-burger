@@ -1,12 +1,13 @@
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from './../../services/auth';
-import React from "react";
+import React, { useEffect } from "react";
 import { Input, EmailInput, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './Profile.module.css';
 import { updateUser, signOut } from '../../services/actions/auth';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ProfileOrdersListItem from '../ProfileOrdersListItem/ProfileOrdersListItem';
 import stylesScrollable from '../../css/scrollable.module.css';
+import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from '../../services/actions/wsActionTypes';
 
 function Profile() {
 
@@ -15,6 +16,19 @@ function Profile() {
     const dispatch = useDispatch();
 
     const history = useHistory();
+
+    const profileOrders = useSelector<any, any>(state => state.profileOrders);
+
+    useEffect(() => {
+
+        dispatch({ type: WS_CONNECTION_START });
+
+        return () => {
+
+            dispatch({ type: WS_CONNECTION_CLOSED });
+
+        }
+    }, [dispatch]);
 
     const onProfileClickHandler = () => {
         history.replace({ pathname: '/profile', state });
@@ -109,24 +123,31 @@ function Profile() {
                 {pathname === '/profile/orders' ?
                     <div className={`${styles['right-aside']}`}>
 
-                        <ul className={`profile-order-list ${stylesScrollable.scrollable} pr-2`} style={{maxHeight:"60vh"}}>
+                        <ul className={`profile-order-list ${stylesScrollable.scrollable} pr-2`} style={{ maxHeight: "60vh" }}>
 
-                            {Array.from([1, 2, 3, 4, 5, 6]).map((item: any) => {
+                            {Array.from(profileOrders.orders).map((item: any) => {
 
                                 return (
                                     <li
                                         key={item._id}
                                         className={""}
-                                        onClick={() => onClickProfileOrderItem(item)}
+                                        onClick={() => onClickProfileOrderItem(item._id)}
                                         style={{ cursor: "pointer" }}
                                     >
-                                        <ProfileOrdersListItem />
+                                        <ProfileOrdersListItem item={item} isShowStatus={true} />
 
                                     </li>
                                 )
                             })}
 
                         </ul>
+
+                        {profileOrders && profileOrders.orders.length === 0 ?
+                            <div className={"text text_type_main-default"} style={{ textAlign: 'center' }}>
+                                У Вас ещё нет заказов 
+                                {/* {(()=>{ var asd = profileOrders; debugger})()} */}
+                            </div>
+                            : null}
 
                     </div>
                     : null}

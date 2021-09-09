@@ -33,9 +33,17 @@ section.order-info ul.order-elements > li .order-elements-item::after {
 }
 section.order-info ul.order-elements > li .order-elements-item .image {
   display: inline-block;
+  border-radius: 50%;
   width: 64px;
   height: 64px;
-  background-color: red;
+  border: 2px solid #4C4CFF;
+  background-color: black;
+  vertical-align: middle;
+}
+section.order-info ul.order-elements > li .order-elements-item .image img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
 }
 section.order-info ul.order-elements > li .order-elements-item .name {
   display: inline-block;

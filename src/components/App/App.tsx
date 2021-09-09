@@ -14,7 +14,6 @@ import AppHeader from '../AppHeader/AppHeader';
 // import HomeOrIngredientPage from '../pages/HomeOrIngredientPage';
 import ModalSwitch from '../pages/ModalSwitch';
 import { FeedPage } from '../pages/FeedPage';
-import OrderInfo from '../OrderInfo/OrderInfo';
 import { OrderInfoPage } from '../pages/OrderInfoPage';
 
 function App() {

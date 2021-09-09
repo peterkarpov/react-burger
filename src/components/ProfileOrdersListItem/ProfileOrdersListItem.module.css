@@ -37,8 +37,25 @@ div.profile-order-item .panel-bottom ul.image-list > li .image-item {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background-color: red;
+  border: 2px solid #4C4CFF;
   margin-right: calc(var(--offset-base-size) * 2);
+  position: relative;
+  margin-right: -19px;
+  background-color: black;
+}
+div.profile-order-item .panel-bottom ul.image-list > li .image-item .offset-count {
+  position: absolute;
+  vertical-align: middle;
+  line-height: 64px;
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  z-index: 1000;
+}
+div.profile-order-item .panel-bottom ul.image-list > li .image-item img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
 }
 div.profile-order-item .panel-bottom .total {
   line-height: 64px;
@@ -47,4 +64,8 @@ div.profile-order-item .panel-bottom .total {
 }
 div.profile-order-item .panel-bottom .total > svg {
   margin-right: calc(var(--offset-base-size) * 2);
+  vertical-align: middle;
+}
+div.profile-order-item .panel-bottom .total > span {
+  vertical-align: middle;
 }

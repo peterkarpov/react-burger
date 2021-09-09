@@ -1,26 +1,38 @@
 import { useHistory, useLocation } from 'react-router-dom';
-import { useAuth } from './../../services/auth';
-import React from "react";
-import { Input, EmailInput, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useEffect } from "react";
 import styles from './Feed.module.css';
-import { updateUser, signOut } from '../../services/actions/auth';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import stylesScrollable from '../../css/scrollable.module.css';
 import ProfileOrdersListItem from '../ProfileOrdersListItem/ProfileOrdersListItem';
+import { WS_FEED_CONNECTION_CLOSED, WS_FEED_CONNECTION_START } from '../../services/actions/wsActionTypes';
+import Loader from '../pages/Loader';
 
 function Feed() {
 
-    const { pathname, state } = useLocation();
-    const auth = useAuth();
+    const { state } = useLocation();
     const dispatch = useDispatch();
 
     const history = useHistory();
 
+    const feed = useSelector<any, any>(state => state.feed);
+
+    useEffect(() => {
+
+        dispatch({ type: WS_FEED_CONNECTION_START });
+
+        return () => {
+
+            dispatch({ type: WS_FEED_CONNECTION_CLOSED });
+        }
+    }, [dispatch]);
+
     const onClickProfileOrderItem = (item: any) => {
+        history.replace({ pathname: `/feed/${item._id}`, state });
+    }
 
-        alert(item._id);
-
-        // history.replace({ pathname: `/profile/order/${item._id}`, state });
+    if (!!!feed) {
+        debugger;
+        return (<Loader />)
     }
 
     return (
@@ -34,24 +46,31 @@ function Feed() {
                 <div className={styles["block-aside"]}>
                     <div className={`${styles['left-aside']}`}>
 
-                        <ul className={`profile-order-list ${stylesScrollable.scrollable} pr-2`} style={{ maxHeight: "60vh" }}>
+                        {feed.wsConnected
+                            ?
+                            <ul className={`profile-order-list ${stylesScrollable.scrollable} pr-2`} style={{ maxHeight: "60vh" }}>
 
-                            {Array.from([1, 2, 3, 4, 5, 6]).map((item: any) => {
+                                {feed.orders.map((item: any) => {
 
-                                return (
-                                    <li
-                                        key={item._id}
-                                        className={""}
-                                        onClick={() => onClickProfileOrderItem(item)}
-                                        style={{ cursor: "pointer" }}
-                                    >
-                                        <ProfileOrdersListItem />
+                                    return (
+                                        <li
+                                            key={item._id}
+                                            className={""}
+                                            onClick={() => onClickProfileOrderItem(item)}
+                                            style={{ cursor: "pointer" }}
+                                        >
+                                            <ProfileOrdersListItem item={item} isShowStatus={false} />
 
-                                    </li>
-                                )
-                            })}
+                                        </li>
+                                    )
+                                })}
 
-                        </ul>
+                            </ul>
+                            :
+                            <Loader />
+                        }
+
+
 
                     </div>
 
@@ -64,14 +83,14 @@ function Feed() {
                                     <div className={styles.title + " text_type_main-medium mb-6"}>
                                         Готовы:
                                     </div>
-                                    <ul>
-                                        {Array.from(['034533', '034534', '034535']).map((item) => {
+                                    <ul className={`${stylesScrollable.scrollable}`} style={{ maxHeight: '172px' }}>
+                                        {Array.from(feed.orders.filter((v: any) => v.status === 'done')).map((item: any) => {
 
                                             return (
-                                                <li key={`${item}`}
+                                                <li key={`${item.number}`}
                                                     className="text_type_digits-default"
                                                 >
-                                                    {item}
+                                                    {item.number}
                                                 </li>
                                             );
                                         })}
@@ -81,14 +100,14 @@ function Feed() {
                                     <div className={styles.title + " text_type_main-medium mb-6"}>
                                         В работе:
                                     </div>
-                                    <ul>
-                                        {Array.from(['111111', '222222', '333333', '444444']).map((item) => {
+                                    <ul className={`${stylesScrollable.scrollable}`} style={{ maxHeight: '172px' }}>
+                                        {Array.from(feed.orders.filter((v: any) => v.status !== 'done')).map((item: any) => {
 
                                             return (
-                                                <li key={`${item}`}
+                                                <li key={`${item.number}`}
                                                     className="text_type_digits-default"
                                                 >
-                                                    {item}
+                                                    {item.number}
                                                 </li>
                                             );
                                         })}
@@ -99,13 +118,13 @@ function Feed() {
                                 Выполнено за все время
                             </div>
                             <div className={styles["complete-total"] + " text text_type_digits-large"}>
-                                28 752
+                                {feed.total}
                             </div>
                             <div className={styles.title + " text text_type_main-medium mt-15"}>
                                 Выполнено за сегодня
                             </div>
                             <div className={styles["complete-today"] + " text text_type_digits-large"}>
-                                138
+                                {feed.totalToday}
                             </div>
 
                         </div>

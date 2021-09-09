@@ -41,11 +41,31 @@ div.profile-order-item {
                 display: inline-block;
 
                 .image-item {
-                    width           : 64px;
-                    height          : 64px;
-                    border-radius   : 50%;
-                    background-color: red;
-                    margin-right    : calc(var(--offset-base-size) * 2);
+                    width              : 64px;
+                    height             : 64px;
+                    border-radius      : 50%;
+                    // background-color: red;
+                    border             : 2px solid #4C4CFF;
+                    margin-right       : calc(var(--offset-base-size) * 2);
+                    position           : relative;
+                    margin-right       : -19px;
+                    background-color   : black;
+
+                    .offset-count {
+                        position      : absolute;
+                        vertical-align: middle;
+                        line-height   : 64px;
+                        width         : 100%;
+                        text-align    : center;
+                        font-size     : 16px;
+                        z-index       : 1000;
+                    }
+
+                    img {
+                        width     : 64px;
+                        height    : 64px;
+                        object-fit: cover;
+                    }
                 }
             }
         }
@@ -57,11 +77,12 @@ div.profile-order-item {
 
             >svg {
                 margin-right: calc(var(--offset-base-size) * 2);
+                vertical-align: middle;
+            }
 
+            >span {
+                vertical-align: middle;
             }
         }
     }
-
-
-
 }
