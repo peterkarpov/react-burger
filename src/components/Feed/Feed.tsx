@@ -1,4 +1,4 @@
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useEffect } from "react";
 import styles from './Feed.module.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +9,6 @@ import Loader from '../pages/Loader';
 
 function Feed() {
 
-    const { state } = useLocation();
     const dispatch = useDispatch();
 
     const history = useHistory();
@@ -27,11 +26,10 @@ function Feed() {
     }, [dispatch]);
 
     const onClickProfileOrderItem = (item: any) => {
-        history.replace({ pathname: `/feed/${item._id}`, state });
+        history.replace({ pathname: `/feed/${item._id}`, state: { from: history.location, number: item.number } });
     }
 
     if (!!!feed) {
-        debugger;
         return (<Loader />)
     }
 

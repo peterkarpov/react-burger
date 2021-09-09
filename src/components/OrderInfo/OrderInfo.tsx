@@ -1,7 +1,7 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './OrderInfo.module.css';
 import stylesScrollable from '../../css/scrollable.module.css';
-import { useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { WS_CONNECTION_CLOSED, WS_CONNECTION_START, WS_FEED_CONNECTION_CLOSED, WS_FEED_CONNECTION_START } from '../../services/actions/wsActionTypes';
 import { useEffect } from 'react';
@@ -18,6 +18,11 @@ function OrderInfo() {
 
     const feed = useSelector<any, any>(state => state.feed);
     const profileOrders = useSelector<any, any>(state => state.profileOrders);
+
+    const history = useHistory();
+    const location = useLocation<any>();
+
+    const background = (location.state && (history.action === 'PUSH' || history.action === 'REPLACE') && location.state.from) || null;
 
     useEffect(() => {
 
@@ -67,7 +72,7 @@ function OrderInfo() {
     return (
         <>
             <section className={styles["order-info"]}>
-                <div className={styles["number"] + " mb-10 text text_type_digits-medium"}>
+                <div className={`${background ? styles["into-modal"] : null} ${styles["number"]}  mb-10 text text_type_digits-medium`}>
                     #{order.number}
                 </div>
                 <div className={styles["name"] + " mb-3 text text_type_main-medium"}>

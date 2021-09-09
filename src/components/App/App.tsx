@@ -14,7 +14,7 @@ import AppHeader from '../AppHeader/AppHeader';
 // import HomeOrIngredientPage from '../pages/HomeOrIngredientPage';
 import ModalSwitch from '../pages/ModalSwitch';
 import { FeedPage } from '../pages/FeedPage';
-import { OrderInfoPage } from '../pages/OrderInfoPage';
+import ModalSwitchForOrderInfo from '../pages/ModalSwitchForOrderInfo';
 
 function App() {
 
@@ -59,7 +59,10 @@ function App() {
 
           <Route path="/feed/:id" exact={true}>
             {/* TODO page and modal */}
-            <OrderInfoPage />
+            {/* <OrderInfoPage /> */}
+            <ModalSwitchForOrderInfo route={"/feed"}>
+              <FeedPage />
+            </ModalSwitchForOrderInfo>
           </Route>
 
           <ProtectedRoute path="/profile/orders" exact={true}>
@@ -68,7 +71,10 @@ function App() {
 
           <ProtectedRoute path="/profile/orders/:id" exact={true}>
             {/* TODO page and modal */}
-            <OrderInfoPage />
+            {/* <OrderInfoPage /> */}
+            <ModalSwitchForOrderInfo route={"/profile/orders"}>
+              <ProfilePage />
+            </ModalSwitchForOrderInfo>
           </ProtectedRoute>
 
           <Route path="/" exact={true}>

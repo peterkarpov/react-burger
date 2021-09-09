@@ -1,5 +1,4 @@
 section.order-info {
-  margin-top: 122px;
   min-width: 640px;
   max-width: 640px;
 }
@@ -7,6 +6,10 @@ section.order-info .number {
   font-size: 28px;
   line-height: 24px;
   text-align: center;
+}
+section.order-info .number.into-modal {
+  text-align: left;
+  margin-top: -1.5em;
 }
 section.order-info .name,
 section.order-info .title {

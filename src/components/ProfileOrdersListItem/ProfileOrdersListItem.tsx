@@ -6,7 +6,6 @@ import { getDateTimeInSpecialFormat } from '../../services/utils';
 import IDataItem from '../../utils/Interfaces/IDataItem';
 import styles from './ProfileOrdersListItem.module.css';
 
-
 function ProfileOrdersListItem(props: { item: any, isShowStatus: boolean }) {
 
     const { data } = useSelector<any, any>(state => state.basic);

@@ -9,7 +9,9 @@ export function OrderInfoPage() {
 
         width: 'calc(var(--offset-base-size) * 320)',
         marginLeft: 'auto',
-        marginRight: 'auto'
+        marginRight: 'auto',
+
+        paddingTop: '122px'
     };
 
     return (

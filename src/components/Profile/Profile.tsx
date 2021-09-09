@@ -61,7 +61,7 @@ function Profile() {
     }
 
     const onClickProfileOrderItem = (item: any) => {
-        history.replace({ pathname: `/profile/order/${item._id}`, state });
+        history.replace({ pathname: `/profile/order/${item._id}`, state: { from: history.location, number: item.number } });
     }
 
     return (

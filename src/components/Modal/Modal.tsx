@@ -15,7 +15,7 @@ class Modal extends React.Component<{ onCloseModalCallback: any, title: any }, {
 
     static propTypes = {
         onCloseModalCallback: PropTypes.func,
-        title: PropTypes.string,
+        title: PropTypes.string
     };
 
     constructor(props: any) {
