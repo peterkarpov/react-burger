@@ -57,7 +57,7 @@ function App() {
             <FeedPage />
           </Route>
 
-          <Route path="/feed/:id" exact={true}>
+          <Route path="/feed/:number" exact={true}>
             {/* TODO page and modal */}
             {/* <OrderInfoPage /> */}
             <ModalSwitchForOrderInfo route={"/feed"}>
@@ -69,7 +69,7 @@ function App() {
             <ProfilePage />
           </ProtectedRoute>
 
-          <ProtectedRoute path="/profile/orders/:id" exact={true}>
+          <ProtectedRoute path="/profile/orders/:number" exact={true}>
             {/* TODO page and modal */}
             {/* <OrderInfoPage /> */}
             <ModalSwitchForOrderInfo route={"/profile/orders"}>

@@ -11,6 +11,8 @@ export const DELETE_ID_FOR_POPUP = 'DELETE_ID_FOR_POPUP';
 
 export const SET_ORDER_DATA = 'SET_ORDER_DATA';
 
+export const SET_ORDER_STATUS = 'SET_ORDER_STATUS';
+
 export function actionInitData() {
 
     return function (dispatch: any) {
@@ -57,6 +59,14 @@ export function actionSetOrderInfo(orderData: any) {
                     orderData: orderData
                 });
 
+            })
+            .then(() => {
+
+                dispatch({
+                    type: SET_ORDER_STATUS,
+                    status: null
+                });
+                
             })
             .catch((error) => {
                 console.log(error);

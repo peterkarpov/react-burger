@@ -13,7 +13,7 @@ import Loader from '../pages/Loader';
 function OrderInfo() {
 
     const { data } = useSelector<any, any>(state => state.basic);
-    const { id } = useParams<any>();
+    const { number } = useParams<any>();
     const dispatch = useDispatch();
 
     const feed = useSelector<any, any>(state => state.feed);
@@ -38,7 +38,7 @@ function OrderInfo() {
         }
     }, [dispatch]);
 
-    const order = [...feed.orders, ...profileOrders.orders].find((v: any) => v._id === id);
+    const order = [...feed.orders, ...profileOrders.orders].find((v: any) => v.number === +number);
 
     const uniqueIngredients = order?.ingredients
         .filter((v: (string | undefined), i: number, a: (string | undefined)[]) => { return a.indexOf(v) === i; });
@@ -60,6 +60,10 @@ function OrderInfo() {
     const getStatus = (status: string) => {
         if (status === 'done') {
             return "Выполнен";
+        } else if (status === 'created' ) {
+            return "Создан";
+        } else if (status === 'pending' ) {
+            return "Готовится";
         } else {
             return status;
         }

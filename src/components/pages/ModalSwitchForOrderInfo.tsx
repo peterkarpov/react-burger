@@ -20,13 +20,13 @@ function ModalSwitchForOrderInfo(props: { route: string, children: any }) {
                 <Route exact={true} path={`${props.route}`} >
                     {props.children}
                 </Route>
-                <Route exact={true} path={`${props.route}/:id`} >
+                <Route exact={true} path={`${props.route}/:number`} >
                     <OrderInfoPage />
                 </Route>
             </Switch>
 
             {background &&
-                <Route path={`${props.route}/:id`}>
+                <Route path={`${props.route}/:number`}>
                     <Modal
                         // title={`#${location?.state?.number}`}
                         title={``}

@@ -6,8 +6,13 @@ import stylesScrollable from '../../css/scrollable.module.css';
 import ProfileOrdersListItem from '../ProfileOrdersListItem/ProfileOrdersListItem';
 import { WS_FEED_CONNECTION_CLOSED, WS_FEED_CONNECTION_START } from '../../services/actions/wsActionTypes';
 import Loader from '../pages/Loader';
+import { actionInitData } from '../../services/actions/basic';
 
 function Feed() {
+
+    const { data } = useSelector<any, any>(state => state.basic);
+
+
 
     const dispatch = useDispatch();
 
@@ -16,6 +21,8 @@ function Feed() {
     const feed = useSelector<any, any>(state => state.feed);
 
     useEffect(() => {
+
+        dispatch(actionInitData());
 
         dispatch({ type: WS_FEED_CONNECTION_START });
 
@@ -26,7 +33,7 @@ function Feed() {
     }, [dispatch]);
 
     const onClickProfileOrderItem = (item: any) => {
-        history.replace({ pathname: `/feed/${item._id}`, state: { from: history.location, number: item.number } });
+        history.replace({ pathname: `/feed/${item.number}`, state: { from: history.location, number: item.number } });
     }
 
     if (!!!feed) {
@@ -57,7 +64,7 @@ function Feed() {
                                             onClick={() => onClickProfileOrderItem(item)}
                                             style={{ cursor: "pointer" }}
                                         >
-                                            <ProfileOrdersListItem item={item} isShowStatus={false} />
+                                            <ProfileOrdersListItem item={item} data={data} isShowStatus={false} />
 
                                         </li>
                                     )

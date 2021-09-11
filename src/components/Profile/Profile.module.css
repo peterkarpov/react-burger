@@ -25,3 +25,6 @@ section.profile .right-aside {
   flex-wrap: nowrap;
   gap: calc(var(--offset-base-size) * 6);
 }
+section.profile .right-aside button {
+  width: 320px;
+}

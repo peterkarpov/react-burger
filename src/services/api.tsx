@@ -1,3 +1,5 @@
+import { getCookie } from "./utils";
+
 const DATA_URL = 'https://norma.nomoreparties.space/api/ingredients';
 const DATA_URL_CHECKOUT = 'https://norma.nomoreparties.space/api/orders';
 
@@ -35,7 +37,10 @@ export const setOrderInfoRequest = (orderData: any) => {
 
     return fetch(DATA_URL_CHECKOUT, {
         method: 'post',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + getCookie('token')
+        },
         body: JSON.stringify({
             ingredients: orderData.selectedIngredientsId
         })

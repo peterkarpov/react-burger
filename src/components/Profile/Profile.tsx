@@ -4,10 +4,9 @@ import React, { useEffect } from "react";
 import { Input, EmailInput, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './Profile.module.css';
 import { updateUser, signOut } from '../../services/actions/auth';
-import { useDispatch, useSelector } from 'react-redux';
-import ProfileOrdersListItem from '../ProfileOrdersListItem/ProfileOrdersListItem';
-import stylesScrollable from '../../css/scrollable.module.css';
+import { useDispatch } from 'react-redux';
 import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from '../../services/actions/wsActionTypes';
+import ProfileOrders from '../ProfileOrders/ProfileOrders';
 
 function Profile() {
 
@@ -16,8 +15,6 @@ function Profile() {
     const dispatch = useDispatch();
 
     const history = useHistory();
-
-    const profileOrders = useSelector<any, any>(state => state.profileOrders);
 
     useEffect(() => {
 
@@ -52,6 +49,7 @@ function Profile() {
     }
 
     const [password, setPassword] = React.useState('')
+
     const onPasswordChange = (e: any) => {
         setPassword(e.target.value)
     }
@@ -60,8 +58,8 @@ function Profile() {
         dispatch(updateUser({ name, email, password }));
     }
 
-    const onClickProfileOrderItem = (item: any) => {
-        history.replace({ pathname: `/profile/order/${item._id}`, state: { from: history.location, number: item.number } });
+    const onCancelHandler = () => {
+        history.go(0);
     }
 
     return (
@@ -112,9 +110,14 @@ function Profile() {
                         <PasswordInput onChange={onPasswordChange} value={password} name={'Пароль'} />
 
                         {email !== '' && name !== '' && password !== '' &&
-                            <Button type="primary" size="medium" onClick={onSaveHandler}>
-                                Сохранить
-                            </Button>
+                            <>
+                                <Button type="primary" size="medium" onClick={onSaveHandler}>
+                                    Сохранить
+                                </Button>
+                                <Button type="primary" size="medium" onClick={onCancelHandler}>
+                                    Отменить
+                                </Button>
+                            </>
                         }
 
                     </div>
@@ -123,31 +126,7 @@ function Profile() {
                 {pathname === '/profile/orders' ?
                     <div className={`${styles['right-aside']}`}>
 
-                        <ul className={`profile-order-list ${stylesScrollable.scrollable} pr-2`} style={{ maxHeight: "60vh" }}>
-
-                            {Array.from(profileOrders.orders).map((item: any) => {
-
-                                return (
-                                    <li
-                                        key={item._id}
-                                        className={""}
-                                        onClick={() => onClickProfileOrderItem(item._id)}
-                                        style={{ cursor: "pointer" }}
-                                    >
-                                        <ProfileOrdersListItem item={item} isShowStatus={true} />
-
-                                    </li>
-                                )
-                            })}
-
-                        </ul>
-
-                        {profileOrders && profileOrders.orders.length === 0 ?
-                            <div className={"text text_type_main-default"} style={{ textAlign: 'center' }}>
-                                У Вас ещё нет заказов 
-                                {/* {(()=>{ var asd = profileOrders; debugger})()} */}
-                            </div>
-                            : null}
+                        <ProfileOrders />
 
                     </div>
                     : null}

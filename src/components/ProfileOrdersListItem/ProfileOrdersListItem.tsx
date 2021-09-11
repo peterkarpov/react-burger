@@ -1,25 +1,12 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { actionInitData } from '../../services/actions/basic';
 import { getDateTimeInSpecialFormat } from '../../services/utils';
 import IDataItem from '../../utils/Interfaces/IDataItem';
 import styles from './ProfileOrdersListItem.module.css';
 
-function ProfileOrdersListItem(props: { item: any, isShowStatus: boolean }) {
-
-    const { data } = useSelector<any, any>(state => state.basic);
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-
-        dispatch(actionInitData());
-
-    }, [dispatch]);
+function ProfileOrdersListItem(props: { item: any, isShowStatus: boolean, data: IDataItem[] }) {
 
     const getIngredientById = (id: string) => {
-        return data.find((v: IDataItem) => { return v._id === id })
+        return props.data.find((v: IDataItem) => { return v._id === id })
     }
 
     const total = Array.from<string>(props?.item?.ingredients)
@@ -31,6 +18,10 @@ function ProfileOrdersListItem(props: { item: any, isShowStatus: boolean }) {
     const getStatus = (status: string) => {
         if (status === 'done') {
             return "Выполнен";
+        } else if (status === 'created' ) {
+            return "Создан";
+        } else if (status === 'pending' ) {
+            return "Готовится";
         } else {
             return status;
         }
@@ -60,7 +51,7 @@ function ProfileOrdersListItem(props: { item: any, isShowStatus: boolean }) {
             <div className={styles["panel-bottom"] + " mt-6"}>
                 <ul className={styles["image-list"]}>
 
-                    {data && Array.from(props.item.ingredients).filter((v, i: number) => i < 5).map((itemId: any, i: number) => {
+                    {props.data && Array.from(props.item.ingredients).filter((v, i: number) => i < 5).map((itemId: any, i: number) => {
 
                         const ingredient = getIngredientById(itemId);
 
