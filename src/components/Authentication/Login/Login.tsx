@@ -14,12 +14,12 @@ function Login() {
 
     //process.env.NODE_ENV !== 'production' // TODO
     
-    const [email, setEmail] = React.useState('') //bisotow677@bushdown.com
+    const [email, setEmail] = React.useState('bisotow677@bushdown.com') //bisotow677@bushdown.com
     const onEmailChange = (e: any) => {
         setEmail(e.target.value)
     }
 
-    const [password, setPassword] = React.useState('')  //123456
+    const [password, setPassword] = React.useState('123456')  //123456
     const onPasswordChange = (e: any) => {
         setPassword(e.target.value)
     }

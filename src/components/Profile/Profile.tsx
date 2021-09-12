@@ -91,36 +91,39 @@ function Profile() {
                 </div>
 
                 {pathname === '/profile' ?
-                    <div className={`${styles['right-aside']}`}>
+                    <>
+                        <div className={`${styles['right-aside']}`} style={{ alignItems: 'center', width: '100%' }}>
 
-                        <Input
-                            type={'text'}
-                            placeholder={'Имя'}
-                            onChange={e => setName(e.target.value)}
-                            value={name}
-                            name={'name'}
-                            error={false}
-                            ref={inputNameRef}
-                            errorText={'Ошибка'}
-                            size={'default'}
-                        />
+                            <Input
+                                type={'text'}
+                                placeholder={'Имя'}
+                                onChange={e => setName(e.target.value)}
+                                value={name}
+                                name={'name'}
+                                error={false}
+                                ref={inputNameRef}
+                                errorText={'Ошибка'}
+                                size={'default'}
+                            />
 
-                        <EmailInput onChange={onEmailChange} value={email} name={'Логин'} />
+                            <EmailInput onChange={onEmailChange} value={email} name={'Логин'} />
 
-                        <PasswordInput onChange={onPasswordChange} value={password} name={'Пароль'} />
+                            <PasswordInput onChange={onPasswordChange} value={password} name={'Пароль'} />
 
-                        {email !== '' && name !== '' && password !== '' &&
-                            <>
-                                <Button type="primary" size="medium" onClick={onSaveHandler}>
-                                    Сохранить
-                                </Button>
-                                <Button type="primary" size="medium" onClick={onCancelHandler}>
-                                    Отменить
-                                </Button>
-                            </>
-                        }
+                            {email !== '' && name !== '' && password !== '' &&
+                                <>
+                                    <Button type="primary" size="medium" onClick={onSaveHandler}>
+                                        Сохранить
+                                    </Button>
+                                    <Button type="primary" size="medium" onClick={onCancelHandler}>
+                                        Отменить
+                                    </Button>
+                                </>
+                            }
 
-                    </div>
+                        </div>
+                        <div style={{ width: '100%' }}></div>
+                    </>
                     : null}
 
                 {pathname === '/profile/orders' ?
