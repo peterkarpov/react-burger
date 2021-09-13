@@ -67,10 +67,17 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, addI
 
     const checkout = () => {
 
-        dispatch({ 
-            type: SET_ORDER_STATUS, 
-            status: "IN_PROGRESS" 
+        dispatch({
+            type: SET_ORDER_STATUS,
+            status: "IN_PROGRESS"
         });
+
+        // setTimeout(function () {
+        //     dispatch({
+        //         type: SET_ORDER_STATUS,
+        //         status: null
+        //     });
+        // }, 1000 * 15);
 
         const orderData = {
             orderNumber: null,//Math.floor(Math.random() * 999999)
@@ -203,13 +210,32 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, addI
                         <CurrencyIcon type="primary" onClick={undefined} />
                     </div>
 
-                    {orderStatus === "IN_PROGRESS" ? null :
+                    {orderStatus === "ERROR" ?
+                        <>
+                            <div className="text text_type_main-default ml-4">
+                                Невозможно выполнить заказ
+                            </div>
+                            <div className={styles["button-wrapper"] + " ml-10"}>
+                                <Button type="primary" size="large" onClick={checkout}>
+                                    Попробовать снова
+                                </Button>
+                            </div>
+                        </>
+                        : null}
+
+                    {orderStatus === "IN_PROGRESS" ?
+                        <div className="text text_type_main-default ml-4">
+                            Дождитесь оформления заказа
+                        </div>
+                        : null}
+
+                    {orderStatus === null ?
                         <div className={styles["button-wrapper"] + " ml-10"}>
                             <Button type="primary" size="large" onClick={checkout}>
                                 Оформить заказ
                             </Button>
                         </div>
-                    }
+                        : null}
 
                 </div>
                 : null}

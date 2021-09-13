@@ -92,7 +92,7 @@ function Profile() {
 
                 {pathname === '/profile' ?
                     <>
-                        <div className={`${styles['right-aside']}`} style={{ alignItems: 'center', width: '100%' }}>
+                        <div className={`${styles['right-aside']}`} style={{ alignItems: 'center', width: '60%' }}>
 
                             <Input
                                 type={'text'}
@@ -122,7 +122,7 @@ function Profile() {
                             }
 
                         </div>
-                        <div style={{ width: '100%' }}></div>
+                        <div style={{ width: '40%' }}></div>
                     </>
                     : null}
 

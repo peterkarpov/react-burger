@@ -14,7 +14,7 @@ function OrderInfo() {
 
     const { data } = useSelector<any, any>(state => state.basic);
     const { number } = useParams<any>();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
 
     const feed = useSelector<any, any>(state => state.feed);
     const profileOrders = useSelector<any, any>(state => state.profileOrders);
@@ -69,7 +69,7 @@ function OrderInfo() {
         }
     };
 
-    if (!!!order) {
+    if (!!!order || !!!data) {
         return <Loader />;
     }
 

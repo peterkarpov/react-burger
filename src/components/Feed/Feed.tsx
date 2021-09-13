@@ -12,8 +12,6 @@ function Feed() {
 
     const { data } = useSelector<any, any>(state => state.basic);
 
-
-
     const dispatch = useDispatch();
 
     const history = useHistory();

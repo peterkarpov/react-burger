@@ -1,4 +1,4 @@
-import { getDataRequest, setOrderInfoRequest } from '../api';
+import { getDataRequest, getOrderRequest, setOrderInfoRequest } from '../api';
 import IDataItem from '../../utils/Interfaces/IDataItem';
 
 export const SET_DATA_REQUEST = 'SET_DATA_REQUEST';
@@ -66,11 +66,30 @@ export function actionSetOrderInfo(orderData: any) {
                     type: SET_ORDER_STATUS,
                     status: null
                 });
-                
+
             })
             .catch((error) => {
+
+                dispatch({
+                    type: SET_ORDER_STATUS,
+                    status: "ERROR"
+                });
+
                 console.log(error);
             })
 
+    }
+}
+
+export function actionGetOrder(orderNumber: any) {
+
+    return function (dispatch: any) {
+
+        getOrderRequest(orderNumber)
+            .then(result => {
+
+                return result;
+            })
+     
     }
 }

@@ -37,7 +37,7 @@ export const setOrderInfoRequest = (orderData: any) => {
 
     return fetch(DATA_URL_CHECKOUT, {
         method: 'post',
-        headers: { 
+        headers: {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + getCookie('token')
         },
@@ -63,6 +63,39 @@ export const setOrderInfoRequest = (orderData: any) => {
                     }
 
                     return orderData;
+
+                } else {
+                    console.log(result);
+                }
+
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+
+};
+
+export const getOrderRequest = (orderNumber: any) => {
+
+    return fetch(`${DATA_URL_CHECKOUT}/${orderNumber}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then((result: any) => {
+            if (result.success) {
+                return result.json();
+            }
+            return Promise.reject(`Ошибка`);
+        })
+        .then(
+            (result) => {
+
+                if (result && result.success) {
+
+                    return result.orders;
 
                 } else {
                     console.log(result);
