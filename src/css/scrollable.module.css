@@ -3,28 +3,29 @@
 */
 
 .scrollable {
-    overflow-y: auto;
-    overflow-y: scroll;
-  }
-  
-  .scrollable::-webkit-scrollbar {
-    width: calc(var(--offset-base-size) * 2);
-  }
-  
-  .scrollable::-webkit-scrollbar-thumb {
-    background-color: #8585AD;
-    box-shadow      : 3px #8585AD;
-  }
-  
-  .scrollable::-webkit-scrollbar-button {
-    display: none;
-  }
-  
-  .scrollable::-webkit-scrollbar-track-piece {
-    background-color: #2F2F37;
-    background-color: transparent;
-  }
-  
-  /*
+  overflow-y: auto;
+  overflow-y: scroll;
+}
+
+.scrollable::-webkit-scrollbar {
+  width : calc(var(--offset-base-size) * 2);
+  height: calc(var(--offset-base-size) * 2);
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background-color: #8585AD;
+  box-shadow      : 3px #8585AD;
+}
+
+.scrollable::-webkit-scrollbar-button {
+  display: none;
+}
+
+.scrollable::-webkit-scrollbar-track-piece {
+  background-color: #2F2F37;
+  background-color: transparent;
+}
+
+/*
     END scrollable
   */

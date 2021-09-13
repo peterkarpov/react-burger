@@ -13,6 +13,8 @@ import Page404 from '../pages/Page404';
 import AppHeader from '../AppHeader/AppHeader';
 // import HomeOrIngredientPage from '../pages/HomeOrIngredientPage';
 import ModalSwitch from '../pages/ModalSwitch';
+import { FeedPage } from '../pages/FeedPage';
+import ModalSwitchForOrderInfo from '../pages/ModalSwitchForOrderInfo';
 
 function App() {
 
@@ -46,9 +48,34 @@ function App() {
           </ProtectedRoute>
 
           <Route path="/ingredients/:id" exact={true}>
-              {/* <HomeOrIngredientPage /> */}
-              <ModalSwitch />
+            {/* <HomeOrIngredientPage /> */}
+            <ModalSwitch />
           </Route>
+
+
+          <Route path="/feed" exact={true}>
+            <FeedPage />
+          </Route>
+
+          <Route path="/feed/:number" exact={true}>
+            {/* TODO page and modal */}
+            {/* <OrderInfoPage /> */}
+            <ModalSwitchForOrderInfo route={"/feed"}>
+              <FeedPage />
+            </ModalSwitchForOrderInfo>
+          </Route>
+
+          <ProtectedRoute path="/profile/orders" exact={true}>
+            <ProfilePage />
+          </ProtectedRoute>
+
+          <ProtectedRoute path="/profile/orders/:number" exact={true}>
+            {/* TODO page and modal */}
+            {/* <OrderInfoPage /> */}
+            <ModalSwitchForOrderInfo route={"/profile/orders"}>
+              <ProfilePage />
+            </ModalSwitchForOrderInfo>
+          </ProtectedRoute>
 
           <Route path="/" exact={true}>
             <HomePage />

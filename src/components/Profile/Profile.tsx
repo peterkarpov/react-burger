@@ -1,10 +1,12 @@
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from './../../services/auth';
-import React from "react";
+import React, { useEffect } from "react";
 import { Input, EmailInput, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './Profile.module.css';
 import { updateUser, signOut } from '../../services/actions/auth';
 import { useDispatch } from 'react-redux';
+import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from '../../services/actions/wsActionTypes';
+import ProfileOrders from '../ProfileOrders/ProfileOrders';
 
 function Profile() {
 
@@ -13,6 +15,17 @@ function Profile() {
     const dispatch = useDispatch();
 
     const history = useHistory();
+
+    useEffect(() => {
+
+        dispatch({ type: WS_CONNECTION_START });
+
+        return () => {
+
+            dispatch({ type: WS_CONNECTION_CLOSED });
+
+        }
+    }, [dispatch]);
 
     const onProfileClickHandler = () => {
         history.replace({ pathname: '/profile', state });
@@ -36,12 +49,17 @@ function Profile() {
     }
 
     const [password, setPassword] = React.useState('')
+
     const onPasswordChange = (e: any) => {
         setPassword(e.target.value)
     }
 
     const onSaveHandler = () => {
         dispatch(updateUser({ name, email, password }));
+    }
+
+    const onCancelHandler = () => {
+        history.go(0);
     }
 
     return (
@@ -73,37 +91,45 @@ function Profile() {
                 </div>
 
                 {pathname === '/profile' ?
-                    <div className={`${styles['right-aside']}`}>
+                    <>
+                        <div className={`${styles['right-aside']}`} style={{ alignItems: 'center', width: '60%' }}>
 
-                        <Input
-                            type={'text'}
-                            placeholder={'Имя'}
-                            onChange={e => setName(e.target.value)}
-                            value={name}
-                            name={'name'}
-                            error={false}
-                            ref={inputNameRef}
-                            errorText={'Ошибка'}
-                            size={'default'}
-                        />
+                            <Input
+                                type={'text'}
+                                placeholder={'Имя'}
+                                onChange={e => setName(e.target.value)}
+                                value={name}
+                                name={'name'}
+                                error={false}
+                                ref={inputNameRef}
+                                errorText={'Ошибка'}
+                                size={'default'}
+                            />
 
-                        <EmailInput onChange={onEmailChange} value={email} name={'Логин'} />
+                            <EmailInput onChange={onEmailChange} value={email} name={'Логин'} />
 
-                        <PasswordInput onChange={onPasswordChange} value={password} name={'Пароль'} />
+                            <PasswordInput onChange={onPasswordChange} value={password} name={'Пароль'} />
 
-                        {email !== '' && name !== '' && password !== '' &&
-                            <Button type="primary" size="medium" onClick={onSaveHandler}>
-                                Сохранить
-                            </Button>
-                        }
+                            {email !== '' && name !== '' && password !== '' &&
+                                <>
+                                    <Button type="primary" size="medium" onClick={onSaveHandler}>
+                                        Сохранить
+                                    </Button>
+                                    <Button type="primary" size="medium" onClick={onCancelHandler}>
+                                        Отменить
+                                    </Button>
+                                </>
+                            }
 
-                    </div>
+                        </div>
+                        <div style={{ width: '40%' }}></div>
+                    </>
                     : null}
 
                 {pathname === '/profile/orders' ?
                     <div className={`${styles['right-aside']}`}>
 
-                        its profile orders
+                        <ProfileOrders />
 
                     </div>
                     : null}

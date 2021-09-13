@@ -29,7 +29,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "serve": "npx serve -s build -l 4000"
+    "serve": "npx serve -s build -l 4000",
+    "cypress:open": "./node_modules/.bin/cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -50,6 +51,8 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.1.8"
+    "@4tw/cypress-drag-drop": "^2.0.0",
+    "@types/react-router-dom": "^5.1.8",
+    "cypress": "^8.3.1"
   }
 }

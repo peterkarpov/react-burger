@@ -16,7 +16,7 @@ export function LoginPage() {
         <section className="main">
             <div className="wrapper" style={mainWrapperStyle}>
 
-                <Login></Login>
+                <Login />
 
             </div>
         </section>

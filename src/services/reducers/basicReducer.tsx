@@ -5,14 +5,16 @@ import {
     SET_SELECTED_INGREDIENTS, 
     SET_ORDER_DATA, 
     SET_ID_FOR_POPUP, 
-    DELETE_ID_FOR_POPUP 
+    DELETE_ID_FOR_POPUP,
+    SET_ORDER_STATUS
 } from '../actions/basic';
 
 const initialState = {
     data: Array.from<IDataItem>([]),
     selectedIngredientsId: Array.from<string>([]),
     idForPopup: null,
-    orderInfo: null
+    orderInfo: null,
+    orderStatus: null
 };
 
 export const basicReducer = (state = initialState, action: any) => {
@@ -46,6 +48,12 @@ export const basicReducer = (state = initialState, action: any) => {
             return {
                 ...state,
                 idForPopup: null
+            };
+        }
+        case SET_ORDER_STATUS: {
+            return {
+                ...state,
+                orderStatus: action.status
             };
         }
         default: {

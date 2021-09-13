@@ -12,7 +12,7 @@ import stylesScrollable from '../../css/scrollable.module.css';
 
 import { useEffect } from 'react';
 
-import { SET_SELECTED_INGREDIENTS } from '../../services/actions/basic';
+import { SET_ORDER_STATUS, SET_SELECTED_INGREDIENTS } from '../../services/actions/basic';
 
 import IDataItem from '../../utils/Interfaces/IDataItem';
 
@@ -28,7 +28,7 @@ import { useDrop } from "react-dnd";
 function BurgerConstructor(props: { removeIngredient: (id: string) => void, addIngredient: (id: string) => void, completeCheckout: (orderData: { orderNumber: (number | null), selectedIngredientsId: string[], total: number }) => void }) {
 
     //const { selectedIngredientsId, removeIngredient } = React.useContext<IBurgerConstructorContext>(BurgerConstructorContext);
-    const { selectedIngredientsId, data } = useSelector<any, any>(state => state.basic);
+    const { selectedIngredientsId, data, orderStatus } = useSelector<any, any>(state => state.basic);
 
     const dispatch = useDispatch();
 
@@ -67,6 +67,18 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, addI
 
     const checkout = () => {
 
+        dispatch({
+            type: SET_ORDER_STATUS,
+            status: "IN_PROGRESS"
+        });
+
+        // setTimeout(function () {
+        //     dispatch({
+        //         type: SET_ORDER_STATUS,
+        //         status: null
+        //     });
+        // }, 1000 * 15);
+
         const orderData = {
             orderNumber: null,//Math.floor(Math.random() * 999999)
             selectedIngredientsId: selectedIngredientsId,
@@ -74,7 +86,6 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, addI
         }
 
         props.completeCheckout(orderData);
-
     }
 
     const moveItem = (from: string, to: string, indexFrom: number, indexTo: number) => {
@@ -198,11 +209,34 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, addI
                     <div className={styles["currency-icon-wrapper"] + " ml-2"}>
                         <CurrencyIcon type="primary" onClick={undefined} />
                     </div>
-                    <div className={styles["button-wrapper"] + " ml-10"}>
-                        <Button type="primary" size="large" onClick={checkout}>
-                            Оформить заказ
-                        </Button>
-                    </div>
+
+                    {orderStatus === "ERROR" ?
+                        <>
+                            <div className="text text_type_main-default ml-4">
+                                Невозможно выполнить заказ
+                            </div>
+                            <div className={styles["button-wrapper"] + " ml-10"}>
+                                <Button type="primary" size="large" onClick={checkout}>
+                                    Попробовать снова
+                                </Button>
+                            </div>
+                        </>
+                        : null}
+
+                    {orderStatus === "IN_PROGRESS" ?
+                        <div className="text text_type_main-default ml-4">
+                            Дождитесь оформления заказа
+                        </div>
+                        : null}
+
+                    {orderStatus === null ?
+                        <div className={styles["button-wrapper"] + " ml-10"}>
+                            <Button type="primary" size="large" onClick={checkout}>
+                                Оформить заказ
+                            </Button>
+                        </div>
+                        : null}
+
                 </div>
                 : null}
 

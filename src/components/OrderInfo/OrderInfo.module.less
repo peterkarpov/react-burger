@@ -1,0 +1,117 @@
+section.order-info {
+
+    //margin-top: 122px;
+    min-width: 640px;
+    max-width: 640px;
+
+    .number {
+        font-size  : 28px;
+        line-height: 24px;
+        text-align : center;
+
+        &.into-modal {
+            text-align: left;
+            margin-top: -1.5em;
+        }
+    }
+
+    .name,
+    .title {
+        font-size  : 24px;
+        line-height: 30px;
+    }
+
+    .status {
+        font-size: 16px;
+
+        &.complete {
+            color: #00CCCC;
+        }
+    }
+
+    ul.order-elements {
+
+        max-height   : 30vh;
+        padding-right: calc(var(--offset-base-size) * 6);
+
+        >li {
+            .order-elements-item {
+
+                &::after {
+                    content: '';
+                    display: block;
+                    clear  : both;
+                }
+
+                line-height: 64px;
+
+                .image {
+
+                    display         : inline-block;
+                    border-radius   : 50%;
+                    width           : 64px;
+                    height          : 64px;
+                    border          : 2px solid #4C4CFF;
+                    background-color: black;
+                    vertical-align  : middle;
+
+                    img {
+                        width     : 64px;
+                        height    : 64px;
+                        object-fit: cover;
+                    }
+                }
+
+                .name {
+
+                    display: inline-block;
+
+                    max-width: 400px;
+
+
+                    vertical-align: middle;
+
+                    font-size  : 16px;
+                    line-height: 24px;
+                }
+
+                .total {
+
+                    float: right;
+
+                    font-size  : 28px;
+                    line-height: 64px;
+
+                    span {
+                        vertical-align: middle;
+                    }
+
+                    svg {
+                        vertical-align: middle;
+                    }
+                }
+            }
+        }
+    }
+
+    .bottom-block {
+
+        &::after {
+            content: '';
+            display: block;
+            clear  : both;
+        }
+
+        .time {
+            float      : left;
+            line-height: 24px;
+            font-size  : 16px;
+        }
+
+        .total {
+            float      : right;
+            line-height: 24px;
+            font-size  : 28px;
+        }
+    }
+}

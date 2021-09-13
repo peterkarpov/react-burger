@@ -7,6 +7,7 @@ import thunk from 'redux-thunk';
 import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { rootReducer } from './services/reducers/rootReducer';
+import { socketMiddlewareList } from './services/middleware';
 
 declare global {
   interface Window {
@@ -15,12 +16,12 @@ declare global {
 }
 
 const composeEnhancers =
-   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__<any>({})
-     : 
+  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__<any>({})
+    :
     compose;
 
-const enhancer = composeEnhancers(applyMiddleware(thunk));
+const enhancer = composeEnhancers(applyMiddleware(thunk, ...socketMiddlewareList()));
 
 const store = createStore(rootReducer, enhancer);
 

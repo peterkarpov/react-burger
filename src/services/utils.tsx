@@ -31,3 +31,56 @@ export function setCookie(name: string, value: string, props: any) {
 export function deleteCookie(name: string) {
   setCookie(name, '', { expires: -1 });
 }
+
+export function getDateTimeInSpecialFormat(someDate: any) {
+
+  if (!someDate) {
+    return;
+  }
+
+  const isToday = ((someDate: any, today: any) => {
+    return someDate.getDate() === today.getDate() &&
+      someDate.getMonth() === today.getMonth() &&
+      someDate.getFullYear() === today.getFullYear();
+  });
+
+  const isYestoday = ((someDate: any, today: any) => {
+
+    const offsetHours = Math.ceil(Math.abs(someDate.getTime() - today.getTime()) / (1000 * 3600));
+
+    return offsetHours > today.getHours() && offsetHours < today.getHours() + 24;
+  });
+
+  const isDayBeforeYesterday = ((someDate: any, today: any) => {
+
+    const offsetHours = Math.ceil(Math.abs(someDate.getTime() - today.getTime()) / (1000 * 3600));
+
+    return offsetHours > today.getHours() + 24 && offsetHours < today.getHours() + 48;
+  });
+
+  someDate = new Date(someDate);
+  const today = new Date();
+
+  let result = ``;
+
+  if (isToday(someDate, today)) {
+    result += `Сегодня`;
+  }
+  else if (isYestoday(someDate, today)) {
+    result += `Вчера`;
+  }
+  else if (isDayBeforeYesterday(someDate, today)) {
+    result += `2 дня назад`;
+  } else {
+    result += `${new Intl.DateTimeFormat('ru', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }).format(someDate)}`
+  }
+
+  result += `, `;
+  result += `${new Intl.DateTimeFormat('ru', { hour: 'numeric', minute: 'numeric' }).format(someDate)}`;
+
+  result += ` i-GMT`;
+  result += `${someDate.getHours() - someDate.getUTCHours() > 0 ? "+" : "-"}`;
+  result += `${someDate.getHours() - someDate.getUTCHours()}`;
+
+  return result;
+};
