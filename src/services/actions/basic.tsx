@@ -85,11 +85,11 @@ export function actionGetOrder(orderNumber: any) {
 
     return function (dispatch: any) {
 
-        getOrderRequest(orderNumber)
-            .then(result => {
+        return getOrderRequest(orderNumber)
+            .then(orders => {
 
-                return result;
-            })
+                return orders;
+            });
      
     }
 }

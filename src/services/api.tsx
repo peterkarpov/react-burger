@@ -85,7 +85,7 @@ export const getOrderRequest = (orderNumber: any) => {
         }
     })
         .then((result: any) => {
-            if (result.success) {
+            if (result.ok) {
                 return result.json();
             }
             return Promise.reject(`Ошибка`);
