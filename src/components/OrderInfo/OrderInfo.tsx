@@ -3,12 +3,13 @@ import styles from './OrderInfo.module.css';
 import stylesScrollable from '../../css/scrollable.module.css';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { WS_CONNECTION_CLOSED, WS_CONNECTION_START, WS_FEED_CONNECTION_CLOSED, WS_FEED_CONNECTION_START } from '../../services/actions/wsActionTypes';
+//import { WS_CONNECTION_CLOSED, WS_CONNECTION_START, WS_FEED_CONNECTION_CLOSED, WS_FEED_CONNECTION_START } from '../../services/actions/wsActionTypes';
 import { useEffect } from 'react';
-import { actionInitData } from '../../services/actions/basic';
+import { actionGetOrder, actionInitData } from '../../services/actions/basic';
 import IDataItem from '../../utils/Interfaces/IDataItem';
 import { getDateTimeInSpecialFormat } from '../../services/utils';
 import Loader from '../pages/Loader';
+import { useState } from 'react';
 
 function OrderInfo() {
 
@@ -16,29 +17,37 @@ function OrderInfo() {
     const { number } = useParams<any>();
     const dispatch = useDispatch<any>();
 
-    const feed = useSelector<any, any>(state => state.feed);
-    const profileOrders = useSelector<any, any>(state => state.profileOrders);
+    //const feed = useSelector<any, any>(state => state.feed);
+    //const profileOrders = useSelector<any, any>(state => state.profileOrders);
 
     const history = useHistory();
     const location = useLocation<any>();
 
     const background = (location.state && (history.action === 'PUSH' || history.action === 'REPLACE') && location.state.from) || null;
 
+    const [ordersByNumber, setOrdersByNumber] = useState<any>([]);
+
     useEffect(() => {
 
         dispatch(actionInitData());
 
-        dispatch({ type: WS_FEED_CONNECTION_START });
-        dispatch({ type: WS_CONNECTION_START });
+        dispatch(actionGetOrder(number))
+            .then((orders: any) => {
+                setOrdersByNumber(orders);
+            });
+
+        //dispatch({ type: WS_FEED_CONNECTION_START });
+        //dispatch({ type: WS_CONNECTION_START });
 
         return () => {
 
-            dispatch({ type: WS_FEED_CONNECTION_CLOSED });
-            dispatch({ type: WS_CONNECTION_CLOSED });
+            //dispatch({ type: WS_FEED_CONNECTION_CLOSED });
+            //dispatch({ type: WS_CONNECTION_CLOSED });
         }
-    }, [dispatch]);
+    }, [dispatch, number]);
 
-    const order = [...feed.orders, ...profileOrders.orders].find((v: any) => v.number === +number);
+    //const order = [...feed.orders, ...profileOrders.orders].find((v: any) => v.number === +number);
+    const order = Array.from<any>(ordersByNumber).find((v: any) => v.number === +number);
 
     const uniqueIngredients = order?.ingredients
         .filter((v: (string | undefined), i: number, a: (string | undefined)[]) => { return a.indexOf(v) === i; });
