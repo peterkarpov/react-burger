@@ -24,16 +24,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import DraggableElement from './DraggableElement';
 
 import { useDrop } from "react-dnd";
+import { TOrderInfo } from '../../utils/Interfaces/IBasicState';
 
-function BurgerConstructor(props: { removeIngredient: (id: string) => void, addIngredient: (id: string) => void, completeCheckout: (orderData: { orderNumber: (number | null), selectedIngredientsId: string[], total: number }) => void }) {
+function BurgerConstructor(props: { removeIngredient: (id: string) => void, addIngredient: (id: string) => void, completeCheckout: (orderData: TOrderInfo) => void }) {
 
     //const { selectedIngredientsId, removeIngredient } = React.useContext<IBurgerConstructorContext>(BurgerConstructorContext);
     const { selectedIngredientsId, data, orderStatus } = useSelector<any, any>(state => state.basic);
 
     const dispatch = useDispatch();
 
-    const ingredientItems = Array.from(selectedIngredientsId)
-        .map((v: any) => {
+    const ingredientItems = Array.from<string>(selectedIngredientsId)
+        .map((v: string) => {
             return data.find((val: IDataItem) => { return val._id === v; })
         });
 
@@ -42,7 +43,7 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, addI
         .filter((v: (IDataItem | undefined), i: number, a: (IDataItem | undefined)[]) => { return a.indexOf(v) === i; });
 
     const ingredientList = ingredientItems
-        .filter((v: any) => { return v.type !== 'bun' });
+        .filter((v: IDataItem) => { return v.type !== 'bun' });
 
     const [total, dispatchTotal] = useReducer(((state: number) => {
 
@@ -79,7 +80,7 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, addI
         //     });
         // }, 1000 * 15);
 
-        const orderData = {
+        const orderData: TOrderInfo = {
             orderNumber: null,//Math.floor(Math.random() * 999999)
             selectedIngredientsId: selectedIngredientsId,
             total: total
@@ -130,7 +131,7 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, addI
         <div className={styles['burger-constructor'] + ' pt-10 mt-15 pb-10 pl-4'} ref={dropTarget} style={{ outline: `2px dashed ${isHover ? '#4c4cff' : 'transparent'}`, }}>
 
             <ul className={styles['top'] + " pr-4"}>
-                {bunList.map((item: any, i) => (
+                {bunList.map((item: IDataItem, i) => (
                     <li key={`${item._id}_${i}`}>
                         {bunList.length > 1 ? <DragIcon type="primary" /> : null}
                         <ConstructorElement
@@ -154,7 +155,7 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, addI
 
             <ul className={stylesScrollable.scrollable + " pr-2 pt-4 pb-4"}>
 
-                {ingredientList.map((item: any, i: any) => (
+                {ingredientList.map((item: IDataItem, i: number) => (
 
                     <li key={`${item._id}_${i}`} data-index={i}>
 
@@ -184,7 +185,7 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, addI
             </ul>
 
             <ul className={styles.bottom + " pr-4"}>
-                {bunList.map((item: any, i) => (
+                {bunList.map((item: IDataItem, i) => (
                     <li key={`${item._id}_${i}`}>
                         {bunList.length > 1 ? <DragIcon type="primary" /> : null}
                         <ConstructorElement

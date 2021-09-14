@@ -24,6 +24,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useAuth } from '../../services/auth';
 import { useHistory, useLocation } from 'react-router-dom';
+import { TOrderInfo } from '../../utils/Interfaces/IBasicState';
 
 //const DATA_URL = 'https://norma.nomoreparties.space/api/ingredients';
 //const DATA_URL_CHECKOUT = 'https://norma.nomoreparties.space/api/orders';
@@ -131,7 +132,7 @@ export function HomePage() {
     return data.find((v: any) => { return v._id === id });
   }
 
-  const setOrderInfo = (orderData: any) => {
+  const setOrderInfo = (orderData: TOrderInfo) => {
 
     if (!auth.isHasCookie()) {
 

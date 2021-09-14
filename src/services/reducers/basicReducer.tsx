@@ -1,3 +1,4 @@
+import IBasicState from '../../utils/Interfaces/IBasicState';
 import IDataItem from '../../utils/Interfaces/IDataItem';
 
 import { 
@@ -9,7 +10,7 @@ import {
     SET_ORDER_STATUS
 } from '../actions/basic';
 
-const initialState = {
+const initialState: IBasicState = {
     data: Array.from<IDataItem>([]),
     selectedIngredientsId: Array.from<string>([]),
     idForPopup: null,
@@ -17,7 +18,7 @@ const initialState = {
     orderStatus: null
 };
 
-export const basicReducer = (state = initialState, action: any) => {
+export const basicReducer = (state = initialState, action: any): IBasicState => {
     switch (action.type) {
         case SET_DATA_REQUEST: {
             return {
@@ -32,7 +33,6 @@ export const basicReducer = (state = initialState, action: any) => {
             };
         }
         case SET_ORDER_DATA: {
-
             return {
                 ...state,
                 orderInfo: action.orderData

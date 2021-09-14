@@ -1,3 +1,4 @@
+import { TOrderInfo } from "../utils/Interfaces/IBasicState";
 import { getCookie } from "./utils";
 
 const DATA_URL = 'https://norma.nomoreparties.space/api/ingredients';
@@ -33,7 +34,7 @@ export const getDataRequest = (url: string = '') => {
 
 };
 
-export const setOrderInfoRequest = (orderData: any) => {
+export const setOrderInfoRequest = (orderData: TOrderInfo) => {
 
     return fetch(DATA_URL_CHECKOUT, {
         method: 'post',
@@ -76,7 +77,7 @@ export const setOrderInfoRequest = (orderData: any) => {
 
 };
 
-export const getOrderRequest = (orderNumber: any) => {
+export const getOrderRequest = (orderNumber: number) => {
 
     return fetch(`${DATA_URL_CHECKOUT}/${orderNumber}`, {
         method: 'GET',
@@ -84,7 +85,7 @@ export const getOrderRequest = (orderNumber: any) => {
             'Content-Type': 'application/json'
         }
     })
-        .then((result: any) => {
+        .then((result) => {
             if (result.ok) {
                 return result.json();
             }

@@ -1,3 +1,5 @@
+import { Dispatch } from 'redux';
+
 import {
     getUserRequest,
     loginRequest,
@@ -10,11 +12,18 @@ import {
 } from "../authApi";
 import { deleteCookie, getCookie, setCookie } from "../utils";
 
-export const SET_USER_REQUEST = 'SET_USER_REQUEST';
+export const SET_USER_REQUEST: 'SET_USER_REQUEST' = 'SET_USER_REQUEST';
+
+export interface ISetUserRequest {
+    readonly type: typeof SET_USER_REQUEST,
+    readonly user: any
+}
+
+export type TAythDispatchType = | ISetUserRequest;
 
 export function getUser() {
 
-    return function (dispatch: any) {
+    return function (dispatch: Dispatch<any>) {
 
         getUserRequest()
             .then(res => res.json())
@@ -41,7 +50,7 @@ export function getUser() {
 
 export function refreshToken(callback: Function) {
 
-    return function (dispatch: any) {
+    return function (dispatch: Dispatch) {
 
         refreshTokenRequest({ token: getCookie('refresh-token') || '' })
             .then(res => {
@@ -79,8 +88,8 @@ export function refreshToken(callback: Function) {
 };
 
 export function signIn(form: { email: string, password: string }) {
-    
-    return function (dispatch: any) {
+
+    return function (dispatch: Dispatch<ISetUserRequest>) {
 
         loginRequest(form)
             .then(res => {
@@ -118,7 +127,7 @@ export function signIn(form: { email: string, password: string }) {
 
 export function signOut() {
 
-    return function (dispatch: any) {
+    return function (dispatch: Dispatch<any>) {
 
         const token = getCookie('refresh-token') || '';
 
@@ -143,7 +152,7 @@ export function signOut() {
 
 export function signUp(form: { name: string, password: string, email: string }) {
 
-    return function (dispatch: any) {
+    return function (dispatch: Dispatch<ISetUserRequest>) {
 
         registerRequest(form)
             .then(res => {
@@ -184,7 +193,7 @@ export function signUp(form: { name: string, password: string, email: string }) 
 
 export function restorePassword(form: { email: string }) {
 
-    return function (dispatch: any) {
+    return function (dispatch: Dispatch) {
 
         const data = restorePasswordRequest(form)
             .then(res => {
@@ -208,7 +217,7 @@ export function restorePassword(form: { email: string }) {
 
 export function resetPassword(form: { token: string, password: string }) {
 
-    return function (dispatch: any) {
+    return function (dispatch: Dispatch) {
 
         const data = resetPasswordRequest(form)
             .then(res => {

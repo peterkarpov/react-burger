@@ -3,33 +3,35 @@ import { WS_FEED_CONNECTION_CLOSED, WS_FEED_CONNECTION_ERROR, WS_FEED_CONNECTION
 
 import { getCookie } from "../utils";
 
+export const wsFeedActions = {
+  wsInit: WS_FEED_CONNECTION_START,
+  wsSendMessage: WS_FEED_SEND_MESSAGE,
+  onOpen: WS_FEED_CONNECTION_SUCCESS,
+  onClose: WS_FEED_CONNECTION_CLOSED,
+  onError: WS_FEED_CONNECTION_ERROR,
+  onMessage: WS_FEED_GET_MESSAGE
+};
+
+export const wsActions = {
+  wsInit: WS_CONNECTION_START,
+  wsSendMessage: WS_SEND_MESSAGE,
+  onOpen: WS_CONNECTION_SUCCESS,
+  onClose: WS_CONNECTION_CLOSED,
+  onError: WS_CONNECTION_ERROR,
+  onMessage: WS_GET_MESSAGE
+};
+
 export const socketMiddlewareList = () => {
 
   const feedUrl = 'wss://norma.nomoreparties.space/orders/all';
   const profileOrdersUrl = 'wss://norma.nomoreparties.space/orders';
 
-  const wsFeedActions = {
-    wsInit: WS_FEED_CONNECTION_START,
-    wsSendMessage: WS_FEED_SEND_MESSAGE,
-    onOpen: WS_FEED_CONNECTION_SUCCESS,
-    onClose: WS_FEED_CONNECTION_CLOSED,
-    onError: WS_FEED_CONNECTION_ERROR,
-    onMessage: WS_FEED_GET_MESSAGE
-  };
-
-  const wsActions = {
-    wsInit: WS_CONNECTION_START,
-    wsSendMessage: WS_SEND_MESSAGE,
-    onOpen: WS_CONNECTION_SUCCESS,
-    onClose: WS_CONNECTION_CLOSED,
-    onError: WS_CONNECTION_ERROR,
-    onMessage: WS_GET_MESSAGE
-  };
-
   return [socketMiddleware(feedUrl, wsFeedActions, false), socketMiddleware(profileOrdersUrl, wsActions, true)];
 }
 
-export const socketMiddleware = (wsUrl: string, wsActions: any, isNeedToken: boolean) => {
+export type IWsActions = typeof wsFeedActions | typeof wsActions;
+
+export const socketMiddleware = (wsUrl: string, wsActions: IWsActions, isNeedToken: boolean) => {
   return ((store: any) => {
     let socket: any = null;
 
@@ -51,15 +53,15 @@ export const socketMiddleware = (wsUrl: string, wsActions: any, isNeedToken: boo
       }
 
       if (socket) {
-        socket.onopen = (event: any) => {
+        socket.onopen = (event: WebSocketEventMap) => {
           dispatch({ type: onOpen, payload: event });
         };
 
-        socket.onerror = (event: any) => {
+        socket.onerror = (event: WebSocketEventMap) => {
           dispatch({ type: onError, payload: event });
         };
 
-        socket.onmessage = (event: any) => {
+        socket.onmessage = (event: WebSocketEventMap & { data: any }) => {
           const { data } = event;
           const parsedData = JSON.parse(data);
           const { success, ...restParsedData } = parsedData;
@@ -67,7 +69,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: any, isNeedToken: boo
           dispatch({ type: onMessage, payload: restParsedData });
         };
 
-        socket.onclose = (event: any) => {
+        socket.onclose = (event: WebSocketEventMap) => {
           dispatch({ type: onClose, payload: event });
         };
 
