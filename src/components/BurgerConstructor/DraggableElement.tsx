@@ -1,6 +1,6 @@
-import { useDrag, useDrop } from "react-dnd";
+import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
 
-function DraggableElement(props: any) {
+function DraggableElement(props: { id: string, index: number, onMoveItem: Function, children: React.ReactNode }) {
 
     const [{ opacity }, dragRef] = useDrag({
         type: 'constructor-ingredients',
@@ -15,10 +15,10 @@ function DraggableElement(props: any) {
 
     const [{ isHover }, dropTarget] = useDrop({
         accept: 'constructor-ingredients',
-        collect: (monitor: any) => ({
+        collect: (monitor: DropTargetMonitor) => ({
             isHover: monitor.isOver()
         }),
-        drop(item: any) {
+        drop(item: {id:number, oldIndex:number}) {
 
             props.onMoveItem(item.id, props.id, item.oldIndex, props.index);
 

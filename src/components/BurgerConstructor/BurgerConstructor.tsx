@@ -23,13 +23,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import DraggableElement from './DraggableElement';
 
-import { useDrop } from "react-dnd";
+import { DropTargetMonitor, useDrop } from "react-dnd";
 import { TOrderInfo } from '../../utils/Interfaces/IBasicState';
+import { RootState } from '../../utils/types';
 
 function BurgerConstructor(props: { removeIngredient: (id: string) => void, addIngredient: (id: string) => void, completeCheckout: (orderData: TOrderInfo) => void }) {
 
     //const { selectedIngredientsId, removeIngredient } = React.useContext<IBurgerConstructorContext>(BurgerConstructorContext);
-    const { selectedIngredientsId, data, orderStatus } = useSelector<any, any>(state => state.basic);
+    const { selectedIngredientsId, data, orderStatus } = useSelector<RootState, any>(state => state.basic);
 
     const dispatch = useDispatch();
 
@@ -91,7 +92,7 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, addI
 
     const moveItem = (from: string, to: string, indexFrom: number, indexTo: number) => {
 
-        let tempArray = ingredientList.map((v) => v?._id);
+        let tempArray = ingredientList.map<string>((v) => v?._id);
 
         //console.log(tempArray);
 
@@ -118,10 +119,10 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, addI
 
     const [{ isHover }, dropTarget] = useDrop({
         accept: 'add-ingredient',
-        collect: (monitor: any) => ({
+        collect: (monitor: DropTargetMonitor) => ({
             isHover: monitor.isOver()
         }),
-        drop(item: any) {
+        drop(item: { id: string }) {
 
             props.addIngredient(item.id)
         },

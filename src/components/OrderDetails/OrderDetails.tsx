@@ -5,8 +5,9 @@ import styles from './OrderDetails.module.css';
 import orderAccpeted from '../../images/order accpeted/popup/done.png';
 
 import PropTypes from 'prop-types';
+import { TOrderInfo } from '../../utils/Interfaces/IBasicState';
 
-class OrderDetails extends React.Component<{ orderInfo: { orderNumber: number, selectedIngredientsId: string[], total: number } }, {}> {
+class OrderDetails extends React.Component<{ orderInfo: TOrderInfo }, {}> {
 
     static propTypes = {
         orderInfo: PropTypes.shape({

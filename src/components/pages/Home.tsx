@@ -24,7 +24,8 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useAuth } from '../../services/auth';
 import { useHistory, useLocation } from 'react-router-dom';
-import { TOrderInfo } from '../../utils/Interfaces/IBasicState';
+import IBasicState, { TOrderInfo } from '../../utils/Interfaces/IBasicState';
+import { RootState } from '../../utils/types';
 
 //const DATA_URL = 'https://norma.nomoreparties.space/api/ingredients';
 //const DATA_URL_CHECKOUT = 'https://norma.nomoreparties.space/api/orders';
@@ -35,7 +36,7 @@ export function HomePage() {
   const history = useHistory();
   const location = useLocation<any>();
 
-  const { data, selectedIngredientsId, orderInfo, idForPopup } = useSelector<any, any>(state => state.basic);
+  const { data, selectedIngredientsId, orderInfo, idForPopup } = useSelector<RootState, IBasicState>(state => state.basic);
 
   const dispatch = useDispatch();
 
@@ -59,7 +60,7 @@ export function HomePage() {
 
   }, [dispatch]);
 
-  const openPopup = (id: any) => {
+  const openPopup = (id: string) => {
 
     // if (history.location.pathname === '/') {
 
@@ -84,7 +85,7 @@ export function HomePage() {
     //window.history.replaceState(null, `react-burger`, `/`)
   }
 
-  const addIngredient = (id: any) => {
+  const addIngredient = (id: string) => {
 
     let newSelectedIngredientsId = Array.from(selectedIngredientsId);
 
@@ -108,7 +109,7 @@ export function HomePage() {
 
   };
 
-  const removeIngredient = (id: any) => {
+  const removeIngredient = (id: string) => {
 
     const newSelectedIngredientsId = selectedIngredientsId;
     const index = selectedIngredientsId.indexOf(id);
@@ -121,7 +122,7 @@ export function HomePage() {
 
   };
 
-  const setIdForPopup = (id: any) => {
+  const setIdForPopup = (id: string) => {
     dispatch({
       type: SET_ID_FOR_POPUP,
       idForPopup: id
@@ -129,7 +130,7 @@ export function HomePage() {
   };
 
   const getIngredientById = (id: string) => {
-    return data.find((v: any) => { return v._id === id });
+    return data.find((v: IDataItem) => { return v._id === id });
   }
 
   const setOrderInfo = (orderData: TOrderInfo) => {
@@ -206,13 +207,13 @@ export function HomePage() {
 
       {orderInfo &&
         <Modal title={null} onCloseModalCallback={clearOrderInfo}>
-          <OrderDetails orderInfo={orderInfo}></OrderDetails>
+          <OrderDetails orderInfo={orderInfo as TOrderInfo}></OrderDetails>
         </Modal>
       }
 
       {idForPopup &&
         <Modal title={'Детали ингредиента'} onCloseModalCallback={clearIdForPopup}>
-          <IngredientDetails style={undefined} element={getIngredientById(idForPopup)}></IngredientDetails>
+          <IngredientDetails style={undefined} element={getIngredientById(idForPopup) as IDataItem}></IngredientDetails>
         </Modal>
       }
     </>

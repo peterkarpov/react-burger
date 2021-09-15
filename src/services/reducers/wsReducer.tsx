@@ -6,16 +6,25 @@ import {
   TWsConnectionDispatchType
 } from '../actions/wsActionTypes';
 
-interface IInitialState {
+export interface IWsOrder {
+  ingredients: string[],
+  _id: string,
+  status: 'created' | 'pending' | 'done'
+  number: number,
+  createdAt: string,
+  updatedAt: string
+}
+
+export interface IInitialState {
   wsConnected: boolean,
-  orders: string[],
+  orders: IWsOrder[],
   total: number | null,
   totalToday: number | null
 }
 
 const initialState: IInitialState = {
   wsConnected: false,
-  orders: [],
+  orders: Array.from<IWsOrder>([]),
   total: null,
   totalToday: null
 };

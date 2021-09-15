@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
     CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -7,8 +5,9 @@ import {
 import './IngredientInfoModal.css';
 
 import PropTypes from 'prop-types';
+import IDataItem from '../../utils/Interfaces/IDataItem';
 
-function IngredientInfoModal(props: { element: any, clearPopup: any }) {
+function IngredientInfoModal(props: { element: IDataItem, clearPopup: () => void }) {
 
     return (
         <div className="ingredient-info" onClick={props.clearPopup}>

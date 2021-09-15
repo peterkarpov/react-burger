@@ -29,9 +29,38 @@ export const socketMiddlewareList = () => {
   return [socketMiddleware(feedUrl, wsFeedActions, false), socketMiddleware(profileOrdersUrl, wsActions, true)];
 }
 
-export type IWsActions = typeof wsFeedActions | typeof wsActions;
+export type TWsActions = typeof wsFeedActions | typeof wsActions;
 
-export const socketMiddleware = (wsUrl: string, wsActions: IWsActions, isNeedToken: boolean) => {
+// START TODO if not for prodaction
+export const tryWithNotWs = (store: any, onMessage: typeof wsFeedActions.onMessage | typeof wsActions.onMessage) => {
+  fetch('https://norma.nomoreparties.space/api/orders/all', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + getCookie('token')
+    },
+  })
+    .then(result => {
+      if (result.ok) {
+        return result.json();
+      }
+      return Promise.reject(`Ошибка ${result.status}`);
+    })
+    .then(
+      (result) => {
+        if (result.success) {
+          const { dispatch } = store;
+          dispatch({ type: onMessage, payload: result });
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+}
+// END
+
+export const socketMiddleware = (wsUrl: string, wsActions: TWsActions, isNeedToken: boolean) => {
   return ((store: any) => {
     let socket: any = null;
 
@@ -58,6 +87,9 @@ export const socketMiddleware = (wsUrl: string, wsActions: IWsActions, isNeedTok
         };
 
         socket.onerror = (event: WebSocketEventMap) => {
+
+          tryWithNotWs(store, onMessage);
+       
           dispatch({ type: onError, payload: event });
         };
 
@@ -77,7 +109,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: IWsActions, isNeedTok
           const message = { ...payload, token: token };
           socket.send(JSON.stringify(message));
         }
-      }
+      } 
 
       next(action);
     });

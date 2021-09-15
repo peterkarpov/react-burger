@@ -11,6 +11,7 @@ import { rootReducer } from '../../services/reducers/rootReducer';
 const store = createStore(rootReducer, applyMiddleware(thunk, ...socketMiddlewareList()));
 
 export type RootState = ReturnType<typeof store.getState>;
+export type LocationExtention = { from: { pathname: string } };
 
 // Типизация всех экшенов приложения
 type TApplicationActions = | TAythDispatchType | TBasicDispatchType | TWsConnectionDispatchType | TWsFeedConnectionDispatchType;

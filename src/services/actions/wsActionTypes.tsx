@@ -1,3 +1,5 @@
+import { IWsOrder } from "../reducers/wsReducer";
+
 export const WS_CONNECTION_START: 'WS_CONNECTION_START' = 'WS_CONNECTION_START';
 export const WS_CONNECTION_SUCCESS: 'WS_CONNECTION_SUCCESS' = 'WS_CONNECTION_SUCCESS';
 export const WS_CONNECTION_ERROR: 'WS_CONNECTION_ERROR' = 'WS_CONNECTION_ERROR';
@@ -34,7 +36,7 @@ export interface IWsConnectionClosed {
 
 export interface IWsGetMessage {
     readonly type: typeof WS_GET_MESSAGE;
-    readonly payload: { total: number, totalToday: number, orders: Array<string> };
+    readonly payload: { total: number, totalToday: number, orders: IWsOrder[] };
 }
 
 export type TWsConnectionDispatchType = | IWsConnectionStart | IWsConnectionSuccess | IWsConnectionError | IWsConnectionClosed | IWsGetMessage;
@@ -61,7 +63,7 @@ export interface IWsFeedConnectionClosed {
 
 export interface IWsFeedGetMessage {
     readonly type: typeof WS_FEED_GET_MESSAGE;
-    readonly payload: { total: number, totalToday: number, orders: Array<string> };
+    readonly payload: { total: number, totalToday: number, orders: Array<IWsOrder> };
 }
 
 export type TWsFeedConnectionDispatchType = | IWsFeedConnectionStart | IWsFeedConnectionSuccess | IWsFeedConnectionError | IWsFeedConnectionClosed | IWsFeedGetMessage;

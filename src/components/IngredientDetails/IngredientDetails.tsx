@@ -1,8 +1,9 @@
 import styles from './IngredientDetails.module.css';
 
 import PropTypes from 'prop-types';
+import IDataItem from '../../utils/Interfaces/IDataItem';
 
-function IngredientDetails(props: { element: any, style: React.CSSProperties | undefined }) {
+function IngredientDetails(props: { element: IDataItem, style: React.CSSProperties | undefined }) {
 
     if (!props.element) {
         return null;

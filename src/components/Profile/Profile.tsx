@@ -44,13 +44,13 @@ function Profile() {
     const inputNameRef = React.useRef(null)
 
     const [email, setEmail] = React.useState(auth.user?.email || '')
-    const onEmailChange = (e: any) => {
+    const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value)
     }
 
     const [password, setPassword] = React.useState('')
 
-    const onPasswordChange = (e: any) => {
+    const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value)
     }
 

@@ -6,7 +6,7 @@ import { useAuth } from "../../../services/auth";
 import { Redirect } from "react-router";
 import { resetPassword } from "../../../services/actions/auth";
 import { useDispatch } from "react-redux";
-import { AppDispatch, AppThunk } from "../../../utils/types";
+import { AppDispatch, AppThunk, LocationExtention, RootState } from "../../../utils/types";
 
 function ResetPassword() {
 
@@ -17,12 +17,12 @@ function ResetPassword() {
     const inputTokenRef = React.useRef(null)
 
     const [password, setPassword] = React.useState('')
-    const onPasswordChange = (e: any) => {
+    const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value)
     }
 
     const history = useHistory();
-    const { state } = useLocation<any>();
+    const { state } = useLocation<RootState & LocationExtention>();
 
     const onLoginHandler = () => {
         history.replace({ pathname: '/login', state });
@@ -51,7 +51,7 @@ function ResetPassword() {
     const onResetClickHandler = (e: SyntheticEvent) => {
         e.preventDefault();
         dispatch(resetPassword({ token, password }))
-            .then((data: any) => {
+            .then((data: { success: boolean }) => {
                 if (data.success) {
                     history.replace({ pathname: '/', state });
                 }

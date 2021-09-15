@@ -5,17 +5,11 @@ import {
   WS_FEED_GET_MESSAGE,
   TWsFeedConnectionDispatchType
 } from '../actions/wsActionTypes';
-
-export interface IInitialState {
-  wsConnected: boolean,
-  orders: any[],
-  total: number | null,
-  totalToday: number | null
-}
+import { IInitialState, IWsOrder } from './wsReducer';
 
 const initialState: IInitialState = {
   wsConnected: false,
-  orders: [],
+  orders: Array.from<IWsOrder>([]),
   total: null,
   totalToday: null
 };

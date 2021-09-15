@@ -10,11 +10,12 @@ import IDataItem from '../../utils/Interfaces/IDataItem';
 import { getDateTimeInSpecialFormat } from '../../services/utils';
 import Loader from '../pages/Loader';
 import { useState } from 'react';
-import { AppDispatch, AppThunk } from '../../utils/types';
+import { AppDispatch, AppThunk, RootState } from '../../utils/types';
+import IBasicState from '../../utils/Interfaces/IBasicState';
 
 function OrderInfo() {
 
-    const { data } = useSelector<any, any>(state => state.basic);
+    const { data } = useSelector<RootState, IBasicState>(state => state.basic);
     const { number } = useParams<any>();
     const dispatch = useDispatch<AppDispatch | AppThunk>();
 
@@ -112,13 +113,13 @@ function OrderInfo() {
                                 >
                                 <div className={styles["order-elements-item"]}>
                                     <div className={styles["image"]}>
-                                        <img src={`${ingredient.image}`} alt={`${ingredient.image}`} />
+                                        <img src={`${ingredient?.image}`} alt={`${ingredient?.image}`} />
                                     </div>
                                     <div className={styles["name"] + " ml-4 mr-4 text text_type_main-medium"}>
-                                        {ingredient.name}
+                                        {ingredient?.name}
                                     </div>
                                     <div className={styles["total"] + " text text_type_digits-medium"}>
-                                        <span className={"mr-2"}>{count} x {ingredient.price}</span>
+                                        <span className={"mr-2"}>{count} x {ingredient?.price}</span>
                                         <CurrencyIcon type="primary" onClick={undefined} />
                                     </div>
                                 </div>

@@ -9,7 +9,7 @@ import Loader from '../pages/Loader';
 import { actionInitData } from '../../services/actions/basic';
 import { RootState } from '../../utils/types';
 import IBasicState from '../../utils/Interfaces/IBasicState';
-import { IInitialState } from '../../services/reducers/wsFeedReducer';
+import { IInitialState, IWsOrder } from '../../services/reducers/wsReducer';
 
 function Feed() {
 
@@ -33,7 +33,7 @@ function Feed() {
         }
     }, [dispatch]);
 
-    const onClickProfileOrderItem = (item: any) => {
+    const onClickProfileOrderItem = (item: IWsOrder) => {
         history.replace({ pathname: `/feed/${item.number}`, state: { from: history.location, number: item.number } });
     }
 
@@ -52,11 +52,11 @@ function Feed() {
                 <div className={styles["block-aside"]}>
                     <div className={`${styles['left-aside']}`}>
 
-                        {feed.wsConnected
+                        {feed.orders.length > 0
                             ?
                             <ul className={`profile-order-list ${stylesScrollable.scrollable} pr-2`} style={{ maxHeight: "60vh" }}>
 
-                                {feed.orders.map((item: any) => {
+                                {feed.orders.map((item: IWsOrder) => {
 
                                     return (
                                         <li
@@ -90,7 +90,7 @@ function Feed() {
                                         Готовы:
                                     </div>
                                     <ul className={`${stylesScrollable.scrollable}`} style={{ maxHeight: '172px' }}>
-                                        {Array.from(feed.orders.filter((v: any) => v.status === 'done')).map((item: any) => {
+                                        {Array.from(feed.orders.filter((v: IWsOrder) => v.status === 'done')).map((item: IWsOrder) => {
 
                                             return (
                                                 <li key={`${item.number}`}
@@ -107,7 +107,7 @@ function Feed() {
                                         В работе:
                                     </div>
                                     <ul className={`${stylesScrollable.scrollable}`} style={{ maxHeight: '172px' }}>
-                                        {Array.from(feed.orders.filter((v: any) => v.status !== 'done')).map((item: any) => {
+                                        {Array.from(feed.orders.filter((v: IWsOrder) => v.status !== 'done')).map((item: IWsOrder) => {
 
                                             return (
                                                 <li key={`${item.number}`}

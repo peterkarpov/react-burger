@@ -6,7 +6,7 @@ import { useAuth } from '../../../services/auth';
 import { useCallback } from "react";
 import { signIn } from "../../../services/actions/auth";
 import { useDispatch } from "react-redux";
-import { RootState } from "../../../utils/types";
+import { LocationExtention, RootState } from "../../../utils/types";
 
 function Login() {
 
@@ -26,7 +26,7 @@ function Login() {
     }
 
     const history = useHistory();
-    const { state } = useLocation<RootState & { from: { pathname: string } }>();
+    const { state } = useLocation<RootState & LocationExtention>();
 
     const onRegisterHandler = () => {
         history.replace({ pathname: '/register', state });
