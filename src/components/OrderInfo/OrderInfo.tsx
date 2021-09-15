@@ -10,12 +10,13 @@ import IDataItem from '../../utils/Interfaces/IDataItem';
 import { getDateTimeInSpecialFormat } from '../../services/utils';
 import Loader from '../pages/Loader';
 import { useState } from 'react';
+import { AppDispatch, AppThunk } from '../../utils/types';
 
 function OrderInfo() {
 
     const { data } = useSelector<any, any>(state => state.basic);
     const { number } = useParams<any>();
-    const dispatch = useDispatch<any>();
+    const dispatch = useDispatch<AppDispatch | AppThunk>();
 
     //const feed = useSelector<any, any>(state => state.feed);
     //const profileOrders = useSelector<any, any>(state => state.profileOrders);

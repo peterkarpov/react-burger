@@ -1,13 +1,14 @@
 import IBasicState from '../../utils/Interfaces/IBasicState';
 import IDataItem from '../../utils/Interfaces/IDataItem';
 
-import { 
-    SET_DATA_REQUEST, 
-    SET_SELECTED_INGREDIENTS, 
-    SET_ORDER_DATA, 
-    SET_ID_FOR_POPUP, 
+import {
+    SET_DATA_REQUEST,
+    SET_SELECTED_INGREDIENTS,
+    SET_ORDER_DATA,
+    SET_ID_FOR_POPUP,
     DELETE_ID_FOR_POPUP,
-    SET_ORDER_STATUS
+    SET_ORDER_STATUS,
+    TBasicDispatchType
 } from '../actions/basic';
 
 const initialState: IBasicState = {
@@ -18,7 +19,7 @@ const initialState: IBasicState = {
     orderStatus: null
 };
 
-export const basicReducer = (state = initialState, action: any): IBasicState => {
+export const basicReducer = (state: IBasicState = initialState, action: TBasicDispatchType): IBasicState => {
     switch (action.type) {
         case SET_DATA_REQUEST: {
             return {

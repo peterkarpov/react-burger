@@ -2,17 +2,25 @@ import {
   WS_CONNECTION_SUCCESS,
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
-  WS_GET_MESSAGE
+  WS_GET_MESSAGE,
+  TWsConnectionDispatchType
 } from '../actions/wsActionTypes';
 
-const initialState = {
+interface IInitialState {
+  wsConnected: boolean,
+  orders: string[],
+  total: number | null,
+  totalToday: number | null
+}
+
+const initialState: IInitialState = {
   wsConnected: false,
   orders: [],
   total: null,
   totalToday: null
 };
 
-export const wsReducer = (state = initialState, action: any) => {
+export const wsReducer = (state: IInitialState = initialState, action: TWsConnectionDispatchType) : IInitialState => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
       return {

@@ -7,16 +7,19 @@ import ProfileOrdersListItem from '../ProfileOrdersListItem/ProfileOrdersListIte
 import { WS_FEED_CONNECTION_CLOSED, WS_FEED_CONNECTION_START } from '../../services/actions/wsActionTypes';
 import Loader from '../pages/Loader';
 import { actionInitData } from '../../services/actions/basic';
+import { RootState } from '../../utils/types';
+import IBasicState from '../../utils/Interfaces/IBasicState';
+import { IInitialState } from '../../services/reducers/wsFeedReducer';
 
 function Feed() {
 
-    const { data } = useSelector<any, any>(state => state.basic);
+    const { data } = useSelector<RootState, IBasicState>(state => state.basic);
 
     const dispatch = useDispatch();
 
     const history = useHistory();
 
-    const feed = useSelector<any, any>(state => state.feed);
+    const feed = useSelector<RootState, IInitialState>(state => state.feed);
 
     useEffect(() => {
 

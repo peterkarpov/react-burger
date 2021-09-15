@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-
+import { AppDispatch, AppThunk } from '../../utils/types';
 import {
     getUserRequest,
     loginRequest,
@@ -16,14 +16,16 @@ export const SET_USER_REQUEST: 'SET_USER_REQUEST' = 'SET_USER_REQUEST';
 
 export interface ISetUserRequest {
     readonly type: typeof SET_USER_REQUEST,
-    readonly user: any
+    readonly user: {
+        email: string
+    } | null,
 }
 
 export type TAythDispatchType = | ISetUserRequest;
 
-export function getUser() {
+export const getUser: AppThunk = function () {
 
-    return function (dispatch: Dispatch<any>) {
+    return function (dispatch: AppDispatch) {
 
         getUserRequest()
             .then(res => res.json())
@@ -48,9 +50,9 @@ export function getUser() {
     }
 }
 
-export function refreshToken(callback: Function) {
+export const refreshToken: AppThunk = function (callback: Function) {
 
-    return function (dispatch: Dispatch) {
+    return function (dispatch: AppDispatch) {
 
         refreshTokenRequest({ token: getCookie('refresh-token') || '' })
             .then(res => {
@@ -87,7 +89,7 @@ export function refreshToken(callback: Function) {
     }
 };
 
-export function signIn(form: { email: string, password: string }) {
+export const signIn: AppThunk = function (form: { email: string, password: string }) {
 
     return function (dispatch: Dispatch<ISetUserRequest>) {
 
@@ -125,9 +127,9 @@ export function signIn(form: { email: string, password: string }) {
     }
 };
 
-export function signOut() {
+export const signOut: AppThunk = function () {
 
-    return function (dispatch: Dispatch<any>) {
+    return function (dispatch: AppDispatch) {
 
         const token = getCookie('refresh-token') || '';
 
@@ -150,9 +152,9 @@ export function signOut() {
 
 };
 
-export function signUp(form: { name: string, password: string, email: string }) {
+export const signUp: AppThunk = function (form: { name: string, password: string, email: string }) {
 
-    return function (dispatch: Dispatch<ISetUserRequest>) {
+    return function (dispatch: AppDispatch) {
 
         registerRequest(form)
             .then(res => {
@@ -191,9 +193,9 @@ export function signUp(form: { name: string, password: string, email: string }) 
     }
 }
 
-export function restorePassword(form: { email: string }) {
+export const restorePassword: AppThunk = function (form: { email: string }) {
 
-    return function (dispatch: Dispatch) {
+    return function (dispatch: AppDispatch) {
 
         const data = restorePasswordRequest(form)
             .then(res => {
@@ -215,7 +217,7 @@ export function restorePassword(form: { email: string }) {
     }
 }
 
-export function resetPassword(form: { token: string, password: string }) {
+export const resetPassword: AppThunk = function (form: { token: string, password: string }) {
 
     return function (dispatch: Dispatch) {
 
@@ -239,9 +241,9 @@ export function resetPassword(form: { token: string, password: string }) {
     }
 }
 
-export function updateUser(form: { name: string, email: string, password: string }) {
+export const updateUser: AppThunk = function (form: { name: string, email: string, password: string }) {
 
-    return function (dispatch: any) {
+    return function (dispatch: AppDispatch) {
 
         const data = updateUserRequest(form)
             .then(res => {

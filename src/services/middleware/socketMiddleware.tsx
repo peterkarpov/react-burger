@@ -61,7 +61,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: IWsActions, isNeedTok
           dispatch({ type: onError, payload: event });
         };
 
-        socket.onmessage = (event: WebSocketEventMap & { data: any }) => {
+        socket.onmessage = (event: WebSocketEventMap & { data: string }) => {
           const { data } = event;
           const parsedData = JSON.parse(data);
           const { success, ...restParsedData } = parsedData;

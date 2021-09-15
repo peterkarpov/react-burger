@@ -1,17 +1,24 @@
-import { SET_USER_REQUEST } from "../actions/auth";
+import { SET_USER_REQUEST, TAythDispatchType } from "../actions/auth";
 
-const initialStateAuth = {
+export interface IInitialStateAuth {
+    user: {
+        email: string
+    } | null,
+    id: string | null
+}
+
+const initialStateAuth: IInitialStateAuth = {
     user: null,
     id: null
 }
 
-export const authReduser = (state = initialStateAuth, action: any) => {
+export const authReduser = (state: IInitialStateAuth = initialStateAuth, action: any) : IInitialStateAuth => {
     switch (action.type) {
         case SET_USER_REQUEST: {
             return {
                 ...state,
                 user: action.user,
-                id: action.user?.email
+                id: action.user?.email || null
             };
         }
         default: {

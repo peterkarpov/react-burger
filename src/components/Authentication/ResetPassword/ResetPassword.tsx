@@ -1,16 +1,17 @@
 import { PasswordInput, Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
+import React, { SyntheticEvent } from "react";
 import styles from './ResetPassword.module.css';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from "../../../services/auth";
 import { Redirect } from "react-router";
 import { resetPassword } from "../../../services/actions/auth";
 import { useDispatch } from "react-redux";
+import { AppDispatch, AppThunk } from "../../../utils/types";
 
 function ResetPassword() {
 
     const auth = useAuth();
-    const dispatch = useDispatch<any>();
+    const dispatch = useDispatch<AppDispatch | AppThunk>();
 
     const [token, setToken] = React.useState('')
     const inputTokenRef = React.useRef(null)
@@ -47,7 +48,7 @@ function ResetPassword() {
         );
     }
 
-    const onResetClickHandler = (e: any) => {
+    const onResetClickHandler = (e: SyntheticEvent) => {
         e.preventDefault();
         dispatch(resetPassword({ token, password }))
             .then((data: any) => {

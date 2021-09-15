@@ -2,6 +2,7 @@ import { getDataRequest, getOrderRequest, setOrderInfoRequest } from '../api';
 import IDataItem from '../../utils/Interfaces/IDataItem';
 import { TOrderInfo } from '../../utils/Interfaces/IBasicState';
 import { Dispatch } from 'redux';
+import { AppDispatch, AppThunk } from '../../utils/types';
 
 export const SET_DATA_REQUEST: 'SET_DATA_REQUEST' = 'SET_DATA_REQUEST';
 export const SET_SELECTED_INGREDIENTS: 'SET_SELECTED_INGREDIENTS' = 'SET_SELECTED_INGREDIENTS';
@@ -18,17 +19,41 @@ export type TBasicActionsType =
     typeof SET_ORDER_DATA |
     typeof SET_ORDER_STATUS;
 
-export interface TBasicDispatchType {
-    readonly type: TBasicActionsType;
-    readonly id?: number;
-    readonly data?: IDataItem[];
-    readonly orderData?: TOrderInfo | void | undefined;
-    readonly status?: string | null;
+export interface ISetDataRequest {
+    readonly type: typeof SET_DATA_REQUEST;
+    readonly data: IDataItem[];
 }
 
-export function actionInitData() {
+export interface ISetSelectedIngredients {
+    readonly type: typeof SET_SELECTED_INGREDIENTS;
+    readonly selectedIngredientsId: string[];
+}
 
-    return function (dispatch: Dispatch<TBasicDispatchType>) {
+export interface ISetIdForPopup {
+    readonly type: typeof SET_ID_FOR_POPUP;
+    readonly idForPopup: string;
+}
+
+export interface IDeleteIdForPopup {
+    readonly type: typeof DELETE_ID_FOR_POPUP;
+    readonly idForPopup: null;
+}
+
+export interface ISetOrderData {
+    readonly type: typeof SET_ORDER_DATA;
+    readonly orderData: TOrderInfo;
+}
+
+export interface ISetOrderStatus {
+    readonly type: typeof SET_ORDER_STATUS;
+    readonly status: 'ERROR' | 'IN_PROGRESS' | null;
+}
+
+export type TBasicDispatchType = | ISetDataRequest | ISetSelectedIngredients | ISetIdForPopup | IDeleteIdForPopup | ISetOrderData | ISetOrderStatus;
+
+export const actionInitData: AppThunk = function () {
+
+    return function (dispatch: Dispatch<ISetDataRequest>) {
 
         getDataRequest()
             .then(data => {
@@ -60,16 +85,16 @@ export function actionInitData() {
     };
 }
 
-export function actionSetOrderInfo(orderData: TOrderInfo) {
+export const actionSetOrderInfo: AppThunk = function (orderData: TOrderInfo) {
 
-    return function (dispatch: Dispatch<TBasicDispatchType>) {
+    return function (dispatch: AppDispatch) {
 
         setOrderInfoRequest(orderData)
             .then(orderData => {
 
                 dispatch({
                     type: SET_ORDER_DATA,
-                    orderData: orderData
+                    orderData: orderData as TOrderInfo
                 });
 
             })
@@ -94,9 +119,9 @@ export function actionSetOrderInfo(orderData: TOrderInfo) {
     }
 }
 
-export function actionGetOrder(orderNumber: number) {
+export const actionGetOrder: AppThunk = function (orderNumber: number) {
 
-    return function (dispatch: Dispatch) {
+    return function (dispatch: AppDispatch) {
 
         return getOrderRequest(orderNumber)
             .then(orders => {
