@@ -17,9 +17,7 @@ export type LocationExtention = { from: { pathname: string } };
 type TApplicationActions = | TAythDispatchType | TBasicDispatchType | TWsConnectionDispatchType | TWsFeedConnectionDispatchType;
 
 // Типизация thunk'ов в нашем приложении
-export type AppThunk<TReturn = void> = ActionCreator<
-ThunkAction<TReturn, Action, RootState, TApplicationActions>
->;
+export type AppThunk<TReturn = void> = ActionCreator<ThunkAction<TReturn, Action, RootState, TApplicationActions>>;
 
 // Типизация метода dispatch для проверки на валидность отправляемого экшена
 export type AppDispatch = typeof store.dispatch; 

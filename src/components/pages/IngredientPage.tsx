@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { actionInitData } from '../../services/actions/basic';
 import { useEffect } from 'react';
+import { RootState } from '../../utils/types';
+import IBasicState from '../../utils/Interfaces/IBasicState';
 
 export function IngredientPage() {
 
     const { id } = useParams<any>();
 
-    const { data } = useSelector<any, any>(state => state.basic);
+    const { data } = useSelector<RootState, IBasicState>(state => state.basic);
 
     const dispatch = useDispatch();
 

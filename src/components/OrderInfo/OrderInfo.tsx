@@ -10,20 +10,21 @@ import IDataItem from '../../utils/Interfaces/IDataItem';
 import { getDateTimeInSpecialFormat } from '../../services/utils';
 import Loader from '../pages/Loader';
 import { useState } from 'react';
-import { AppDispatch, AppThunk, RootState } from '../../utils/types';
+import { AppDispatch, AppThunk, LocationExtention, RootState } from '../../utils/types';
 import IBasicState from '../../utils/Interfaces/IBasicState';
+import { IWsOrder } from '../../services/reducers/wsReducer';
 
 function OrderInfo() {
 
     const { data } = useSelector<RootState, IBasicState>(state => state.basic);
-    const { number } = useParams<any>();
+    const { number } = useParams<{ number: string }>();
     const dispatch = useDispatch<AppDispatch | AppThunk>();
 
     //const feed = useSelector<any, any>(state => state.feed);
     //const profileOrders = useSelector<any, any>(state => state.profileOrders);
 
     const history = useHistory();
-    const location = useLocation<any>();
+    const location = useLocation<LocationExtention>();
 
     const background = (location.state && (history.action === 'PUSH' || history.action === 'REPLACE') && location.state.from) || null;
 
@@ -49,7 +50,7 @@ function OrderInfo() {
     }, [dispatch, number]);
 
     //const order = [...feed.orders, ...profileOrders.orders].find((v: any) => v.number === +number);
-    const order = Array.from<any>(ordersByNumber).find((v: any) => v.number === +number);
+    const order = Array.from<IWsOrder>(ordersByNumber).find((v: IWsOrder) => v.number === +number) as IWsOrder;
 
     const uniqueIngredients = order?.ingredients
         .filter((v: (string | undefined), i: number, a: (string | undefined)[]) => { return a.indexOf(v) === i; });
@@ -64,7 +65,7 @@ function OrderInfo() {
 
     const total = Array.from<string>(order?.ingredients || [])
         .map((id: string) => { return getIngredientById(id)?.price || 0 })
-        .reduce((previousValue: any, currentValue: any) => previousValue + currentValue, 0);
+        .reduce((previousValue: number, currentValue: number) => previousValue + currentValue, 0);
 
     const getDateTime = getDateTimeInSpecialFormat;
 
@@ -132,7 +133,7 @@ function OrderInfo() {
 
                 <div className={styles["bottom-block"] + " mt-10"}>
                     <div className={styles["time"] + " text text_type_main-medium text_color_inactive"}>
-                        {getDateTime(order.createdAt)}
+                        {getDateTime(new Date(order.createdAt))}
                     </div>
                     <div className={styles["total"] + " text text_type_digits-medium"}>
                         <span className={"mr-2"}>{total}</span>

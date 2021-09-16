@@ -12,7 +12,8 @@ export interface IWsOrder {
   status: 'created' | 'pending' | 'done'
   number: number,
   createdAt: string,
-  updatedAt: string
+  updatedAt: string,
+  name?: string
 }
 
 export interface IInitialState {

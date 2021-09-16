@@ -21,11 +21,11 @@ export interface ISetUserRequest {
     } | null,
 }
 
-export type TAythDispatchType = | ISetUserRequest;
+export type TAythDispatchType = | ISetUserRequest | any;
 
 export const getUser: AppThunk = function () {
 
-    return function (dispatch: AppDispatch) {
+    return function (dispatch: AppDispatch | AppThunk) {
 
         getUserRequest()
             .then(res => res.json())
@@ -129,7 +129,7 @@ export const signIn: AppThunk = function (form: { email: string, password: strin
 
 export const signOut: AppThunk = function () {
 
-    return function (dispatch: AppDispatch) {
+    return function (dispatch: AppDispatch | AppThunk) {
 
         const token = getCookie('refresh-token') || '';
 
@@ -243,7 +243,7 @@ export const resetPassword: AppThunk = function (form: { token: string, password
 
 export const updateUser: AppThunk = function (form: { name: string, email: string, password: string }) {
 
-    return function (dispatch: AppDispatch) {
+    return function (dispatch: AppDispatch | AppThunk) {
 
         const data = updateUserRequest(form)
             .then(res => {

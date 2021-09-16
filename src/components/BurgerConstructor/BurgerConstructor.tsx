@@ -24,24 +24,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import DraggableElement from './DraggableElement';
 
 import { DropTargetMonitor, useDrop } from "react-dnd";
-import { TOrderInfo } from '../../utils/Interfaces/IBasicState';
+import IBasicState, { TOrderInfo } from '../../utils/Interfaces/IBasicState';
 import { RootState } from '../../utils/types';
 
 function BurgerConstructor(props: { removeIngredient: (id: string) => void, addIngredient: (id: string) => void, completeCheckout: (orderData: TOrderInfo) => void }) {
 
     //const { selectedIngredientsId, removeIngredient } = React.useContext<IBurgerConstructorContext>(BurgerConstructorContext);
-    const { selectedIngredientsId, data, orderStatus } = useSelector<RootState, any>(state => state.basic);
+    const { selectedIngredientsId, data, orderStatus } = useSelector<RootState, IBasicState>(state => state.basic);
 
     const dispatch = useDispatch();
 
     const ingredientItems = Array.from<string>(selectedIngredientsId)
         .map((v: string) => {
             return data.find((val: IDataItem) => { return val._id === v; })
-        });
+        }) as IDataItem[];
 
     const bunList = ingredientItems
-        .filter((v: (IDataItem | undefined)) => { return v?.type === 'bun' })
-        .filter((v: (IDataItem | undefined), i: number, a: (IDataItem | undefined)[]) => { return a.indexOf(v) === i; });
+        .filter((v: (IDataItem)) => { return v?.type === 'bun' })
+        .filter((v: (IDataItem), i: number, a: (IDataItem)[]) => { return a.indexOf(v) === i; });
 
     const ingredientList = ingredientItems
         .filter((v: IDataItem) => { return v.type !== 'bun' });
@@ -49,7 +49,7 @@ function BurgerConstructor(props: { removeIngredient: (id: string) => void, addI
     const [total, dispatchTotal] = useReducer(((state: number) => {
 
         return Array.from(ingredientItems)
-            .map((v: (IDataItem | undefined)) => { return v!.price })
+            .map((v: (IDataItem)) => { return v!.price })
             .reduce((previousValue, currentValue) => previousValue + currentValue, 0);
     }), 0);
 

@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
 import { actionInitData, DELETE_ID_FOR_POPUP, SET_ID_FOR_POPUP } from "../../services/actions/basic";
+import IBasicState from "../../utils/Interfaces/IBasicState";
+import IDataItem from "../../utils/Interfaces/IDataItem";
+import { RootState } from "../../utils/types";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
 import { HomePage } from "./Home";
@@ -9,7 +12,7 @@ import { IngredientPage } from "./IngredientPage";
 
 function ModalSwitch() {
 
-    const { id } = useParams<any>();
+    const { id } = useParams<{ id: string }>();
 
     const history = useHistory<any>();
     const location = useLocation<any>();
@@ -39,7 +42,7 @@ function ModalSwitch() {
 
     }, [dispatch, id]);
 
-    const { data, idForPopup } = useSelector<any, any>(state => state.basic);
+    const { data, idForPopup } = useSelector<RootState, IBasicState>(state => state.basic);
 
     const clearIdForPopup = () => {
         dispatch({
@@ -69,7 +72,7 @@ function ModalSwitch() {
 
                     {idForPopup &&
                         <Modal title={'Детали ингредиента'} onCloseModalCallback={(clearIdForPopup)}>
-                            <IngredientDetails style={undefined} element={getIngredientById(idForPopup)}></IngredientDetails>
+                            <IngredientDetails style={undefined} element={getIngredientById(idForPopup) as IDataItem}></IngredientDetails>
                         </Modal>
                     }
 

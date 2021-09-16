@@ -25,7 +25,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { useAuth } from '../../services/auth';
 import { useHistory, useLocation } from 'react-router-dom';
 import IBasicState, { TOrderInfo } from '../../utils/Interfaces/IBasicState';
-import { RootState } from '../../utils/types';
+import { LocationExtention, RootState } from '../../utils/types';
 
 //const DATA_URL = 'https://norma.nomoreparties.space/api/ingredients';
 //const DATA_URL_CHECKOUT = 'https://norma.nomoreparties.space/api/orders';
@@ -34,7 +34,7 @@ export function HomePage() {
 
   const auth = useAuth();
   const history = useHistory();
-  const location = useLocation<any>();
+  const location = useLocation<LocationExtention>();
 
   const { data, selectedIngredientsId, orderInfo, idForPopup } = useSelector<RootState, IBasicState>(state => state.basic);
 

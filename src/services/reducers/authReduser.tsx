@@ -12,7 +12,7 @@ const initialStateAuth: IInitialStateAuth = {
     id: null
 }
 
-export const authReduser = (state: IInitialStateAuth = initialStateAuth, action: any) : IInitialStateAuth => {
+export const authReduser = (state: IInitialStateAuth = initialStateAuth, action: TAythDispatchType) : IInitialStateAuth => {
     switch (action.type) {
         case SET_USER_REQUEST: {
             return {
