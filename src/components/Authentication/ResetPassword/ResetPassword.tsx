@@ -50,7 +50,7 @@ function ResetPassword() {
 
     const onResetClickHandler = (e: SyntheticEvent) => {
         e.preventDefault();
-        dispatch(resetPassword({ token, password }))
+        (dispatch(resetPassword({ token, password })) as any)
             .then((data: { success: boolean }) => {
                 if (data.success) {
                     history.replace({ pathname: '/', state });

@@ -21,7 +21,7 @@ export interface ISetUserRequest {
     } | null,
 }
 
-export type TAythDispatchType = | ISetUserRequest | any;
+export type TAythDispatchType = | ISetUserRequest;
 
 export const getUser: AppThunk = function () {
 

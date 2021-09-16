@@ -34,7 +34,7 @@ function OrderInfo() {
 
         dispatch(actionInitData());
 
-        dispatch(actionGetOrder(number))
+        (dispatch(actionGetOrder(number)) as any)
             .then((orders: any) => {
                 setOrdersByNumber(orders);
             });

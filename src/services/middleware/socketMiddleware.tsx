@@ -88,7 +88,8 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWsActions, isNeedTok
 
         socket.onerror = (event: WebSocketEventMap) => {
 
-          tryWithNotWs(store, onMessage);
+          //TODO if not for prodaction
+          //tryWithNotWs(store, onMessage);
        
           dispatch({ type: onError, payload: event });
         };

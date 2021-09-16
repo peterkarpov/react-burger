@@ -27,7 +27,8 @@ function ForgotPassword() {
 
     const onRestorePasswordkHandler = (e: SyntheticEvent) => {
         e.preventDefault();
-        dispatch(restorePassword({ email }))
+        
+        (dispatch(restorePassword({ email })) as any)
             .then((data: { success: boolean }) => {
                 if (data?.success) {
                     history.replace({ pathname: '/reset-password', state: { from: history.location } });
