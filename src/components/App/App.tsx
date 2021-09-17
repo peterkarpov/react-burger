@@ -11,9 +11,9 @@ import {
   ModalSwitchForOrderInfo,
   Page404
 } from './../pages';
-import { ProtectedRoute } from '../protected-route';
 import { ProvideAuth } from '../../services/auth';
 import AppHeader from '../AppHeader/AppHeader';
+import { ProtectedRoute } from '../ProtectedRoute';
 // import HomeOrIngredientPage from '../pages/HomeOrIngredientPage';
 
 function App() {

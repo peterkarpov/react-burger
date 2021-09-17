@@ -5,13 +5,13 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from "../../../services/auth";
 import { Redirect } from "react-router";
 import { restorePassword } from "../../../services/actions/auth";
-import { useDispatch } from "react-redux";
-import { AppDispatch, AppThunk, RootState } from "../../../utils/types";
+import { RootState } from "../../../utils/types";
+import { useAppDispatch } from "../../../utils/hooks";
 
 function ForgotPassword() {
 
     const auth = useAuth();
-    const dispatch = useDispatch<AppDispatch | AppThunk>();
+    const dispatch = useAppDispatch();
 
     const [email, setEmail] = React.useState('')
     const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {

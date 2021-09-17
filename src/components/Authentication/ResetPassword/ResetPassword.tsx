@@ -5,13 +5,13 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from "../../../services/auth";
 import { Redirect } from "react-router";
 import { resetPassword } from "../../../services/actions/auth";
-import { useDispatch } from "react-redux";
-import { AppDispatch, AppThunk, LocationExtention, RootState } from "../../../utils/types";
+import { LocationExtention, RootState } from "../../../utils/types";
+import { useAppDispatch } from "../../../utils/hooks";
 
 function ResetPassword() {
 
     const auth = useAuth();
-    const dispatch = useDispatch<AppDispatch | AppThunk>();
+    const dispatch = useAppDispatch();
 
     const [token, setToken] = React.useState('')
     const inputTokenRef = React.useRef(null)

@@ -1,25 +1,23 @@
 import { useHistory } from 'react-router-dom';
 import { useEffect } from "react";
 import styles from './Feed.module.css';
-import { useDispatch, useSelector } from 'react-redux';
 import stylesScrollable from '../../css/scrollable.module.css';
 import ProfileOrdersListItem from '../ProfileOrdersListItem/ProfileOrdersListItem';
 import { WS_FEED_CONNECTION_CLOSED, WS_FEED_CONNECTION_START } from '../../services/actions/wsActionTypes';
 import Loader from '../pages/Loader';
 import { actionInitData } from '../../services/actions/basic';
-import { RootState } from '../../utils/types';
-import IBasicState from '../../utils/Interfaces/IBasicState';
-import { IInitialState, IWsOrder } from '../../services/reducers/wsReducer';
+import { IWsOrder } from '../../services/reducers/wsReducer';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 
 function Feed() {
 
-    const { data } = useSelector<RootState, IBasicState>(state => state.basic);
+    const { data } = useAppSelector(state => state.basic);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const history = useHistory();
 
-    const feed = useSelector<RootState, IInitialState>(state => state.feed);
+    const feed = useAppSelector(state => state.feed);
 
     useEffect(() => {
 

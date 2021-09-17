@@ -2,7 +2,6 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import styles from './OrderInfo.module.css';
 import stylesScrollable from '../../css/scrollable.module.css';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 //import { WS_CONNECTION_CLOSED, WS_CONNECTION_START, WS_FEED_CONNECTION_CLOSED, WS_FEED_CONNECTION_START } from '../../services/actions/wsActionTypes';
 import { useEffect } from 'react';
 import { actionGetOrder, actionInitData } from '../../services/actions/basic';
@@ -10,15 +9,15 @@ import IDataItem from '../../utils/Interfaces/IDataItem';
 import { getDateTimeInSpecialFormat } from '../../services/utils';
 import Loader from '../pages/Loader';
 import { useState } from 'react';
-import { AppDispatch, AppThunk, LocationExtention, RootState } from '../../utils/types';
-import IBasicState from '../../utils/Interfaces/IBasicState';
+import { LocationExtention } from '../../utils/types';
 import { IWsOrder } from '../../services/reducers/wsReducer';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 
 function OrderInfo() {
 
-    const { data } = useSelector<RootState, IBasicState>(state => state.basic);
+    const { data } = useAppSelector(state => state.basic);
     const { number } = useParams<{ number: string }>();
-    const dispatch = useDispatch<AppDispatch | AppThunk>();
+    const dispatch = useAppDispatch();
 
     //const feed = useSelector<any, any>(state => state.feed);
     //const profileOrders = useSelector<any, any>(state => state.profileOrders);

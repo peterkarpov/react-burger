@@ -4,18 +4,18 @@ import styles from './OrderDetails.module.css';
 
 import orderAccpeted from '../../images/order accpeted/popup/done.png';
 
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { TOrderInfo } from '../../utils/Interfaces/IBasicState';
 
 class OrderDetails extends React.Component<{ orderInfo: TOrderInfo }, {}> {
 
-    static propTypes = {
-        orderInfo: PropTypes.shape({
-            orderNumber: PropTypes.number,
-            selectedIngredientsId: PropTypes.arrayOf(PropTypes.string),
-            total: PropTypes.number,
-        }),
-    };
+    // static propTypes = {
+    //     orderInfo: PropTypes.shape({
+    //         orderNumber: PropTypes.number,
+    //         selectedIngredientsId: PropTypes.arrayOf(PropTypes.string),
+    //         total: PropTypes.number,
+    //     }),
+    // };
 
     render() {
 

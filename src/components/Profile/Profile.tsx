@@ -4,15 +4,15 @@ import React, { useEffect } from "react";
 import { Input, EmailInput, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './Profile.module.css';
 import { updateUser, signOut } from '../../services/actions/auth';
-import { useDispatch } from 'react-redux';
 import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from '../../services/actions/wsActionTypes';
 import ProfileOrders from '../ProfileOrders/ProfileOrders';
+import { useAppDispatch } from '../../utils/hooks';
 
 function Profile() {
 
     const { pathname, state } = useLocation();
     const auth = useAuth();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const history = useHistory();
 

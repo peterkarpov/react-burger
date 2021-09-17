@@ -1,10 +1,8 @@
 import { useContext, createContext, useEffect } from 'react';
 
 import { getCookie } from './utils';
-import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from './actions/auth';
-import { RootState } from '../utils/types';
-import { IInitialStateAuth } from './reducers/authReduser';
+import { useAppDispatch, useAppSelector } from '../utils/hooks';
 
 const AuthContext = createContext<any>(undefined);
 
@@ -23,9 +21,9 @@ export function useAuth() {
 
 export function useProvideAuth() {
 
-  const { user } = useSelector<RootState, IInitialStateAuth>(state => state.auth);
+  const { user } = useAppSelector(state => state.auth);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
 

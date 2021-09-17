@@ -1,10 +1,8 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
 import { actionInitData, DELETE_ID_FOR_POPUP, SET_ID_FOR_POPUP } from "../../services/actions/basic";
-import IBasicState from "../../utils/Interfaces/IBasicState";
+import { useAppDispatch, useAppSelector } from "../../utils/hooks";
 import IDataItem from "../../utils/Interfaces/IDataItem";
-import { RootState } from "../../utils/types";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
 import { HomePage } from "./Home";
@@ -19,7 +17,7 @@ function ModalSwitch() {
 
     const background = (location.state && (history.action === 'PUSH' || history.action === 'REPLACE') && location.state.from) || null;
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
 
@@ -42,7 +40,7 @@ function ModalSwitch() {
 
     }, [dispatch, id]);
 
-    const { data, idForPopup } = useSelector<RootState, IBasicState>(state => state.basic);
+    const { data, idForPopup } = useAppSelector(state => state.basic);
 
     const clearIdForPopup = () => {
         dispatch({

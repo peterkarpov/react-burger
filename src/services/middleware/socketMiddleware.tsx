@@ -1,3 +1,4 @@
+import { AppDispatch, AppThunk } from '../../utils/types';
 import { WS_CONNECTION_CLOSED, WS_CONNECTION_ERROR, WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_GET_MESSAGE, WS_SEND_MESSAGE } from '../actions/wsActionTypes';
 import { WS_FEED_CONNECTION_CLOSED, WS_FEED_CONNECTION_ERROR, WS_FEED_CONNECTION_START, WS_FEED_CONNECTION_SUCCESS, WS_FEED_GET_MESSAGE, WS_FEED_SEND_MESSAGE } from '../actions/wsActionTypes';
 
@@ -60,8 +61,8 @@ export const tryWithNotWs = (store: any, onMessage: typeof wsFeedActions.onMessa
 }
 // END
 
-export const socketMiddleware = (wsUrl: string, wsActions: TWsActions, isNeedToken: boolean) => {
-  return ((store: any) => {
+export const socketMiddleware = (wsUrl: string, wsActions: TWsActions, isNeedToken: boolean): any => {
+  return ((store: { dispatch: AppDispatch | AppThunk }) => {
     let socket: any = null;
 
     return ((next: any) => (action: any) => {
@@ -90,7 +91,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWsActions, isNeedTok
 
           //TODO if not for prodaction
           //tryWithNotWs(store, onMessage);
-       
+
           dispatch({ type: onError, payload: event });
         };
 
@@ -110,7 +111,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWsActions, isNeedTok
           const message = { ...payload, token: token };
           socket.send(JSON.stringify(message));
         }
-      } 
+      }
 
       next(action);
     });

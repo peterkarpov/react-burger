@@ -19,20 +19,18 @@ import IDataItem from '../../utils/Interfaces/IDataItem';
 //import { BurgerConstructorContext } from '../../services/BurgerConstructorContext';
 //import { IBurgerConstructorContext } from '../../utils/Interfaces/IBurgerConstructorContext';
 
-import { useDispatch, useSelector } from 'react-redux';
-
 import DraggableElement from './DraggableElement';
 
 import { DropTargetMonitor, useDrop } from "react-dnd";
-import IBasicState, { TOrderInfo } from '../../utils/Interfaces/IBasicState';
-import { RootState } from '../../utils/types';
+import { TOrderInfo } from '../../utils/Interfaces/IBasicState';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 
 function BurgerConstructor(props: { removeIngredient: (id: string) => void, addIngredient: (id: string) => void, completeCheckout: (orderData: TOrderInfo) => void }) {
 
     //const { selectedIngredientsId, removeIngredient } = React.useContext<IBurgerConstructorContext>(BurgerConstructorContext);
-    const { selectedIngredientsId, data, orderStatus } = useSelector<RootState, IBasicState>(state => state.basic);
+    const { selectedIngredientsId, data, orderStatus } = useAppSelector(state => state.basic);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const ingredientItems = Array.from<string>(selectedIngredientsId)
         .map((v: string) => {

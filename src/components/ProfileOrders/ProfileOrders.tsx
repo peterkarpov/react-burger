@@ -1,20 +1,18 @@
 import ProfileOrdersListItem from "../ProfileOrdersListItem/ProfileOrdersListItem";
 import stylesScrollable from '../../css/scrollable.module.css';
 import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { actionInitData } from "../../services/actions/basic";
-import { RootState } from "../../utils/types";
-import IBasicState from "../../utils/Interfaces/IBasicState";
-import { IInitialState, IWsOrder } from "../../services/reducers/wsReducer";
+import { IWsOrder } from "../../services/reducers/wsReducer";
+import { useAppDispatch, useAppSelector } from "../../utils/hooks";
 
 function ProfileOrders() {
 
-    const { data } = useSelector<RootState, IBasicState>(state => state.basic);
+    const { data } = useAppSelector(state => state.basic);
 
-    const profileOrders = useSelector<RootState, IInitialState>(state => state.profileOrders);
+    const profileOrders = useAppSelector(state => state.profileOrders);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
 

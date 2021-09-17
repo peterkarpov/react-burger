@@ -1,9 +1,9 @@
 import { useAuth } from '../services/auth';
 import { Redirect, Route } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Loader from './pages/Loader';
 
-export function ProtectedRoute({ children, ...rest }) {
+export function ProtectedRoute({ children, ...rest }: React.PropsWithChildren<{ [key: string]: any }>) {
 
   let { user, ...auth } = useAuth();
   const [isUserLoaded, setUserLoaded] = useState(false);
@@ -17,9 +17,9 @@ export function ProtectedRoute({ children, ...rest }) {
   const isHas = auth.isHasCookie();
 
   if (isHas && !isUserLoaded) {
-        
+
     return (
-        <Loader />
+      <Loader />
     );
   }
 
@@ -27,7 +27,7 @@ export function ProtectedRoute({ children, ...rest }) {
     <Route
       {...rest}
       render={({ location }) =>
-      isUserLoaded ? (
+        isUserLoaded ? (
           children
         ) : (
           <Redirect

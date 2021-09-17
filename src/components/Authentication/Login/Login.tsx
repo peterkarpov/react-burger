@@ -5,13 +5,13 @@ import { useHistory, useLocation, Redirect } from 'react-router-dom';
 import { useAuth } from '../../../services/auth';
 import { useCallback } from "react";
 import { signIn } from "../../../services/actions/auth";
-import { useDispatch } from "react-redux";
 import { LocationExtention, RootState } from "../../../utils/types";
+import { useAppDispatch } from "../../../utils/hooks";
 
 function Login() {
 
     const auth = useAuth();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     //process.env.NODE_ENV !== 'production' // TODO
     

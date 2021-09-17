@@ -1,18 +1,16 @@
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { actionInitData } from '../../services/actions/basic';
 import { useEffect } from 'react';
-import { RootState } from '../../utils/types';
-import IBasicState from '../../utils/Interfaces/IBasicState';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 
 export function IngredientPage() {
 
     const { id } = useParams<any>();
 
-    const { data } = useSelector<RootState, IBasicState>(state => state.basic);
+    const { data } = useAppSelector(state => state.basic);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
 

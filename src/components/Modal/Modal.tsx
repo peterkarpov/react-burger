@@ -9,14 +9,14 @@ import {
 
 import styles from './Modal.module.css';
 
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 class Modal extends React.Component<{ onCloseModalCallback: Function, title: string | null }, { enable: boolean }> {
 
-    static propTypes = {
-        onCloseModalCallback: PropTypes.func,
-        title: PropTypes.string
-    };
+    // static propTypes = {
+    //     onCloseModalCallback: PropTypes.func,
+    //     title: PropTypes.string
+    // };
 
     constructor(props: any) {
 

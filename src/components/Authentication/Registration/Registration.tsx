@@ -5,12 +5,12 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from "../../../services/auth";
 import { Redirect } from "react-router";
 import { signUp } from "../../../services/actions/auth";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../../utils/hooks";
 
 function Registration() {
 
     const auth = useAuth();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [name, setName] = React.useState('')
     const inputNameRef = React.useRef(null)
