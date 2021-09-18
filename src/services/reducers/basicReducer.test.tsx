@@ -44,11 +44,11 @@ const compareState = {
     selectedIngredientsId: ["60d3b41abdacab0026a733c6", "60d3b41abdacab0026a733c7"],
     idForPopup: "60d3b41abdacab0026a733c6",
     orderInfo: {
-        orderNumber: "#1234",
+        orderNumber: 1234,
         selectedIngredientsId: ["60d3b41abdacab0026a733c6", "60d3b41abdacab0026a733c7"],
         total: 1234,
     },
-    orderStatus: "IN_PROGRESS"
+    orderStatus: 'ERROR' as ('ERROR' | 'IN_PROGRESS' | null)
 }
 
 describe('Проверка basicReducer', () => {
