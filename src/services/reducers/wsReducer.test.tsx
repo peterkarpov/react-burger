@@ -1,7 +1,9 @@
+import { configureStore } from "@reduxjs/toolkit";
 import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
+import { RootState } from "../../utils/types";
 import { WS_CONNECTION_CLOSED, WS_CONNECTION_ERROR, WS_CONNECTION_SUCCESS, WS_GET_MESSAGE } from "../actions/wsActionTypes";
-import { wsReducer } from "./wsReducer";
+import { IWsOrder, wsReducer } from "./wsReducer";
 
 
 const initialState = {
@@ -13,7 +15,25 @@ const initialState = {
 
 const compareState = {
     wsConnected: false,
-    orders: [1, 2],
+    orders: Array.from<IWsOrder>([
+        {
+            ingredients: ["1", "2"],
+            _id: "3",
+            status: 'created' as 'created' | 'pending' | 'done',
+            number: 1,
+            createdAt: "string",
+            updatedAt: "string",
+            name: "string"
+        },
+        {
+            ingredients: ["4", "5"],
+            _id: "6",
+            status: 'created' as 'created' | 'pending' | 'done',
+            number: 1,
+            createdAt: "string",
+            updatedAt: "string",
+        }
+    ]),
     total: 1,
     totalToday: 1
 }

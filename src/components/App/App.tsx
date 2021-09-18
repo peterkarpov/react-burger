@@ -5,16 +5,16 @@ import {
   RegistrationPage,
   ProfilePage,
   ForgotPasswordPage,
-  ResetPasswordPage
+  ResetPasswordPage,
+  ModalSwitch,
+  FeedPage,
+  ModalSwitchForOrderInfo,
+  Page404
 } from './../pages';
-import { ProtectedRoute } from '../protected-route';
 import { ProvideAuth } from '../../services/auth';
-import Page404 from '../pages/Page404';
 import AppHeader from '../AppHeader/AppHeader';
+import { ProtectedRoute } from '../ProtectedRoute';
 // import HomeOrIngredientPage from '../pages/HomeOrIngredientPage';
-import ModalSwitch from '../pages/ModalSwitch';
-import { FeedPage } from '../pages/FeedPage';
-import ModalSwitchForOrderInfo from '../pages/ModalSwitchForOrderInfo';
 
 function App() {
 

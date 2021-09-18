@@ -1,11 +1,13 @@
-export function getCookie(name: string) {
+export type nameOfCookie = 'token' | 'refresh-token';
+
+export function getCookie(name: nameOfCookie) {
   const matches = document.cookie.match(
     new RegExp('(?:^|; )' + name.replace(/([\\.$?*|{}\\(\\)\\[\]\\\\/\\+^])/g, '\\$1') + '=([^;]*)')
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function setCookie(name: string, value: string, props: any) {
+export function setCookie(name: nameOfCookie, value: string, props: any) {
   props = props || {};
   let exp = props.expires || 20 * 60;
   if (typeof exp == 'number' && exp) {
@@ -28,30 +30,30 @@ export function setCookie(name: string, value: string, props: any) {
   document.cookie = updatedCookie;
 }
 
-export function deleteCookie(name: string) {
+export function deleteCookie(name: nameOfCookie) {
   setCookie(name, '', { expires: -1 });
 }
 
-export function getDateTimeInSpecialFormat(someDate: any) {
+export function getDateTimeInSpecialFormat(someDate: Date): (string | null) {
 
   if (!someDate) {
-    return;
+    return null;
   }
 
-  const isToday = ((someDate: any, today: any) => {
+  const isToday = ((someDate: Date, today: Date): boolean => {
     return someDate.getDate() === today.getDate() &&
       someDate.getMonth() === today.getMonth() &&
       someDate.getFullYear() === today.getFullYear();
   });
 
-  const isYestoday = ((someDate: any, today: any) => {
+  const isYestoday = ((someDate: Date, today: Date): boolean => {
 
     const offsetHours = Math.ceil(Math.abs(someDate.getTime() - today.getTime()) / (1000 * 3600));
 
     return offsetHours > today.getHours() && offsetHours < today.getHours() + 24;
   });
 
-  const isDayBeforeYesterday = ((someDate: any, today: any) => {
+  const isDayBeforeYesterday = ((someDate: Date, today: Date): boolean => {
 
     const offsetHours = Math.ceil(Math.abs(someDate.getTime() - today.getTime()) / (1000 * 3600));
 

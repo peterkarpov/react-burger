@@ -1,12 +1,12 @@
 import { getCookie } from './utils';
 
-export const deserializeQuery = (query: any, noQuestionMark = false) => {
+export const deserializeQuery = (query: string, noQuestionMark = false) => {
     const pairs = (noQuestionMark ? query : query.substring(1)).split('&');
-    const array = pairs.map((elem: any) => elem.split('='));
+    const array = pairs.map((elem: string) => elem.split('='));
     return Object.fromEntries(array);
 };
 
-export const serializeQuery = (queryParams: any) =>
+export const serializeQuery = (queryParams: object) =>
     Object.entries(queryParams).reduce((acc, [key, value], index, array) => {
         if (typeof value === 'undefined') {
             return acc;
@@ -44,7 +44,7 @@ export const getUserRequest = async () =>
     referrerPolicy: 'no-referrer'
   });
 
-export const updateUserRequest = async (form: any) =>
+export const updateUserRequest = async (form: object) =>
     await fetch('https://norma.nomoreparties.space/api/auth/user', {
         method: 'PATCH',
         mode: 'cors',

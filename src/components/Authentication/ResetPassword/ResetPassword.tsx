@@ -1,27 +1,28 @@
 import { PasswordInput, Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
+import React, { SyntheticEvent } from "react";
 import styles from './ResetPassword.module.css';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from "../../../services/auth";
 import { Redirect } from "react-router";
 import { resetPassword } from "../../../services/actions/auth";
-import { useDispatch } from "react-redux";
+import { LocationExtention, RootState } from "../../../utils/types";
+import { useAppDispatch } from "../../../utils/hooks";
 
 function ResetPassword() {
 
     const auth = useAuth();
-    const dispatch = useDispatch<any>();
+    const dispatch = useAppDispatch();
 
     const [token, setToken] = React.useState('')
     const inputTokenRef = React.useRef(null)
 
     const [password, setPassword] = React.useState('')
-    const onPasswordChange = (e: any) => {
+    const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value)
     }
 
     const history = useHistory();
-    const { state } = useLocation<any>();
+    const { state } = useLocation<RootState & LocationExtention>();
 
     const onLoginHandler = () => {
         history.replace({ pathname: '/login', state });
@@ -47,10 +48,10 @@ function ResetPassword() {
         );
     }
 
-    const onResetClickHandler = (e: any) => {
+    const onResetClickHandler = (e: SyntheticEvent) => {
         e.preventDefault();
-        dispatch(resetPassword({ token, password }))
-            .then((data: any) => {
+        (dispatch(resetPassword({ token, password })) as any)
+            .then((data: { success: boolean }) => {
                 if (data.success) {
                     history.replace({ pathname: '/', state });
                 }

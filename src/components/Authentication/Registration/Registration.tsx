@@ -1,27 +1,27 @@
 import { Input, EmailInput, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
+import React, { SyntheticEvent } from "react";
 import styles from './Registration.module.css';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from "../../../services/auth";
 import { Redirect } from "react-router";
 import { signUp } from "../../../services/actions/auth";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../../utils/hooks";
 
 function Registration() {
 
     const auth = useAuth();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [name, setName] = React.useState('')
     const inputNameRef = React.useRef(null)
 
     const [email, setEmail] = React.useState('')
-    const onEmailChange = (e: any) => {
+    const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value)
     }
 
     const [password, setPassword] = React.useState('')
-    const onPasswordChange = (e: any) => {
+    const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value)
     }
 
@@ -32,7 +32,7 @@ function Registration() {
         history.replace({ pathname: '/login', state });
     }
 
-    const onRegistrationHandler = (e: any) => {
+    const onRegistrationHandler = (e: SyntheticEvent) => {
         e.preventDefault();
         dispatch(signUp({ name, password, email }));
     }

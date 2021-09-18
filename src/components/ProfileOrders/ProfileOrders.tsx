@@ -1,18 +1,18 @@
 import ProfileOrdersListItem from "../ProfileOrdersListItem/ProfileOrdersListItem";
 import stylesScrollable from '../../css/scrollable.module.css';
 import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { actionInitData } from "../../services/actions/basic";
-
+import { IWsOrder } from "../../services/reducers/wsReducer";
+import { useAppDispatch, useAppSelector } from "../../utils/hooks";
 
 function ProfileOrders() {
 
-    const { data } = useSelector<any, any>(state => state.basic);
+    const { data } = useAppSelector(state => state.basic);
 
-    const profileOrders = useSelector<any, any>(state => state.profileOrders);
+    const profileOrders = useAppSelector(state => state.profileOrders);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
 
@@ -26,7 +26,7 @@ function ProfileOrders() {
     
     const history = useHistory();
 
-    const onClickProfileOrderItem = (item: any) => {
+    const onClickProfileOrderItem = (item: IWsOrder) => {
         history.replace({ pathname: `/profile/orders/${item.number}`, state: { from: history.location, number: item.number } });
     }
 
@@ -34,7 +34,7 @@ function ProfileOrders() {
         <>
             <ul className={`profile-order-list ${stylesScrollable.scrollable} pr-2`} style={{ maxHeight: "60vh" }}>
 
-                {Array.from(profileOrders.orders).map((item: any) => {
+                {Array.from(profileOrders.orders).map((item: IWsOrder) => {
 
                     return (
                         <li

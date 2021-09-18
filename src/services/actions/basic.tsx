@@ -1,21 +1,59 @@
 import { getDataRequest, getOrderRequest, setOrderInfoRequest } from '../api';
 import IDataItem from '../../utils/Interfaces/IDataItem';
+import { TOrderInfo } from '../../utils/Interfaces/IBasicState';
+import { Dispatch } from 'redux';
+import { AppDispatch, AppThunk } from '../../utils/types';
 
-export const SET_DATA_REQUEST = 'SET_DATA_REQUEST';
+export const SET_DATA_REQUEST: 'SET_DATA_REQUEST' = 'SET_DATA_REQUEST';
+export const SET_SELECTED_INGREDIENTS: 'SET_SELECTED_INGREDIENTS' = 'SET_SELECTED_INGREDIENTS';
+export const SET_ID_FOR_POPUP: 'SET_ID_FOR_POPUP' = 'SET_ID_FOR_POPUP';
+export const DELETE_ID_FOR_POPUP: 'DELETE_ID_FOR_POPUP' = 'DELETE_ID_FOR_POPUP';
+export const SET_ORDER_DATA: 'SET_ORDER_DATA' = 'SET_ORDER_DATA';
+export const SET_ORDER_STATUS: 'SET_ORDER_STATUS' = 'SET_ORDER_STATUS';
 
-export const SET_SELECTED_INGREDIENTS = 'SET_SELECTED_INGREDIENTS';
+export type TBasicActionsType =
+    typeof SET_DATA_REQUEST |
+    typeof SET_SELECTED_INGREDIENTS |
+    typeof SET_ID_FOR_POPUP |
+    typeof DELETE_ID_FOR_POPUP |
+    typeof SET_ORDER_DATA |
+    typeof SET_ORDER_STATUS;
 
-export const SET_ID_FOR_POPUP = 'SET_ID_FOR_POPUP';
+export interface ISetDataRequest {
+    readonly type: typeof SET_DATA_REQUEST;
+    readonly data: IDataItem[];
+}
 
-export const DELETE_ID_FOR_POPUP = 'DELETE_ID_FOR_POPUP';
+export interface ISetSelectedIngredients {
+    readonly type: typeof SET_SELECTED_INGREDIENTS;
+    readonly selectedIngredientsId: string[];
+}
 
-export const SET_ORDER_DATA = 'SET_ORDER_DATA';
+export interface ISetIdForPopup {
+    readonly type: typeof SET_ID_FOR_POPUP;
+    readonly idForPopup: string;
+}
 
-export const SET_ORDER_STATUS = 'SET_ORDER_STATUS';
+export interface IDeleteIdForPopup {
+    readonly type: typeof DELETE_ID_FOR_POPUP;
+    readonly idForPopup: null;
+}
 
-export function actionInitData() {
+export interface ISetOrderData {
+    readonly type: typeof SET_ORDER_DATA;
+    readonly orderData: TOrderInfo;
+}
 
-    return function (dispatch: any) {
+export interface ISetOrderStatus {
+    readonly type: typeof SET_ORDER_STATUS;
+    readonly status: 'ERROR' | 'IN_PROGRESS' | null;
+}
+
+export type TBasicDispatchType = | ISetDataRequest | ISetSelectedIngredients | ISetIdForPopup | IDeleteIdForPopup | ISetOrderData | ISetOrderStatus;
+
+export const actionInitData: AppThunk = function () {
+
+    return function (dispatch: Dispatch<ISetDataRequest>) {
 
         getDataRequest()
             .then(data => {
@@ -47,16 +85,16 @@ export function actionInitData() {
     };
 }
 
-export function actionSetOrderInfo(orderData: any) {
+export const actionSetOrderInfo: AppThunk = function (orderData: TOrderInfo) {
 
-    return function (dispatch: any) {
+    return function (dispatch: AppDispatch) {
 
         setOrderInfoRequest(orderData)
             .then(orderData => {
 
                 dispatch({
                     type: SET_ORDER_DATA,
-                    orderData: orderData
+                    orderData: orderData as TOrderInfo
                 });
 
             })
@@ -81,15 +119,15 @@ export function actionSetOrderInfo(orderData: any) {
     }
 }
 
-export function actionGetOrder(orderNumber: any) {
+export const actionGetOrder: AppThunk = function (orderNumber: number) {
 
-    return function (dispatch: any) {
+    return function (dispatch: AppDispatch) {
 
         return getOrderRequest(orderNumber)
             .then(orders => {
 
                 return orders;
             });
-     
+
     }
 }

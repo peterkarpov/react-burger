@@ -30,7 +30,10 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "serve": "npx serve -s build -l 4000",
-    "cypress:open": "./node_modules/.bin/cypress open"
+    "cypress:open": "./node_modules/.bin/cypress open",
+    "clean": "npx gh-pages-clean",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -53,6 +56,7 @@
   "devDependencies": {
     "@4tw/cypress-drag-drop": "^2.0.0",
     "@types/react-router-dom": "^5.1.8",
-    "cypress": "^8.3.1"
+    "cypress": "^8.3.1",
+    "gh-pages": "^3.2.3"
   }
 }

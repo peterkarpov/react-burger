@@ -1,34 +1,36 @@
 import { EmailInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
+import React, { SyntheticEvent } from "react";
 import styles from './ForgotPassword.module.css';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from "../../../services/auth";
 import { Redirect } from "react-router";
 import { restorePassword } from "../../../services/actions/auth";
-import { useDispatch } from "react-redux";
+import { RootState } from "../../../utils/types";
+import { useAppDispatch } from "../../../utils/hooks";
 
 function ForgotPassword() {
 
     const auth = useAuth();
-    const dispatch = useDispatch<any>();
+    const dispatch = useAppDispatch();
 
     const [email, setEmail] = React.useState('')
-    const onEmailChange = (e: any) => {
+    const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
     }
 
     const history = useHistory();
-    const { state } = useLocation<any>();
+    const { state } = useLocation<RootState>();
 
     const onLoginHandler = () => {
         history.replace({ pathname: '/login', state });
     }
 
-    const onRestorePasswordkHandler = (e: any) => {
+    const onRestorePasswordkHandler = (e: SyntheticEvent) => {
         e.preventDefault();
-        dispatch(restorePassword({ email }))
-            .then((data: any) => {
-                if (data.success) {
+        
+        (dispatch(restorePassword({ email })) as any)
+            .then((data: { success: boolean }) => {
+                if (data?.success) {
                     history.replace({ pathname: '/reset-password', state: { from: history.location } });
                 }
             });

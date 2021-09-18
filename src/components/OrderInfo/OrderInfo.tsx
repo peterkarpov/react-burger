@@ -2,7 +2,6 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import styles from './OrderInfo.module.css';
 import stylesScrollable from '../../css/scrollable.module.css';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 //import { WS_CONNECTION_CLOSED, WS_CONNECTION_START, WS_FEED_CONNECTION_CLOSED, WS_FEED_CONNECTION_START } from '../../services/actions/wsActionTypes';
 import { useEffect } from 'react';
 import { actionGetOrder, actionInitData } from '../../services/actions/basic';
@@ -10,18 +9,21 @@ import IDataItem from '../../utils/Interfaces/IDataItem';
 import { getDateTimeInSpecialFormat } from '../../services/utils';
 import Loader from '../pages/Loader';
 import { useState } from 'react';
+import { LocationExtention } from '../../utils/types';
+import { IWsOrder } from '../../services/reducers/wsReducer';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 
 function OrderInfo() {
 
-    const { data } = useSelector<any, any>(state => state.basic);
-    const { number } = useParams<any>();
-    const dispatch = useDispatch<any>();
+    const { data } = useAppSelector(state => state.basic);
+    const { number } = useParams<{ number: string }>();
+    const dispatch = useAppDispatch();
 
     //const feed = useSelector<any, any>(state => state.feed);
     //const profileOrders = useSelector<any, any>(state => state.profileOrders);
 
     const history = useHistory();
-    const location = useLocation<any>();
+    const location = useLocation<LocationExtention>();
 
     const background = (location.state && (history.action === 'PUSH' || history.action === 'REPLACE') && location.state.from) || null;
 
@@ -31,7 +33,7 @@ function OrderInfo() {
 
         dispatch(actionInitData());
 
-        dispatch(actionGetOrder(number))
+        (dispatch(actionGetOrder(number)) as any)
             .then((orders: any) => {
                 setOrdersByNumber(orders);
             });
@@ -47,7 +49,7 @@ function OrderInfo() {
     }, [dispatch, number]);
 
     //const order = [...feed.orders, ...profileOrders.orders].find((v: any) => v.number === +number);
-    const order = Array.from<any>(ordersByNumber).find((v: any) => v.number === +number);
+    const order = Array.from<IWsOrder>(ordersByNumber).find((v: IWsOrder) => v.number === +number) as IWsOrder;
 
     const uniqueIngredients = order?.ingredients
         .filter((v: (string | undefined), i: number, a: (string | undefined)[]) => { return a.indexOf(v) === i; });
@@ -62,7 +64,7 @@ function OrderInfo() {
 
     const total = Array.from<string>(order?.ingredients || [])
         .map((id: string) => { return getIngredientById(id)?.price || 0 })
-        .reduce((previousValue: any, currentValue: any) => previousValue + currentValue, 0);
+        .reduce((previousValue: number, currentValue: number) => previousValue + currentValue, 0);
 
     const getDateTime = getDateTimeInSpecialFormat;
 
@@ -111,13 +113,13 @@ function OrderInfo() {
                                 >
                                 <div className={styles["order-elements-item"]}>
                                     <div className={styles["image"]}>
-                                        <img src={`${ingredient.image}`} alt={`${ingredient.image}`} />
+                                        <img src={`${ingredient?.image}`} alt={`${ingredient?.image}`} />
                                     </div>
                                     <div className={styles["name"] + " ml-4 mr-4 text text_type_main-medium"}>
-                                        {ingredient.name}
+                                        {ingredient?.name}
                                     </div>
                                     <div className={styles["total"] + " text text_type_digits-medium"}>
-                                        <span className={"mr-2"}>{count} x {ingredient.price}</span>
+                                        <span className={"mr-2"}>{count} x {ingredient?.price}</span>
                                         <CurrencyIcon type="primary" onClick={undefined} />
                                     </div>
                                 </div>
@@ -130,7 +132,7 @@ function OrderInfo() {
 
                 <div className={styles["bottom-block"] + " mt-10"}>
                     <div className={styles["time"] + " text text_type_main-medium text_color_inactive"}>
-                        {getDateTime(order.createdAt)}
+                        {getDateTime(new Date(order.createdAt))}
                     </div>
                     <div className={styles["total"] + " text text_type_digits-medium"}>
                         <span className={"mr-2"}>{total}</span>

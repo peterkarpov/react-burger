@@ -3,9 +3,9 @@ import Modal from "../Modal/Modal";
 import OrderInfo from "../OrderInfo/OrderInfo";
 import { OrderInfoPage } from "./OrderInfoPage";
 
-function ModalSwitchForOrderInfo(props: { route: string, children: any }) {
+function ModalSwitchForOrderInfo(props: { route: string, children: React.ReactNode }) {
 
-    const history = useHistory<any>();
+    const history = useHistory();
     const location = useLocation<any>();
 
     const background = (location.state && (history.action === 'PUSH' || history.action === 'REPLACE') && location.state.from) || null;

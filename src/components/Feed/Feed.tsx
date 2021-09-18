@@ -1,22 +1,23 @@
 import { useHistory } from 'react-router-dom';
 import { useEffect } from "react";
 import styles from './Feed.module.css';
-import { useDispatch, useSelector } from 'react-redux';
 import stylesScrollable from '../../css/scrollable.module.css';
 import ProfileOrdersListItem from '../ProfileOrdersListItem/ProfileOrdersListItem';
 import { WS_FEED_CONNECTION_CLOSED, WS_FEED_CONNECTION_START } from '../../services/actions/wsActionTypes';
 import Loader from '../pages/Loader';
 import { actionInitData } from '../../services/actions/basic';
+import { IWsOrder } from '../../services/reducers/wsReducer';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 
 function Feed() {
 
-    const { data } = useSelector<any, any>(state => state.basic);
+    const { data } = useAppSelector(state => state.basic);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const history = useHistory();
 
-    const feed = useSelector<any, any>(state => state.feed);
+    const feed = useAppSelector(state => state.feed);
 
     useEffect(() => {
 
@@ -30,7 +31,7 @@ function Feed() {
         }
     }, [dispatch]);
 
-    const onClickProfileOrderItem = (item: any) => {
+    const onClickProfileOrderItem = (item: IWsOrder) => {
         history.replace({ pathname: `/feed/${item.number}`, state: { from: history.location, number: item.number } });
     }
 
@@ -49,11 +50,11 @@ function Feed() {
                 <div className={styles["block-aside"]}>
                     <div className={`${styles['left-aside']}`}>
 
-                        {feed.wsConnected
+                        {feed.orders.length > 0
                             ?
                             <ul className={`profile-order-list ${stylesScrollable.scrollable} pr-2`} style={{ maxHeight: "60vh" }}>
 
-                                {feed.orders.map((item: any) => {
+                                {feed.orders.map((item: IWsOrder) => {
 
                                     return (
                                         <li
@@ -87,7 +88,7 @@ function Feed() {
                                         Готовы:
                                     </div>
                                     <ul className={`${stylesScrollable.scrollable}`} style={{ maxHeight: '172px' }}>
-                                        {Array.from(feed.orders.filter((v: any) => v.status === 'done')).map((item: any) => {
+                                        {Array.from(feed.orders.filter((v: IWsOrder) => v.status === 'done')).map((item: IWsOrder) => {
 
                                             return (
                                                 <li key={`${item.number}`}
@@ -104,7 +105,7 @@ function Feed() {
                                         В работе:
                                     </div>
                                     <ul className={`${stylesScrollable.scrollable}`} style={{ maxHeight: '172px' }}>
-                                        {Array.from(feed.orders.filter((v: any) => v.status !== 'done')).map((item: any) => {
+                                        {Array.from(feed.orders.filter((v: IWsOrder) => v.status !== 'done')).map((item: IWsOrder) => {
 
                                             return (
                                                 <li key={`${item.number}`}

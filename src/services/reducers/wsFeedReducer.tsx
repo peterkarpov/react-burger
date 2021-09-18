@@ -2,17 +2,19 @@ import {
   WS_FEED_CONNECTION_SUCCESS,
   WS_FEED_CONNECTION_ERROR,
   WS_FEED_CONNECTION_CLOSED,
-  WS_FEED_GET_MESSAGE
+  WS_FEED_GET_MESSAGE,
+  TWsFeedConnectionDispatchType
 } from '../actions/wsActionTypes';
+import { IInitialState, IWsOrder } from './wsReducer';
 
-const initialState = {
+const initialState: IInitialState = {
   wsConnected: false,
-  orders: [],
+  orders: Array.from<IWsOrder>([]),
   total: null,
   totalToday: null
 };
 
-export const wsFeedReducer = (state = initialState, action: any) => {
+export const wsFeedReducer = (state: IInitialState = initialState, action: TWsFeedConnectionDispatchType): IInitialState => {
   switch (action.type) {
     case WS_FEED_CONNECTION_SUCCESS:
       return {
@@ -40,7 +42,7 @@ export const wsFeedReducer = (state = initialState, action: any) => {
         totalToday: action.payload.totalToday,
         orders: action.payload.orders
       };
-    
+
     default:
       return state;
   }

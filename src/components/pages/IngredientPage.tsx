@@ -1,16 +1,16 @@
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { actionInitData } from '../../services/actions/basic';
 import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 
 export function IngredientPage() {
 
     const { id } = useParams<any>();
 
-    const { data } = useSelector<any, any>(state => state.basic);
+    const { data } = useAppSelector(state => state.basic);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
 

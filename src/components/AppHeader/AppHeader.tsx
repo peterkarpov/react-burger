@@ -47,7 +47,7 @@ function AppHeader() {
                     </li>
                 </ul>
 
-                <div className={styles["logo-wrapper"]}>
+                <div className={styles["logo-wrapper"]} onClick={onConstructorClickHandler}>
                     <Logo />
                 </div>
 

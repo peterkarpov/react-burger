@@ -5,27 +5,28 @@ import { useHistory, useLocation, Redirect } from 'react-router-dom';
 import { useAuth } from '../../../services/auth';
 import { useCallback } from "react";
 import { signIn } from "../../../services/actions/auth";
-import { useDispatch } from "react-redux";
+import { LocationExtention, RootState } from "../../../utils/types";
+import { useAppDispatch } from "../../../utils/hooks";
 
 function Login() {
 
     const auth = useAuth();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     //process.env.NODE_ENV !== 'production' // TODO
     
-    const [email, setEmail] = React.useState('bisotow677@bushdown.com') //bisotow677@bushdown.com
-    const onEmailChange = (e: any) => {
+    const [email, setEmail] = React.useState('') //bisotow677@bushdown.com
+    const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value)
     }
 
-    const [password, setPassword] = React.useState('123456')  //123456
-    const onPasswordChange = (e: any) => {
+    const [password, setPassword] = React.useState('')  //123456
+    const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value)
     }
 
     const history = useHistory();
-    const { state } = useLocation<any>();
+    const { state } = useLocation<RootState & LocationExtention>();
 
     const onRegisterHandler = () => {
         history.replace({ pathname: '/register', state });

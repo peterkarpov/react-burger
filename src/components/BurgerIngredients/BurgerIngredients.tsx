@@ -17,18 +17,18 @@ import { IBurgerIngredientsProps } from '../../utils/Interfaces/IBurgerIngredien
 
 import { IBurgerIngredientsState } from '../../utils/Interfaces/IBurgerIngredientsState';
 
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../utils/hooks';
 
 function BurgerIngredients(props: IBurgerIngredientsProps) {
 
     //const { selectedIngredientsId, addIngredient } = React.useContext<{ selectedIngredientsId: string[], addIngredient: (id: string) => void }>(BurgerConstructorContext);
-    const { selectedIngredientsId, data } = useSelector<any, any>(state => state.basic);
+    const { selectedIngredientsId, data } = useAppSelector(state => state.basic);
 
     const [state, setState] = React.useState<IBurgerIngredientsState>({ current: 'bun', currentItems: data });
 
-    const tabElementsRef = useRef<any>(null);
-    const forBunRef = useRef<any>(null);
-    const forSauceRef = useRef<any>(null);
+    const tabElementsRef = useRef<HTMLUListElement>(null);
+    const forBunRef = useRef<HTMLLIElement>(null);
+    const forSauceRef = useRef<HTMLLIElement>(null);
     const forMainRef = useRef<any>(null);
 
     const getRefByType = (type: string) => {
@@ -127,7 +127,7 @@ function BurgerIngredients(props: IBurgerIngredientsProps) {
     };
 
     const getSelectedCountById = (id: string) => {
-        return Array.from(selectedIngredientsId).filter((v: any) => v === id).length;
+        return Array.from(selectedIngredientsId).filter((v: string) => v === id).length;
     }
 
     const getQuantityCountById = (id: string) => {
