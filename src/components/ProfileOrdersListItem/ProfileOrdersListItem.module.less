@@ -1,0 +1,88 @@
+div.profile-order-item {
+
+    background-color: #1C1C21;
+    border-radius   : calc(var(--offset-base-size) * 10);
+
+    .number {
+        font-size  : 28px;
+        line-height: 24px;
+        float      : left;
+    }
+
+    .time {
+        font-size  : 16px;
+        line-height: 24px;
+        float      : right;
+    }
+
+    .name {
+        clear    : both;
+        font-size: 24px;
+    }
+
+    .status {
+        font-size: 16px;
+    }
+
+    .panel-bottom {
+
+        min-height: calc(var(--offset-base-size) * 6);
+
+        &::after {
+            display: block;
+            content: '';
+            clear  : both;
+        }
+
+        ul.image-list {
+            float: left;
+
+            >li {
+                display: inline-block;
+
+                .image-item {
+                    width              : 64px;
+                    height             : 64px;
+                    border-radius      : 50%;
+                    // background-color: red;
+                    border             : 2px solid #4C4CFF;
+                    margin-right       : calc(var(--offset-base-size) * 2);
+                    position           : relative;
+                    margin-right       : -19px;
+                    background-color   : black;
+
+                    .offset-count {
+                        position      : absolute;
+                        vertical-align: middle;
+                        line-height   : 64px;
+                        width         : 100%;
+                        text-align    : center;
+                        font-size     : 16px;
+                        z-index       : 1000;
+                    }
+
+                    img {
+                        width     : 64px;
+                        height    : 64px;
+                        object-fit: cover;
+                    }
+                }
+            }
+        }
+
+        .total {
+            line-height: 64px;
+            float      : right;
+            font-size  : 28px;
+
+            >svg {
+                margin-right: calc(var(--offset-base-size) * 2);
+                vertical-align: middle;
+            }
+
+            >span {
+                vertical-align: middle;
+            }
+        }
+    }
+}

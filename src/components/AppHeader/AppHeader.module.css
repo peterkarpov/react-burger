@@ -1,5 +1,5 @@
 header.app-header {
-    background-color: #1C1C21
+    background-color: #1C1C21;
 }
 
 header.app-header .wrapper {
@@ -26,9 +26,25 @@ header.app-header ul.navigation-bar {
 header.app-header ul.navigation-bar li.navigation-link {
     display: inline-block;
     border-radius: 40px;
+    cursor: pointer;
 }
 
 header.app-header ul.navigation-bar li.navigation-link .navigation-text {
     line-height: 24px;
     vertical-align: top;
+    transition: all ease 0.4s;
+}
+
+header.app-header ul.navigation-bar li.navigation-link:hover .navigation-text {
+    line-height: 24px;
+    vertical-align: top;
+    color:white;
+}
+
+header.app-header ul.navigation-bar li.navigation-link svg {
+    transition: all ease 0.4s;
+}
+
+header.app-header ul.navigation-bar li.navigation-link:hover svg {
+    fill:white;
 }

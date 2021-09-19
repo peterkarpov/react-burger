@@ -1,11 +1,16 @@
 import styles from './IngredientDetails.module.css';
 
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+import IDataItem from '../../utils/Interfaces/IDataItem';
 
-function IngredientDetails(props: { element: any }) {
+function IngredientDetails(props: { element: IDataItem, style: React.CSSProperties | undefined }) {
+
+    if (!props.element) {
+        return null;
+    }
 
     return (
-        <div className={styles["ingredient-info"]}>
+        <div className={styles["ingredient-info"]} style={props.style}>
             <div className={styles["icon-wrapper"] + " mb-4"}>
                 <img src={props.element.image_large} alt="icon-wrapper-img" />
             </div>
@@ -50,21 +55,21 @@ function IngredientDetails(props: { element: any }) {
     );
 }
 
-IngredientDetails.propTypes = {
-    element: PropTypes.shape({
-        _id: PropTypes.string,
-        name: PropTypes.string,
-        type: PropTypes.string,
-        proteins: PropTypes.number,
-        fat: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        calories: PropTypes.number,
-        price: PropTypes.number,
-        image: PropTypes.string,
-        image_mobile: PropTypes.string,
-        image_large: PropTypes.string,
-        __v: PropTypes.number
-    }),
-};
+// IngredientDetails.propTypes = {
+//     element: PropTypes.shape({
+//         _id: PropTypes.string,
+//         name: PropTypes.string,
+//         type: PropTypes.string,
+//         proteins: PropTypes.number,
+//         fat: PropTypes.number,
+//         carbohydrates: PropTypes.number,
+//         calories: PropTypes.number,
+//         price: PropTypes.number,
+//         image: PropTypes.string,
+//         image_mobile: PropTypes.string,
+//         image_large: PropTypes.string,
+//         __v: PropTypes.number
+//     }),
+// };
 
 export default IngredientDetails;

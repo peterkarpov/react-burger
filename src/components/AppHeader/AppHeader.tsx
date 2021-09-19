@@ -1,5 +1,4 @@
-import React from 'react';
-
+import { useHistory, useLocation } from 'react-router-dom';
 import {
     Logo,
     BurgerIcon,
@@ -17,30 +16,45 @@ const styleForHeaderWrapper = {
 
 function AppHeader() {
 
+    const history = useHistory();
+    const { state, pathname } = useLocation();
+    
+    const onConstructorClickHandler = () => {
+        history.replace({ pathname: '/', state });
+    }
+    
+    const onFeedClickHandler = () => {
+        history.replace({ pathname: '/feed', state });
+    }
+    
+    const onProfileClickHandler = () => {
+        history.replace({ pathname: '/profile', state });
+    }
+
     return (
         <header className={styles["app-header"] + " pt-4 pb-4"}>
 
             <div className={styles["wrapper"]} style={styleForHeaderWrapper}>
 
                 <ul className={styles["navigation-bar"]}>
-                    <li className={styles["navigation-link"] + " p-5"}>
-                        <BurgerIcon type="primary" />
-                        <span className={styles["navigation-text"] + " text text_type_main-default ml-2"} >Конструктор</span>
+                    <li className={styles["navigation-link"] + " p-5"} onClick={onConstructorClickHandler}>
+                        <BurgerIcon type={`${pathname === '/' ? 'primary' : 'secondary'}`} />
+                        <span className={styles["navigation-text"] + ` text text_type_main-default ${pathname !== '/' ? 'text_color_inactive' : null} ml-2`} >Конструктор</span>
                     </li>
-                    <li className={styles["navigation-link"] + " p-5"}>
-                        <ListIcon type="secondary" />
-                        <span className={styles["navigation-text"] + " text text_type_main-default text_color_inactive ml-2"} >Лента заказов</span>
+                    <li className={styles["navigation-link"] + " p-5"} onClick={onFeedClickHandler}>
+                        <ListIcon type={`${pathname === '/feed' ? 'primary' : 'secondary'}`} />
+                        <span className={styles["navigation-text"] + ` text text_type_main-default ${pathname !== '/feed' ? 'text_color_inactive' : null}  ml-2`} >Лента заказов</span>
                     </li>
                 </ul>
 
-                <div className={styles["logo-wrapper"]}>
+                <div className={styles["logo-wrapper"]} onClick={onConstructorClickHandler}>
                     <Logo />
                 </div>
 
                 <ul className={styles["navigation-bar"]}>
-                    <li className={styles["navigation-link"] + " p-5"}>
-                        <ProfileIcon type="secondary" />
-                        <span className={styles["navigation-text"] + " text text_type_main-default text_color_inactive ml-2"} >Личный кабинет</span>
+                    <li className={styles["navigation-link"] + " p-5"} onClick={onProfileClickHandler}>
+                        <ProfileIcon type={`${pathname === '/profile' ? 'primary' : 'secondary'}`} />
+                        <span className={styles["navigation-text"] + ` text text_type_main-default ${pathname !== '/profile' ? 'text_color_inactive' : null} ml-2`} >Личный кабинет</span>
                     </li>
                 </ul>
 

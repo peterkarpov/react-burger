@@ -21,6 +21,7 @@
 .burger-constructor ul.bottom > li > svg {
   position: absolute;
   left: 0;
+  margin-right: calc(var(--offset-base-size) * 4);
 }
 .burger-constructor ul > li {
   width: 100%;
@@ -30,18 +31,26 @@
   align-content: center;
   align-items: center;
   justify-content: space-between;
+  justify-content: flex-end;
 }
-.burger-constructor ul > li > div {
+.burger-constructor ul > li > span > span {
+  display: flex;
+  align-items: center;
+}
+.burger-constructor ul > li > span > span > svg {
+  margin-right: calc(var(--offset-base-size) * 4);
+}
+.burger-constructor ul > li > span > span > div {
   min-width: 488px;
   min-width: calc(var(--offset-base-size) * 122);
 }
-.burger-constructor ul > li > div > span {
+.burger-constructor ul > li > span > span > div > span {
   justify-content: space-between;
 }
 .burger-constructor .checkout-block {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-content: center;
   justify-content: flex-end;
   align-items: center;

@@ -15,18 +15,18 @@
 
             >li {
                 justify-content: flex-end;
-                position: relative;
-                
-                >svg{
-                    position:absolute;
-                    left: 0;
+                position       : relative;
+
+                >svg {
+                    position    : absolute;
+                    left        : 0;
+                    margin-right: calc(var(--offset-base-size) * 4);
                 }
 
             }
         }
 
         >li {
-
 
             width         : 100%;
             display       : flex;
@@ -36,23 +36,34 @@
             align-items   : center;
 
             justify-content: space-between;
+            justify-content: flex-end;
 
-            >div{
+            >span>span {
+                display    : flex;
+                align-items: center;
+            }
+
+            >span>span>svg {
+                margin-right: calc(var(--offset-base-size) * 4);
+            }
+
+            >span>span>div {
                 min-width: 488px;
                 min-width: calc(var(--offset-base-size) * 122);
 
-                >span{
+                >span {
                     justify-content: space-between;
                 }
+
             }
         }
 
     }
-    
+
     .checkout-block {
         display        : flex;
         flex-direction : row;
-        flex-wrap      : nowrap;
+        flex-wrap      : wrap;
         align-content  : center;
         justify-content: flex-end;
         align-items    : center;

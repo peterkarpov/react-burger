@@ -1,219 +1,102 @@
-import React from 'react';
-
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  HomePage,
+  LoginPage,
+  RegistrationPage,
+  ProfilePage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
+  ModalSwitch,
+  FeedPage,
+  ModalSwitchForOrderInfo,
+  Page404
+} from './../pages';
+import { ProvideAuth } from '../../services/auth';
 import AppHeader from '../AppHeader/AppHeader';
-import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
-import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
-import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import { ProtectedRoute } from '../ProtectedRoute';
+// import HomeOrIngredientPage from '../pages/HomeOrIngredientPage';
 
-import json from '../../utils/data.json';
+function App() {
 
-import IDataItem from '../Interfaces/IDataItem';
+  return (
+    <ProvideAuth>
 
-import Modal from '../Modal/Modal';
+      <Router>
 
-import OrderDetails from '../OrderDetails/OrderDetails';
-
-const DATA_URL = 'https://norma.nomoreparties.space/api/ingredients';
-
-class App extends React.Component<{}, { data: IDataItem[], idForPopup: any, selectedIngredientsId: string[], quantityData: { id: string, quantity: number }[], orderInfo: any }> {
-
-  constructor(props: any) {
-
-    super(props);
-
-    this.state = {
-      data: json,
-      idForPopup: null,
-      selectedIngredientsId: (() => {
-
-        const result = Array.from<string>([]);
-
-        const defaultBunIngredientId = Array.from(json).filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
-        result.push(defaultBunIngredientId);
-        result.push(defaultBunIngredientId);
-
-        return result;
-
-      })(),
-      quantityData: Array.from(json).map((v: IDataItem) => {
-        return {
-          id: v._id,
-          quantity: Math.floor(Math.random() * 10)
-        };
-      }),
-      orderInfo: null,
-    };
-
-    this.setIdForPopup = this.setIdForPopup.bind(this);
-    this.addIngredient = this.addIngredient.bind(this);
-    this.removeIngredient = this.removeIngredient.bind(this);
-  }
-
-  componentDidMount() {
-    fetch(DATA_URL)
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка ${res.status}`);
-      })
-      .then(
-        (result) => {
-
-          const defaultSelectedIngredientsId = Array.from<string>([]);
-          
-          //let defaultBunIngredientId = result.data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
-          //defaultSelectedIngredientsId.push(defaultBunIngredientId);
-          //defaultSelectedIngredientsId.push(defaultBunIngredientId);
-
-          this.setState({ ...this.state, data: Array.from(result.data), selectedIngredientsId: defaultSelectedIngredientsId });
-        },
-        // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
-        // чтобы не перехватывать исключения из ошибок в самих компонентах.
-        (error) => {
-          console.log(error);
-          this.setState({ ...this.state, data: json });
-        }
-      )
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  addIngredient = (id: any) => {
-
-    // if (this.state.quantityData.find((v) => { return v.id === id })?.quantity === 0) {
-    //   this.setState({ ...this.state, idForPopup: id });
-    //   return;
-    // }
-
-    let newQuantityData = this.state.quantityData.map((v) => {
-
-      if (v.id === id) {
-        v.quantity = v.quantity - 1;
-      }
-
-      return v;
-    });
-
-    let selectedIngredientsId = Array.from(this.state.selectedIngredientsId);
-
-    let chosenIngredient = this.state.data.find((v) => v._id === id);
-
-    if (chosenIngredient?.type === 'bun') {
-
-      selectedIngredientsId = selectedIngredientsId.filter((v, i, a) => {
-        return this.state.data.find((x) => x._id === v)?.type !== 'bun';
-      });
-
-      selectedIngredientsId.push(id);
-      selectedIngredientsId.push(id);
-
-    } else {
-      selectedIngredientsId.push(id);
-    }
-
-    this.setState({ ...this.state, selectedIngredientsId: selectedIngredientsId, quantityData: newQuantityData, idForPopup: id });
-
-  };
-
-  removeIngredient = (id: any) => {
-
-    let newQuantityData = this.state.quantityData.map((v) => {
-
-      if (v.id === id) {
-        v.quantity = v.quantity + 1;
-      }
-
-      return v;
-    });
-
-    let selectedIngredientsId = this.state.selectedIngredientsId;
-    let index = this.state.selectedIngredientsId.indexOf(id);
-    selectedIngredientsId.splice(index, 1);
-
-    this.setState({ ...this.state, selectedIngredientsId: selectedIngredientsId, quantityData: newQuantityData });
-  };
-
-  setIdForPopup = (id: any) => {
-    this.setState({ ...this.state, idForPopup: id });
-  };
-
-  getIngredientById = (id: string) => {
-    return this.state.data.find((v: any) => { return v._id === id });
-  }
-
-  clearIdForPopup = () => {
-    this.setState({ ...this.state, idForPopup: null });
-  }
-
-  setOrderInfo = (orderData: any) => {
-    this.setState({ ...this.state, orderInfo: orderData });
-  }
-
-  clearOrderInfo = () => {
-
-    let defaultIngredients = [];
-
-    let defaultBunIngredientId = this.state.data.filter((v: IDataItem) => { return v.type === 'bun' })[0]._id;
-
-    defaultIngredients.push(defaultBunIngredientId);
-    defaultIngredients.push(defaultBunIngredientId);
-
-    this.setState({ ...this.state, orderInfo: null, selectedIngredientsId: defaultIngredients });
-  }
-
-  mainWrapperStyle = {
-    display: 'flex',
-    gap: 'calc(var(--offset-base-size) * 10)',
-    justifyContent: 'space-evenly',
-
-    width: 'calc(var(--offset-base-size) * 320)',
-    marginLeft: 'auto',
-    marginRight: 'auto'
-  };
-
-  render() {
-
-    return (
-      <>
         <AppHeader />
 
-        <section className="main">
-          <div className="wrapper" style={this.mainWrapperStyle}>
+        <Switch>
 
-            <BurgerIngredients
-              data={this.state.data}
-              selectedIngredientsId={this.state.selectedIngredientsId}
-              setIdForPopup={this.setIdForPopup}
-              addIngredient={this.addIngredient}
-              quantityData={this.state.quantityData}
-            ></BurgerIngredients>
+          <Route path="/login" exact={true}>
+            <LoginPage />
+          </Route>
 
-            <BurgerConstructor
-              data={this.state.data}
-              selectedIngredientsId={this.state.selectedIngredientsId}
-              removeIngredient={this.removeIngredient}
-              completeCheckout={this.setOrderInfo}
-            ></BurgerConstructor>
+          <Route path="/register" exact={true}>
+            <RegistrationPage />
+          </Route>
 
-          </div>
-        </section>
+          <Route path="/forgot-password" exact={true}>
+            <ForgotPasswordPage />
+          </Route>
 
-        {this.state.orderInfo != null ?
-          <Modal title={null} onCloseModalCallback={this.clearOrderInfo}>
-            <OrderDetails orderInfo={this.state.orderInfo}></OrderDetails>
-          </Modal>
-          : null}
+          <Route path="/reset-password" exact={true}>
+            <ResetPasswordPage />
+          </Route>
 
-        {this.state.idForPopup != null ?
-          <Modal title={'Детали ингридиента'} onCloseModalCallback={this.clearIdForPopup}>
-            <IngredientDetails element={this.getIngredientById(this.state.idForPopup)}></IngredientDetails>
-          </Modal>
-          : null}
-      </>
-    );
-  }
+          <ProtectedRoute path="/profile" exact={true}>
+            <ProfilePage />
+          </ProtectedRoute>
+
+          <Route path="/ingredients/:id" exact={true}>
+            {/* <HomeOrIngredientPage /> */}
+            <ModalSwitch />
+          </Route>
+
+
+          <Route path="/feed" exact={true}>
+            <FeedPage />
+          </Route>
+
+          <Route path="/feed/:number" exact={true}>
+            {/* TODO page and modal */}
+            {/* <OrderInfoPage /> */}
+            <ModalSwitchForOrderInfo route={"/feed"}>
+              <FeedPage />
+            </ModalSwitchForOrderInfo>
+          </Route>
+
+          <ProtectedRoute path="/profile/orders" exact={true}>
+            <ProfilePage />
+          </ProtectedRoute>
+
+          <ProtectedRoute path="/profile/orders/:number" exact={true}>
+            {/* TODO page and modal */}
+            {/* <OrderInfoPage /> */}
+            <ModalSwitchForOrderInfo route={"/profile/orders"}>
+              <ProfilePage />
+            </ModalSwitchForOrderInfo>
+          </ProtectedRoute>
+
+          <Route path="/" exact={true}>
+            <HomePage />
+          </Route>
+
+          <Route>
+
+            {/* <h1>Oops! 404 Error</h1>
+            <p>The page you requested does not exist</p>
+            <br />
+            <p>check the address or try <Link to='/' >homepage</Link></p> */}
+
+            <Page404 />
+
+          </Route>
+
+        </Switch>
+      </Router>
+
+    </ProvideAuth>
+  );
 }
 
 export default App;
