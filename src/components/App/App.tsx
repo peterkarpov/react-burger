@@ -21,7 +21,9 @@ function App() {
   return (
     <ProvideAuth>
 
-      <BrowserRouter basename="/react-burger">
+      <BrowserRouter
+        basename="/react-burger"
+      >
 
         <AppHeader />
 
