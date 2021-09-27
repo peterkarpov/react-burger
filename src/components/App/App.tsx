@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import {
   HomePage,
   LoginPage,
@@ -21,7 +21,7 @@ function App() {
   return (
     <ProvideAuth>
 
-      <Router basename="/react-burger">
+      <BrowserRouter basename="/react-burger">
 
         <AppHeader />
 
@@ -93,7 +93,7 @@ function App() {
           </Route>
 
         </Switch>
-      </Router>
+      </BrowserRouter>
 
     </ProvideAuth>
   );
