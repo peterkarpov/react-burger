@@ -27,7 +27,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://peterkarpov.github.io/react-burger",
+  "homepage": "/",
   "eslintConfig": {
     "extends": [
       "react-app",
